@@ -168,7 +168,7 @@ public class MonitorService extends DynamicEngine {
      *
      * @param dynamicAppInfo {@link DynamicAppInfo} of the foreground package.
      */
-    @override
+    @Override
     public void onAppChange(dynamicAppInfo);
     
     ...
