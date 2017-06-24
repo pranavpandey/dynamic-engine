@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/pranavpandey/dynamic-engine/master/graphics/dynamic-engine_512x512.png" width="160" height="160" align="right" hspace="20">
+
 # Dynamic Engine
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?)](https://www.apache.org/licenses/LICENSE-2.0.html)
@@ -26,18 +28,6 @@ foreground app via service on Android 9+ (Gingerbread or above) devices.
 It can be installed by adding the following dependency to your `build.gradle` file:
 
 ```groovy
-allprojects {
-    repositories {
-        ...
-        
-        maven {
-            url 'https://dl.bintray.com/pranavpandey/android/'
-        }
-    }
-}
-
-...
-
 dependencies {
     compile 'com.pranavpandey.android:dynamic-engine:0.1.0'
 }
@@ -55,6 +45,11 @@ events. I will do my best to add more tasks later.
 
 Extend the `DynamicEngine` service and implement the interface functions to monitor monitor 
 call, lock, headset, charging and dock related events.
+
+On Android M (Marshmallow) or above devices, `READ_PHONE_STATE` permission must be granted for 
+the app `package` to monitor call events. If this permission is not granted then,
+`onCallStateChange(isCall)` method will never be called. For more information on the 
+`runtime permissions`, please read official documentation [here](https://developer.android.com/training/permissions/requesting.html).
 
 ```java
 public class MonitorService extends DynamicEngine {
@@ -81,7 +76,8 @@ public class MonitorService extends DynamicEngine {
      *
      * @param isCall {@code true} if the device is on call. Either ringing
      *               or answered.
-     */    @Override
+     */    
+    @Override
     public void onCallStateChange(isCall) {
     
     }
@@ -144,6 +140,11 @@ currently in `beta` stage so, more improvements will be done in the future.
 It will not run by default to save resources. It should be started explicitly by calling the
 `setAppMonitor(isRunning)`.
 
+On Android L (Lollipop) or above devices, `PACKAGE_USAGE_STATS` permission must be granted for 
+the app `package` to monitor foreground app. If this permission is not granted then,
+`onAppChange(dynamicAppInfo)` method will never be called. For more information on the 
+`UsageStatsManager`, please read official documentation [here](https://developer.android.com/reference/android/app/usage/UsageStatsManager.html).
+
 ```java
 public class MonitorService extends DynamicEngine {
 
@@ -158,6 +159,17 @@ public class MonitorService extends DynamicEngine {
      * @see DynamicEventListener#onAppChange(DynamicAppInfo)
      */
     setAppMonitor(isRunning);
+    
+    ...
+    
+    /**
+     * On foreground app changed. Use it to provide the app specific
+     * functionality in the app.
+     *
+     * @param dynamicAppInfo {@link DynamicAppInfo} of the foreground package.
+     */
+    @override
+    public void onAppChange(dynamicAppInfo);
     
     ...
 }
