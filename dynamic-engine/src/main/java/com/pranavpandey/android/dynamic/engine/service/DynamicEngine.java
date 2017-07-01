@@ -108,7 +108,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void initializeEvents() {
         Intent chargingIntent = registerReceiver(null,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        if(chargingIntent != null) {
+        if (chargingIntent != null) {
             int status = chargingIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                     status == BatteryManager.BATTERY_STATUS_FULL;
@@ -116,13 +116,13 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
 
         Intent headsetIntent = registerReceiver(null,
                 new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-        if(headsetIntent != null) {
+        if (headsetIntent != null) {
             isHeadset = headsetIntent.getIntExtra(EXTRA_HEADSET_STATE, -1) == 1;
         }
 
         Intent dockIntent = registerReceiver(null,
                 new IntentFilter(Intent.ACTION_DOCK_EVENT));
-        if(dockIntent != null) {
+        if (dockIntent != null) {
             isDocked = dockIntent.getIntExtra(Intent.EXTRA_DOCK_STATE, -1)
                     != Intent.EXTRA_DOCK_STATE_UNDOCKED;
         }
@@ -276,7 +276,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction() != null) {
+            if (intent.getAction() != null) {
                 switch (intent.getAction()) {
                     case Intent.ACTION_POWER_CONNECTED:
                         setCharging(true);
