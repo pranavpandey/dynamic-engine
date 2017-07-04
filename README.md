@@ -11,7 +11,7 @@ foreground app via service on Android 9+ (Gingerbread or above) devices.
 
 ---
 
-## Table of Contents
+## Contents
 
 - [Installation](https://github.com/pranavpandey/dynamic-engine#installation)
 - [Usage](https://github.com/pranavpandey/dynamic-engine#usage)
