@@ -4,6 +4,7 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![Build Status](https://travis-ci.org/pranavpandey/dynamic-engine.svg?branch=master)](https://travis-ci.org/pranavpandey/dynamic-engine)
+[![Download](https://api.bintray.com/packages/pranavpandey/android/dynamic-engine/images/download.svg)](https://bintray.com/pranavpandey/android/dynamic-engine/_latestVersion)
 
 A collection of tasks to monitor various events including call, lock, headset, charging, dock and 
 foreground app via service on Android 9+ (Gingerbread or above) devices.
@@ -12,14 +13,14 @@ foreground app via service on Android 9+ (Gingerbread or above) devices.
 
 ## Table of Contents
 
-1. [Installation](https://github.com/pranavpandey/dynamic-engine#installation)
-2. [Usage](https://github.com/pranavpandey/dynamic-engine#usage)
-    1. [Monitor special events](https://github.com/pranavpandey/dynamic-engine#monitor-special-events)
-    2. [Monitor foreground app](https://github.com/pranavpandey/dynamic-engine#monitor-foreground-app)
-    3. [Monitor package state](https://github.com/pranavpandey/dynamic-engine#monitor-package-state)
-    4. [Events priority](https://github.com/pranavpandey/dynamic-engine#events-priority)
-    5. [Dependency](https://github.com/pranavpandey/dynamic-engine#dependency)
-3. [License](https://github.com/pranavpandey/dynamic-engine#license)
+- [Installation](https://github.com/pranavpandey/dynamic-engine#installation)
+- [Usage](https://github.com/pranavpandey/dynamic-engine#usage)
+    - [Monitor special events](https://github.com/pranavpandey/dynamic-engine#monitor-special-events)
+    - [Monitor foreground app](https://github.com/pranavpandey/dynamic-engine#monitor-foreground-app)
+    - [Monitor package state](https://github.com/pranavpandey/dynamic-engine#monitor-package-state)
+    - [Events priority](https://github.com/pranavpandey/dynamic-engine#events-priority)
+    - [Dependency](https://github.com/pranavpandey/dynamic-engine#dependency)
+- [License](https://github.com/pranavpandey/dynamic-engine#license)
 
 ---
 
@@ -270,8 +271,8 @@ public abstract class DynamicEngine {
 
 ### Dependency
 
-As it depends on the [Dynamic Utils](https://github.com/pranavpandey/dynamic-utils), its functions
-can be used to perform various useful operations.
+This library depends on the [Dynamic Utils](https://github.com/pranavpandey/dynamic-utils) so, its 
+functions can be used to perform other operations.
 
 ---
 
