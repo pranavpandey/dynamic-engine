@@ -45,9 +45,9 @@ public class DynamicPriority {
     private static final String DAS_PREF_EVENTS_PRIORITY = "das_pref_events_priority";
 
     /**
-     * DynamicPriority splitter to separate different events.
+     * Priority splitter to separate different events.
      */
-    private static final String PRIORITY_SPLIT = ",";
+    public static final String PRIORITY_SPLIT = ",";
 
     /**
      * Constant for the call event.
