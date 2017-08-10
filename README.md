@@ -9,6 +9,9 @@
 A collection of tasks to monitor various events including call, lock, headset, charging, dock and 
 foreground app via service on Android 9+ (Gingerbread or above) devices.
 
+> Since v0.4.0, it uses [26.x.x support libraries](https://developer.android.com/topic/libraries/support-library/revisions.html#26-0-0)
+so, minimum SDK will be Android 14+ (ICS or above).
+
 ---
 
 ## Contents
@@ -19,7 +22,6 @@ foreground app via service on Android 9+ (Gingerbread or above) devices.
     - [Monitor foreground app](https://github.com/pranavpandey/dynamic-engine#monitor-foreground-app)
     - [Monitor package state](https://github.com/pranavpandey/dynamic-engine#monitor-package-state)
     - [Events priority](https://github.com/pranavpandey/dynamic-engine#events-priority)
-    - [Dependency](https://github.com/pranavpandey/dynamic-engine#dependency)
 - [License](https://github.com/pranavpandey/dynamic-engine#license)
 
 ---
@@ -30,7 +32,7 @@ It can be installed by adding the following dependency to your `build.gradle` fi
 
 ```groovy
 dependencies {
-    compile 'com.pranavpandey.android:dynamic-engine:0.3.0'
+    compile 'com.pranavpandey.android:dynamic-engine:0.4.0'
 }
 ```
 
@@ -268,11 +270,6 @@ public abstract class DynamicEngine {
     ...
 }
 ```
-
-### Dependency
-
-This library depends on the [Dynamic Utils](https://github.com/pranavpandey/dynamic-utils) so, its 
-functions can be used to perform other operations.
 
 ---
 

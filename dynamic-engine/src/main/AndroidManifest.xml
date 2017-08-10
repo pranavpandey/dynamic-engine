@@ -20,8 +20,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pranavpandey.android.dynamic.engine">
 
-    <uses-sdk android:minSdkVersion="9" />
-
     <!-- Permissions used by the foreground app monitor. -->
     <uses-permission android:name="android.permission.GET_TASKS"
         android:maxSdkVersion="19" />
