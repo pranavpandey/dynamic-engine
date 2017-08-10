@@ -30,8 +30,11 @@ task clean(type: Delete) {
 ext {
     projectName = 'dynamic-engine'
     projectDesc = 'A collection of tasks to monitor various events including call, lock, ' +
-            'headset, charging, dock and foreground app via service on Android 9+ ' +
-            '(Gingerbread or above) devices.'
+            'headset, charging, dock and foreground app via service on Android ' +
+            'devices.'
+    versionDesc = 'A collection of tasks to monitor various events including call, lock, ' +
+            'headset, charging, dock and foreground app via service on Android 14+ ' +
+            '(ICS or above) devices.'
     siteUrl = 'https://github.com/pranavpandey/dynamic-engine'
     gitUrl = 'https://github.com/pranavpandey/dynamic-engine'
     issueUrl = 'https://github.com/pranavpandey/dynamic-engine/issues'
@@ -54,9 +57,9 @@ ext {
     versionCode = 3
 
     buildTools = '26.0.1'
-    minSdk = 9
+    minSdk = 14
     compileSdk = 26
     targetSdk = 25
 
-    androidSupport = '25.4.0'
+    androidSupport = '26.0.1'
 }
