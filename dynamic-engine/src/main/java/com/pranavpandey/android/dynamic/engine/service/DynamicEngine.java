@@ -25,6 +25,7 @@ import android.os.BatteryManager;
 
 import com.pranavpandey.android.dynamic.engine.listener.DynamicEventListener;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
+import com.pranavpandey.android.dynamic.engine.model.DynamicEvent;
 import com.pranavpandey.android.dynamic.engine.model.DynamicPriority;
 import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
@@ -325,46 +326,50 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
 
         for (String eventPriority : eventsPriority) {
             switch (eventPriority) {
-                case DynamicPriority.EVENT_CALL:
+                case DynamicEvent.EVENT_CALL:
                     if (isCall()) {
-                        currentEvents.add(DynamicPriority.EVENT_CALL);
+                        currentEvents.add(DynamicEvent.EVENT_CALL);
                     }
                     break;
-                case DynamicPriority.EVENT_LOCK:
+                case DynamicEvent.EVENT_LOCK:
                     if (isLocked()) {
-                        currentEvents.add(DynamicPriority.EVENT_LOCK);
+                        currentEvents.add(DynamicEvent.EVENT_LOCK);
                     }
                     break;
-                case DynamicPriority.EVENT_HEADSET:
+                case DynamicEvent.EVENT_HEADSET:
                     if (isHeadset()) {
-                        currentEvents.add(DynamicPriority.EVENT_HEADSET);
+                        currentEvents.add(DynamicEvent.EVENT_HEADSET);
                     }
                     break;
-                case DynamicPriority.EVENT_CHARGING:
+                case DynamicEvent.EVENT_CHARGING:
                     if (isCharging()) {
-                        currentEvents.add(DynamicPriority.EVENT_CHARGING);
+                        currentEvents.add(DynamicEvent.EVENT_CHARGING);
                     }
                     break;
-                case DynamicPriority.EVENT_DOCK:
+                case DynamicEvent.EVENT_DOCK:
                     if (isDocked()) {
-                        currentEvents.add(DynamicPriority.EVENT_DOCK);
+                        currentEvents.add(DynamicEvent.EVENT_DOCK);
                     }
                     break;
-                case DynamicPriority.EVENT_APP:
+                case DynamicEvent.EVENT_APP:
                     if (getAppMonitor().isRunning()){
-                        currentEvents.add(DynamicPriority.EVENT_APP);
+                        currentEvents.add(DynamicEvent.EVENT_APP);
                     }
                     break;
             }
         }
 
+        if (currentEvents.isEmpty()) {
+            currentEvents.add(DynamicEvent.EVENT_NONE);
+        }
         return currentEvents;
     }
 
     /**
      * Get the highest priority event.
      */
-    protected String getHighestPriorityEvent() {
+    protected @DynamicEvent
+    String getHighestPriorityEvent() {
         List<String> currentEvents = getCurrentEvents();
 
         if (!currentEvents.isEmpty()) {

@@ -16,6 +16,7 @@
 
 package com.pranavpandey.android.dynamic.engine.task;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
@@ -59,6 +60,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * DynamicEngine object to initialize usage stats service.
      */
+    @SuppressLint("StaticFieldLeak")
     private DynamicEngine mDynamicEngine;
 
     /**
@@ -88,6 +90,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * Constructor to initialize DynamicAppMonitor for the gove DynamicEngine.
      */
+    @SuppressLint("WrongConstant")
     public DynamicAppMonitor(DynamicEngine dynamicEngine) {
         this.mDynamicEngine = dynamicEngine;
         this.mActivityManager = (ActivityManager)
@@ -119,9 +122,8 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
             try {
                 DynamicAppInfo dynamicAppInfo = getForegroundAppInfo();
                 if (dynamicAppInfo != null && dynamicAppInfo.getPackageName() != null) {
-                    if ((getCurrentAppInfo() == null
-                            || !getCurrentAppInfo().equals(dynamicAppInfo))) {
-                        setCurrentAppInfo(dynamicAppInfo);
+                    if (mDynamicAppInfo == null
+                            || !mDynamicAppInfo.equals(dynamicAppInfo)) {
                         publishProgress(dynamicAppInfo);
                     }
                 }
@@ -139,7 +141,8 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     protected void onProgressUpdate(DynamicAppInfo... dynamicAppInfo) {
         super.onProgressUpdate(dynamicAppInfo);
 
-        mDynamicEngine.getSpecialEventListener().onAppChange(dynamicAppInfo[0]);
+        mDynamicAppInfo = dynamicAppInfo[0];
+        mDynamicEngine.getSpecialEventListener().onAppChange(mDynamicAppInfo);
     }
 
     @Override
@@ -147,6 +150,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
         super.onPostExecute(param);
 
         mDynamicAppInfo = null;
+        mDynamicEngine = null;
     }
 
     /**
@@ -197,7 +201,8 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
         }
 
         if (packageName != null) {
-            dynamicAppInfo = DynamicEngineUtils.getAppInfoFromPackage(mDynamicEngine, packageName);
+            dynamicAppInfo = DynamicEngineUtils.getAppInfoFromPackage(
+                    mDynamicEngine, packageName);
         }
 
         return dynamicAppInfo;

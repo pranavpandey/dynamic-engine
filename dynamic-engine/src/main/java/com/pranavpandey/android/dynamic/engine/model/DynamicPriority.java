@@ -51,31 +51,43 @@ public class DynamicPriority {
 
     /**
      * Constant for the call event.
+     *
+     * @deprecated Use {@link DynamicEvent#EVENT_CALL}.
      */
     public static final String EVENT_CALL = "0";
 
     /**
      * Constant for the lock event.
+     *
+     * @deprecated Use {@link DynamicEvent#EVENT_LOCK}.
      */
     public static final String EVENT_LOCK = "1";
 
     /**
      * Constant for the headset event.
+     *
+     * @deprecated Use {@link DynamicEvent#EVENT_HEADSET}.
      */
     public static final String EVENT_HEADSET = "2";
 
     /**
      * Constant for the charging event.
+     *
+     * @deprecated Use {@link DynamicEvent#EVENT_CHARGING}.
      */
     public static final String EVENT_CHARGING = "3";
 
     /**
      * Constant for the dock event.
+     *
+     * @deprecated Use {@link DynamicEvent#EVENT_DOCK}.
      */
     public static final String EVENT_DOCK = "4";
 
     /**
      * Constant for the app event.
+     *
+     * @deprecated Use {@link DynamicEvent#EVENT_APP}.
      */
     public static final String EVENT_APP = "5";
 
@@ -89,9 +101,10 @@ public class DynamicPriority {
      * <br />5. Dock
      * <br />6. App (lowest)
      */
-    private static final String DAS_DEFAULT_EVENTS_PRIORITY = EVENT_DOCK
-            + PRIORITY_SPLIT + EVENT_CHARGING + PRIORITY_SPLIT + EVENT_HEADSET
-            + PRIORITY_SPLIT + EVENT_LOCK + PRIORITY_SPLIT + EVENT_CALL;
+    private static final String DAS_DEFAULT_EVENTS_PRIORITY = DynamicEvent.EVENT_DOCK
+            + PRIORITY_SPLIT + DynamicEvent.EVENT_CHARGING + PRIORITY_SPLIT
+            + DynamicEvent.EVENT_HEADSET + PRIORITY_SPLIT + DynamicEvent.EVENT_LOCK
+            + PRIORITY_SPLIT + DynamicEvent.EVENT_CALL;
 
     /**
      * Get shared preferences of the app engine for a given context.
@@ -170,12 +183,13 @@ public class DynamicPriority {
      */
     private static ArrayList<String> returnAfterDeviceCheck(Context context,
                                                             ArrayList<String> eventsPriority) {
-        if (!DynamicDeviceUtils.hasTelephony(context) && eventsPriority.contains(EVENT_CALL)) {
-            eventsPriority.remove(EVENT_CALL);
+        if (!DynamicDeviceUtils.hasTelephony(context)
+                && eventsPriority.contains(DynamicEvent.EVENT_CALL)) {
+            eventsPriority.remove(DynamicEvent.EVENT_CALL);
         }
 
-        if (!eventsPriority.contains(EVENT_APP)) {
-            eventsPriority.add(0, EVENT_APP);
+        if (!eventsPriority.contains(DynamicEvent.EVENT_APP)) {
+            eventsPriority.add(0, DynamicEvent.EVENT_APP);
         }
 
         return eventsPriority;

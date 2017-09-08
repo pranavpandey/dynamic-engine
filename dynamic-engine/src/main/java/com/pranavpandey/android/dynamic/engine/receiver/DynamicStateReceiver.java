@@ -60,8 +60,9 @@ public class DynamicStateReceiver extends BroadcastReceiver {
                         break;
                 }
 
-                context.sendBroadcast(new Intent(
-                        onCall ? DynamicEngineUtils.ACTION_ON_CALL : DynamicEngineUtils.ACTION_CALL_IDLE));
+                context.sendBroadcast(new Intent(onCall
+                        ? DynamicEngineUtils.ACTION_ON_CALL
+                        : DynamicEngineUtils.ACTION_CALL_IDLE));
             }
         }, LISTEN_CALL_STATE);
     }

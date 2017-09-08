@@ -60,11 +60,13 @@ public class DynamicEngineUtils {
         if (packageName != null) {
             DynamicAppInfo dynamicAppInfo = new DynamicAppInfo();
             try {
-                dynamicAppInfo.setApplicationInfo(context.getPackageManager().getApplicationInfo(
+                dynamicAppInfo.setApplicationInfo(
+                        context.getPackageManager().getApplicationInfo(
                         packageName, PackageManager.GET_META_DATA));
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+
             dynamicAppInfo.setPackageName(packageName);
             dynamicAppInfo.setLabel(dynamicAppInfo.getApplicationInfo().
                     loadLabel(context.getPackageManager()).toString());
