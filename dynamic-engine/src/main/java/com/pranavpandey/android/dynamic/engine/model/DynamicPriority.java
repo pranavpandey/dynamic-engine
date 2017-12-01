@@ -54,6 +54,7 @@ public class DynamicPriority {
      *
      * @deprecated Use {@link DynamicEvent#EVENT_CALL}.
      */
+    @Deprecated
     public static final String EVENT_CALL = "0";
 
     /**
@@ -61,6 +62,7 @@ public class DynamicPriority {
      *
      * @deprecated Use {@link DynamicEvent#EVENT_LOCK}.
      */
+    @Deprecated
     public static final String EVENT_LOCK = "1";
 
     /**
@@ -68,6 +70,7 @@ public class DynamicPriority {
      *
      * @deprecated Use {@link DynamicEvent#EVENT_HEADSET}.
      */
+    @Deprecated
     public static final String EVENT_HEADSET = "2";
 
     /**
@@ -75,6 +78,7 @@ public class DynamicPriority {
      *
      * @deprecated Use {@link DynamicEvent#EVENT_CHARGING}.
      */
+    @Deprecated
     public static final String EVENT_CHARGING = "3";
 
     /**
@@ -82,6 +86,7 @@ public class DynamicPriority {
      *
      * @deprecated Use {@link DynamicEvent#EVENT_DOCK}.
      */
+    @Deprecated
     public static final String EVENT_DOCK = "4";
 
     /**
@@ -89,6 +94,7 @@ public class DynamicPriority {
      *
      * @deprecated Use {@link DynamicEvent#EVENT_APP}.
      */
+    @Deprecated
     public static final String EVENT_APP = "5";
 
     /**
