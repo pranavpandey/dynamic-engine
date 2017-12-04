@@ -22,6 +22,7 @@ so, minimum SDK will be Android 14+ (ICS or above).
     - [Monitor foreground app](https://github.com/pranavpandey/dynamic-engine#monitor-foreground-app)
     - [Monitor package state](https://github.com/pranavpandey/dynamic-engine#monitor-package-state)
     - [Events priority](https://github.com/pranavpandey/dynamic-engine#events-priority)
+    - [Dependency](https://github.com/pranavpandey/dynamic-engine#dependency)
 - [License](https://github.com/pranavpandey/dynamic-engine#license)
 
 ---
@@ -273,7 +274,7 @@ public abstract class DynamicEngine {
 
 ### Dependency
 
-It depends on the [Dynamic Utils](https://github.com/pranavpandey/dynamic-utils) to perform
+It depends on the [dynamic-utils](https://github.com/pranavpandey/dynamic-utils) to perform
 various internal operations. So, its functions can also be used to perform other useful operations.
 
 ---
