@@ -297,14 +297,20 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                     case Intent.ACTION_USER_PRESENT:
                         KeyguardManager keyguardManager = (KeyguardManager)context
                                 .getSystemService(Context.KEYGUARD_SERVICE);
-                        setLocked(keyguardManager.inKeyguardRestrictedInputMode());
+                        if (keyguardManager != null) {
+                            setLocked(keyguardManager.inKeyguardRestrictedInputMode());
+                        }
                         break;
                     case Intent.ACTION_PACKAGE_REMOVED:
                         break;
                     case Intent.ACTION_PACKAGE_ADDED:
-                        mDynamicEventListener.onPackageUpdated(DynamicEngineUtils.getAppInfoFromPackage(
-                                context, intent.getData().getSchemeSpecificPart()),
-                                !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false));
+                        if (intent.getData() != null
+                                && intent.getData().getSchemeSpecificPart() != null) {
+                            mDynamicEventListener.onPackageUpdated(
+                                    DynamicEngineUtils.getAppInfoFromPackage(
+                                            context, intent.getData().getSchemeSpecificPart()),
+                                    !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false));
+                        }
                         break;
                     case DynamicEngineUtils.ACTION_ON_CALL:
                         setCall(true);
@@ -368,8 +374,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     /**
      * Get the highest priority event.
      */
-    protected @DynamicEvent
-    String getHighestPriorityEvent() {
+    protected @DynamicEvent String getHighestPriorityEvent() {
         List<String> currentEvents = getCurrentEvents();
 
         if (!currentEvents.isEmpty()) {

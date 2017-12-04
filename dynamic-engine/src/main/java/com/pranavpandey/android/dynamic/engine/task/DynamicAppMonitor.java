@@ -23,6 +23,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 
@@ -88,8 +89,9 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private UsageStatsManager mUsageStatsManager;
 
     /**
-     * Constructor to initialize DynamicAppMonitor for the gove DynamicEngine.
+     * Constructor to initialize DynamicAppMonitor for the give DynamicEngine.
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @SuppressLint("WrongConstant")
     public DynamicAppMonitor(DynamicEngine dynamicEngine) {
         this.mDynamicEngine = dynamicEngine;
@@ -116,6 +118,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
         mDynamicAppInfo = null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected Void doInBackground(Void... params) {
         while(isRunning()) {
@@ -170,7 +173,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * Setter for {@link #mDynamicAppInfo}.
      */
-    private void setCurrentAppInfo(DynamicAppInfo dynamicAppInfo) {
+    private void setCurrentAppInfo(@Nullable DynamicAppInfo dynamicAppInfo) {
         this.mDynamicAppInfo = dynamicAppInfo;
     }
 
@@ -184,6 +187,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * Get DynamicAppInfo from the foreground package name.
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private DynamicAppInfo getForegroundAppInfo() {
         String packageName = null;
         DynamicAppInfo dynamicAppInfo = null;

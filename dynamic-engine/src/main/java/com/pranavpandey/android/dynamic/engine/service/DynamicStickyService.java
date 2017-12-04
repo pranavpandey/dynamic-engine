@@ -46,10 +46,11 @@ public abstract class DynamicStickyService extends Service {
         restartService.setPackage(getPackageName());
         PendingIntent restartServicePI = PendingIntent.getService(
                 this, 1, restartService, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmService = (AlarmManager)
-                this.getSystemService(Context.ALARM_SERVICE);
-        alarmService.set(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + getRestartInterval(), restartServicePI);
+        AlarmManager alarmService = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (alarmService != null) {
+            alarmService.set(AlarmManager.ELAPSED_REALTIME,
+                    SystemClock.elapsedRealtime() + getRestartInterval(), restartServicePI);
+        }
         super.onTaskRemoved(rootIntent);
     }
 

@@ -32,7 +32,7 @@ It can be installed by adding the following dependency to your `build.gradle` fi
 
 ```groovy
 dependencies {
-    implementation 'com.pranavpandey.android:dynamic-engine:0.7.0'
+    compile 'com.pranavpandey.android:dynamic-engine:0.7.0'
 }
 ```
 
@@ -98,7 +98,7 @@ public class MonitorService extends DynamicEngine {
     }
     
     /**
-     * On headset state changed. Either teh device is connected to a audio
+     * On headset state changed. Either the device is connected to a audio
      * output device or volume is routed through the internal speaker.
      *
      * @param isConnected {@code true} if the device is connected to a headset
@@ -137,7 +137,7 @@ public class MonitorService extends DynamicEngine {
 
 ### Monitor foreground app
 
-It can be used to monitor the foreground app to perform actions based on the foreground app. It is 
+It can be used to monitor the foreground app to perform actions based on it. It is 
 currently in `beta` stage so, more improvements will be done in the future.
 
 It will not run by default to save resources. It should be started explicitly by calling the
@@ -145,8 +145,8 @@ It will not run by default to save resources. It should be started explicitly by
 
 On Android L (Lollipop) or above devices, `PACKAGE_USAGE_STATS` permission must be granted for 
 the app `package` to monitor foreground app. If this permission is not granted then,
-`onAppChange(dynamicAppInfo)` method will never be called. For more information on the 
-`UsageStatsManager`, please read official documentation [here](https://developer.android.com/reference/android/app/usage/UsageStatsManager.html).
+`onAppChange(dynamicAppInfo)` method will never be called. For more information on 
+`UsageStatsManager`, please read the official documentation [here](https://developer.android.com/reference/android/app/usage/UsageStatsManager.html).
 
 ```java
 public class MonitorService extends DynamicEngine {

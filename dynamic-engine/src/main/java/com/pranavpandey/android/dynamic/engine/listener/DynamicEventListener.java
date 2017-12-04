@@ -16,6 +16,9 @@
 
 package com.pranavpandey.android.dynamic.engine.listener;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
 
@@ -57,7 +60,7 @@ public interface DynamicEventListener {
     void onLockStateChange(boolean isLocked);
 
     /**
-     * On headset state changed. Either teh device is connected to a audio
+     * On headset state changed. Either the device is connected to a audio
      * output device or volume is routed through the internal speaker.
      *
      * @param isConnected {@code true} if the device is connected to a headset
@@ -87,7 +90,7 @@ public interface DynamicEventListener {
      *
      * @param dynamicAppInfo {@link DynamicAppInfo} of the foreground package.
      */
-    void onAppChange(DynamicAppInfo dynamicAppInfo);
+    void onAppChange(@Nullable DynamicAppInfo dynamicAppInfo);
 
     /**
      * On app package added or changed. Useful to show a notification if
@@ -96,5 +99,5 @@ public interface DynamicEventListener {
      * @param dynamicAppInfo {@link DynamicAppInfo} of the updated or added package.
      * @param isNewPackage {@code true} if the package is newly added.
      */
-    void onPackageUpdated(DynamicAppInfo dynamicAppInfo, boolean isNewPackage);
+    void onPackageUpdated(@NonNull DynamicAppInfo dynamicAppInfo, boolean isNewPackage);
 }
