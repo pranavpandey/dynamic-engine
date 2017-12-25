@@ -16,12 +16,9 @@
 
 package com.pranavpandey.android.dynamic.engine.service;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
+import android.support.annotation.Nullable;
 
 /**
  * Sticky service which will restart automatically if killed by the
@@ -33,25 +30,11 @@ public abstract class DynamicStickyService extends Service {
     /**
      * Default interval after which try to restart the service.
      */
-    public static final int DEFAULT_RESTART_INTERVAL = 2000;
+    public static final long ADE_DEFAULT_RESTART_INTERVAL = 2000;
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         return START_STICKY;
-    }
-
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Intent restartService = new Intent(this, this.getClass());
-        restartService.setPackage(getPackageName());
-        PendingIntent restartServicePI = PendingIntent.getService(
-                this, 1, restartService, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmService = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (alarmService != null) {
-            alarmService.set(AlarmManager.ELAPSED_REALTIME,
-                    SystemClock.elapsedRealtime() + getRestartInterval(), restartServicePI);
-        }
-        super.onTaskRemoved(rootIntent);
     }
 
     /**
@@ -62,9 +45,9 @@ public abstract class DynamicStickyService extends Service {
      * @return Interval in milliseconds after which service will be
      * restarted.
      *
-     * @see #DEFAULT_RESTART_INTERVAL
+     * @see #ADE_DEFAULT_RESTART_INTERVAL
      */
-    protected int getRestartInterval() {
-        return DEFAULT_RESTART_INTERVAL;
+    protected long getRestartInterval() {
+        return ADE_DEFAULT_RESTART_INTERVAL;
     }
 }

@@ -34,55 +34,55 @@ public interface DynamicEventListener {
      * On initialize the service so that we can get the current
      * charging, headset and dock state.
      *
-     * @param isCharging {@code true} if the device is charging or connected
+     * @param charging {@code true} if the device is charging or connected
      *                   to a power source.
-     * @param isHeadset {@code true} if the device is connected to a headset
+     * @param headset {@code true} if the device is connected to a headset
      *                  or a audio output device.
-     * @param isDocked {@code true} if the device is docked.
+     * @param docked {@code true} if the device is docked.
      */
-    void onInitialize(boolean isCharging, boolean isHeadset, boolean isDocked);
+    void onInitialize(boolean charging, boolean headset, boolean docked);
 
     /**
      * On call state changed. Either on call or the device is idle.
      *
-     * @param isCall {@code true} if the device is on call. Either ringing
+     * @param call {@code true} if the device is on call. Either ringing
      *               or answered.
      */
-    void onCallStateChange(boolean isCall);
+    void onCallStateChange(boolean call);
 
     /**
      * On lock state changed. Either the device is in the locked or unlocked
      * state independent of the PIN, password or any other security lock.
      *
-     * @param isLocked {@code true} if the device is in the locked state or
+     * @param locked {@code true} if the device is in the locked state or
      *                  the lock screen is shown.
      */
-    void onLockStateChange(boolean isLocked);
+    void onLockStateChange(boolean locked);
 
     /**
      * On headset state changed. Either the device is connected to a audio
      * output device or volume is routed through the internal speaker.
      *
-     * @param isConnected {@code true} if the device is connected to a headset
+     * @param connected {@code true} if the device is connected to a headset
      *                    or a audio output device.
      */
-    void onHeadsetStateChange(boolean isConnected);
+    void onHeadsetStateChange(boolean connected);
 
     /**
      * On charging state changed. Either the device is connected to a power
      * source using the battery.
      *
-     * @param isCharging {@code true} if the device is charging or connected
+     * @param charging {@code true} if the device is charging or connected
      *                   to a power source.
      */
-    void onChargingStateChange(boolean isCharging);
+    void onChargingStateChange(boolean charging);
 
     /**
      * On dock state changed. Either the device is docked or not.
      *
-     * @param isDocked {@code true} if the device is docked.
+     * @param docked {@code true} if the device is docked.
      */
-    void onDockStateChange(boolean isDocked);
+    void onDockStateChange(boolean docked);
 
     /**
      * On foreground app changed. Use it to provide the app specific
@@ -97,7 +97,7 @@ public interface DynamicEventListener {
      * an app is updated or a new app is installed.
      *
      * @param dynamicAppInfo {@link DynamicAppInfo} of the updated or added package.
-     * @param isNewPackage {@code true} if the package is newly added.
+     * @param newPackage {@code true} if the package is newly added.
      */
-    void onPackageUpdated(@NonNull DynamicAppInfo dynamicAppInfo, boolean isNewPackage);
+    void onPackageUpdated(@NonNull DynamicAppInfo dynamicAppInfo, boolean newPackage);
 }

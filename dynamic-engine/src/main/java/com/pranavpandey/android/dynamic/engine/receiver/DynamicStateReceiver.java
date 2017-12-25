@@ -19,51 +19,38 @@ package com.pranavpandey.android.dynamic.engine.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
-import android.telephony.PhoneStateListener;
+import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 
-import static android.telephony.PhoneStateListener.LISTEN_CALL_STATE;
-
 /**
  * Broadcast receiver to listen call events. It is added in the manifest and
  * should be registered dynamically at the runtime.
- * <br /><br />
- * Package must be granted {@link android.Manifest.permission_group#PHONE}
- * permission to listen call events on Android M and above devices.
+ *
+ * <p>Package must be granted {@link android.Manifest.permission_group#PHONE}
+ * permission to listen call events on Android M and above devices.</p>
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public class DynamicStateReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(final Context context, Intent intent) {
-        final TelephonyManager telephoneManager = (TelephonyManager)
-                context.getSystemService(Context.TELEPHONY_SERVICE);
+    public void onReceive(@NonNull final Context context, @Nullable Intent intent) {
+        if (intent != null && intent.getAction() != null
+                && intent.getAction().equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
+            String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
-        telephoneManager.listen(new PhoneStateListener() {
-
-            boolean onCall = false;
-
-            @Override
-            public void onCallStateChanged(int state, String incomingNumber) {
-                switch (state) {
-                    case TelephonyManager.CALL_STATE_IDLE:
-                        onCall = false;
-                        break;
-                    case TelephonyManager.CALL_STATE_OFFHOOK:
-                        onCall = true;
-                        break;
-                    case TelephonyManager.CALL_STATE_RINGING:
-                        onCall = true;
-                        break;
-                }
-
-                context.sendBroadcast(new Intent(onCall
-                        ? DynamicEngineUtils.ACTION_ON_CALL
-                        : DynamicEngineUtils.ACTION_CALL_IDLE));
+            if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)
+                    || state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+                LocalBroadcastManager.getInstance(context).sendBroadcast(
+                        new Intent(DynamicEngineUtils.ACTION_ON_CALL));
+            } else {
+                LocalBroadcastManager.getInstance(context).sendBroadcast(
+                        new Intent(DynamicEngineUtils.ACTION_CALL_IDLE));
             }
-        }, LISTEN_CALL_STATE);
+        }
     }
 }

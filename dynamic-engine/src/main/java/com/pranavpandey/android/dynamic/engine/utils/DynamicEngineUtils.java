@@ -92,6 +92,18 @@ public class DynamicEngineUtils {
         intentFilter.addAction(Intent.ACTION_USER_PRESENT);
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+
+        return intentFilter;
+    }
+
+    /**
+     * Get intent filter to register a broadcast receiver which can
+     * listen call events of the DynamicEngine.
+     *
+     * @see DynamicEngine
+     */
+    public static IntentFilter getCallIntentFilter() {
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_ON_CALL);
         intentFilter.addAction(ACTION_CALL_IDLE);
 

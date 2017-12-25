@@ -16,12 +16,17 @@
 
 package com.pranavpandey.android.dynamic.engine.service;
 
+import android.annotation.TargetApi;
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.pranavpandey.android.dynamic.engine.listener.DynamicEventListener;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
@@ -39,12 +44,13 @@ import java.util.List;
  * functionality in the app. Just extend this service and implement
  * the interface functions to monitor different events.
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 public abstract class DynamicEngine extends DynamicStickyService implements DynamicEventListener {
 
     /**
      * Intent extra for headset state.
      */
-    private static final String EXTRA_HEADSET_STATE = "state";
+    private static final String ADE_EXTRA_HEADSET_STATE = "state";
 
     /**
      * Listener to listen special events.
@@ -65,30 +71,35 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      * {@code true} if the device is charging or connected
      * to a power source.
      */
-    private boolean isCharging;
+    private boolean mCharging;
 
     /**
      * {@code true} if the device is connected to a headset
      * or a audio output device.
      */
-    private boolean isHeadset;
+    private boolean mHeadset;
 
     /**
      * {@code true} if the device is docked.
      */
-    private boolean isDocked;
+    private boolean mDocked;
 
     /**
      * {@code true} if the device is in the locked state or
      * the lock screen is shown.
      */
-    private boolean isLocked;
+    private boolean mLocked;
 
     /**
      * {@code true} if the device is on call. Either ringing
      * or answered.
      */
-    private boolean isCall;
+    private boolean mCall;
+
+    /**
+     * Keyguard manager to detect the lock screen state.
+     */
+    private KeyguardManager mKeyguardManager;
 
     @Override
     public void onCreate() {
@@ -97,9 +108,12 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         mDynamicEventListener = this;
         mSpecialEventReceiver = new SpecialEventReceiver();
         mDynamicAppMonitor = new DynamicAppMonitor(this);
+        mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
 
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getEventsIntentFilter());
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getPackageIntentFilter());
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mSpecialEventReceiver, DynamicEngineUtils.getCallIntentFilter());
     }
 
     /**
@@ -111,24 +125,24 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         if (chargingIntent != null) {
             int status = chargingIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-            isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+            mCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                     status == BatteryManager.BATTERY_STATUS_FULL;
         }
 
         Intent headsetIntent = registerReceiver(null,
                 new IntentFilter(Intent.ACTION_HEADSET_PLUG));
         if (headsetIntent != null) {
-            isHeadset = headsetIntent.getIntExtra(EXTRA_HEADSET_STATE, -1) == 1;
+            mHeadset = headsetIntent.getIntExtra(ADE_EXTRA_HEADSET_STATE, -1) == 1;
         }
 
         Intent dockIntent = registerReceiver(null,
                 new IntentFilter(Intent.ACTION_DOCK_EVENT));
         if (dockIntent != null) {
-            isDocked = dockIntent.getIntExtra(Intent.EXTRA_DOCK_STATE, -1)
+            mDocked = dockIntent.getIntExtra(Intent.EXTRA_DOCK_STATE, -1)
                     != Intent.EXTRA_DOCK_STATE_UNDOCKED;
         }
 
-        mDynamicEventListener.onInitialize(isCharging, isHeadset, isDocked);
+        mDynamicEventListener.onInitialize(mCharging, mHeadset, mDocked);
     }
 
     /**
@@ -148,13 +162,13 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     /**
      * Enable or disable foreground app monitor.
      *
-     * @param isRunning {@code true} to start monitoring the foreground app
+     * @param running {@code true} to start monitoring the foreground app
      *                  and receive listener callback.
      *
      * @see DynamicEventListener#onAppChange(DynamicAppInfo)
      */
-    public void setAppMonitorTask(boolean isRunning) {
-        if (isRunning) {
+    public void setAppMonitorTask(boolean running) {
+        if (running) {
             mDynamicAppMonitor = new DynamicAppMonitor(this);
             mDynamicAppMonitor.setRunning(true);
             DynamicTaskUtils.executeTask(mDynamicAppMonitor);
@@ -170,91 +184,96 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void onDestroy() {
         super.onDestroy();
 
-        unregisterReceiver(mSpecialEventReceiver);
-        setAppMonitorTask(false);
+        try {
+            unregisterReceiver(mSpecialEventReceiver);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mSpecialEventReceiver);
+            setAppMonitorTask(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Getter for {@link #isCall}.
+     * Getter for {@link #mCall}.
      */
     public boolean isCall() {
-        return isCall;
+        return mCall;
     }
 
     /**
-     * Setter for {@link #isCall}.
+     * Setter for {@link #mCall}.
      */
     public void setCall(boolean call) {
         if (call != isCall()) {
-            this.isCall = call;
+            this.mCall = call;
             mDynamicEventListener.onCallStateChange(call);
         }
     }
 
     /**
-     * Getter for {@link #isLocked}.
+     * Getter for {@link #mLocked}.
      */
     public boolean isLocked() {
-        return isLocked;
+        return mLocked;
     }
 
     /**
-     * Setter for {@link #isLocked}.
+     * Setter for {@link #mLocked}.
      */
     public void setLocked(boolean locked) {
         if (locked != isLocked()) {
-            this.isLocked = locked;
+            this.mLocked = locked;
             mDynamicEventListener.onLockStateChange(locked);
         }
     }
 
     /**
-     * Getter for {@link #isHeadset}.
+     * Getter for {@link #mHeadset}.
      */
     public boolean isHeadset() {
-        return isHeadset;
+        return mHeadset;
     }
 
     /**
-     * Setter for {@link #isHeadset}.
+     * Setter for {@link #mHeadset}.
      */
     public void setHeadset(boolean headset) {
         if (headset != isHeadset()) {
-            this.isHeadset = headset;
+            this.mHeadset = headset;
             mDynamicEventListener.onHeadsetStateChange(headset);
         }
     }
 
     /**
-     * Getter for {@link #isCharging}.
+     * Getter for {@link #mCharging}.
      */
     public boolean isCharging() {
-        return isCharging;
+        return mCharging;
     }
 
     /**
-     * Setter for {@link #isCharging}.
+     * Setter for {@link #mCharging}.
      */
     public void setCharging(boolean charging) {
-        if (charging != isCharging) {
-            this.isCharging = charging;
+        if (charging != mCharging) {
+            this.mCharging = charging;
             mDynamicEventListener.onChargingStateChange(charging);
         }
     }
 
     /**
-     * Getter for {@link #isDocked}.
+     * Getter for {@link #mDocked}.
      */
     public boolean isDocked() {
-        return isDocked;
+        return mDocked;
     }
 
     /**
-     * Setter for {@link #isDocked}.
+     * Setter for {@link #mDocked}.
      */
     public void setDocked(boolean docked) {
         if (docked != isDocked()) {
-            this.isDocked = docked;
+            this.mDocked = docked;
             mDynamicEventListener.onDockStateChange(docked);
         }
     }
@@ -276,8 +295,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     private class SpecialEventReceiver extends BroadcastReceiver {
 
         @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null) {
+        public void onReceive(@NonNull Context context, @Nullable Intent intent) {
+            if (intent != null && intent.getAction() != null) {
                 switch (intent.getAction()) {
                     case Intent.ACTION_POWER_CONNECTED:
                         setCharging(true);
@@ -286,7 +305,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                         setCharging(false);
                         break;
                     case Intent.ACTION_HEADSET_PLUG:
-                        setHeadset(intent.getIntExtra(EXTRA_HEADSET_STATE, 0) == 1);
+                        setHeadset(intent.getIntExtra(ADE_EXTRA_HEADSET_STATE, 0) == 1);
                         break;
                     case Intent.ACTION_DOCK_EVENT:
                         setDocked(intent.getIntExtra(Intent.EXTRA_DOCK_STATE, -1)
@@ -295,10 +314,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                     case Intent.ACTION_SCREEN_OFF:
                     case Intent.ACTION_SCREEN_ON:
                     case Intent.ACTION_USER_PRESENT:
-                        KeyguardManager keyguardManager = (KeyguardManager)context
-                                .getSystemService(Context.KEYGUARD_SERVICE);
-                        if (keyguardManager != null) {
-                            setLocked(keyguardManager.inKeyguardRestrictedInputMode());
+                        if (mKeyguardManager != null) {
+                            setLocked(mKeyguardManager.inKeyguardRestrictedInputMode());
                         }
                         break;
                     case Intent.ACTION_PACKAGE_REMOVED:
@@ -330,57 +347,66 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         ArrayList<String> currentEvents = new ArrayList<>();
         ArrayList<String> eventsPriority = DynamicPriority.getEventsPriority(this);
 
+        currentEvents.add(DynamicEvent.NONE);
         for (String eventPriority : eventsPriority) {
             switch (eventPriority) {
-                case DynamicEvent.EVENT_CALL:
+                case DynamicEvent.CALL:
                     if (isCall()) {
-                        currentEvents.add(DynamicEvent.EVENT_CALL);
+                        currentEvents.add(DynamicEvent.CALL);
                     }
                     break;
-                case DynamicEvent.EVENT_LOCK:
+                case DynamicEvent.LOCK:
                     if (isLocked()) {
-                        currentEvents.add(DynamicEvent.EVENT_LOCK);
+                        currentEvents.add(DynamicEvent.LOCK);
                     }
                     break;
-                case DynamicEvent.EVENT_HEADSET:
+                case DynamicEvent.HEADSET:
                     if (isHeadset()) {
-                        currentEvents.add(DynamicEvent.EVENT_HEADSET);
+                        currentEvents.add(DynamicEvent.HEADSET);
                     }
                     break;
-                case DynamicEvent.EVENT_CHARGING:
+                case DynamicEvent.CHARGING:
                     if (isCharging()) {
-                        currentEvents.add(DynamicEvent.EVENT_CHARGING);
+                        currentEvents.add(DynamicEvent.CHARGING);
                     }
                     break;
-                case DynamicEvent.EVENT_DOCK:
+                case DynamicEvent.DOCK:
                     if (isDocked()) {
-                        currentEvents.add(DynamicEvent.EVENT_DOCK);
+                        currentEvents.add(DynamicEvent.DOCK);
                     }
                     break;
-                case DynamicEvent.EVENT_APP:
+                case DynamicEvent.APP:
                     if (getAppMonitor().isRunning()){
-                        currentEvents.add(DynamicEvent.EVENT_APP);
+                        currentEvents.add(DynamicEvent.APP);
                     }
                     break;
             }
         }
 
-        if (currentEvents.isEmpty()) {
-            currentEvents.add(DynamicEvent.EVENT_NONE);
-        }
         return currentEvents;
     }
 
     /**
-     * Get the highest priority event.
+     * Get the event according to its priority.
+     *
+     * @param currentEvents A list of events.
+     * @param priority The event priority to find event.
+     *
+     * @return The event according to its priority.
+     */
+    protected @DynamicEvent String getEventByPriority(
+            @NonNull List<String> currentEvents, int priority) {
+        if (!currentEvents.isEmpty() && priority > 0 && priority <= currentEvents.size()) {
+            return currentEvents.get(currentEvents.size() - priority);
+        } else {
+            return DynamicEvent.NONE;
+        }
+    }
+
+    /**
+     * @return The highest priority event event that has been occurred.
      */
     protected @DynamicEvent String getHighestPriorityEvent() {
-        List<String> currentEvents = getCurrentEvents();
-
-        if (!currentEvents.isEmpty()) {
-            return currentEvents.get(currentEvents.size() - 1);
-        } else {
-            return null;
-        }
+        return getEventByPriority(getCurrentEvents(), 1);
     }
 }

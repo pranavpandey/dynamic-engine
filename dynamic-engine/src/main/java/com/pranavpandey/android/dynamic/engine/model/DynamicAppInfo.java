@@ -20,6 +20,7 @@ import android.content.ComponentName;
 import android.content.pm.ApplicationInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /**
  * Collection of various properties for a given package for an easy
@@ -48,7 +49,7 @@ public class DynamicAppInfo implements Parcelable {
     private String label;
 
     /**
-     * Default constructor to initialize DynamicAppInfo..
+     * Default constructor to initialize DynamicAppInfo.
      */
     public DynamicAppInfo() { }
 
@@ -148,7 +149,7 @@ public class DynamicAppInfo implements Parcelable {
      *
      * @return {@code true} if the two DynamicAppInfo are equal.
      */
-    public boolean equals(DynamicAppInfo dynamicAppInfo) {
+    public boolean equals(@NonNull DynamicAppInfo dynamicAppInfo) {
         return getPackageName().equals(dynamicAppInfo.getPackageName());
     }
 }
