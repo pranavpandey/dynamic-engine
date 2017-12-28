@@ -18,6 +18,7 @@ package com.pranavpandey.android.dynamic.engine.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.pranavpandey.android.dynamic.utils.DynamicDeviceUtils;
@@ -25,8 +26,6 @@ import com.pranavpandey.android.dynamic.utils.DynamicDeviceUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Helper class to manage priority of the different events in case
@@ -37,65 +36,17 @@ public class DynamicPriority {
     /**
      * Shared preference key for the engine preferences.
      */
-    private static final String DAS_PREF_ENGINE = "das_engine_preferences";
+    private static final String ADE_PREF_ENGINE = "ade_engine_preferences";
 
     /**
      * Shared preference key for the event priorities.
      */
-    private static final String DAS_PREF_EVENTS_PRIORITY = "das_pref_events_priority";
+    private static final String ADE_PREF_EVENTS_PRIORITY = "ade_pref_events_priority";
 
     /**
-     * Priority splitter to separate different events.
+     * DynamicPriority splitter to separate different events.
      */
-    public static final String PRIORITY_SPLIT = ",";
-
-    /**
-     * Constant for the call event.
-     *
-     * @deprecated Use {@link DynamicEvent#CALL}.
-     */
-    @Deprecated
-    public static final String EVENT_CALL = "0";
-
-    /**
-     * Constant for the lock event.
-     *
-     * @deprecated Use {@link DynamicEvent#LOCK}.
-     */
-    @Deprecated
-    public static final String EVENT_LOCK = "1";
-
-    /**
-     * Constant for the headset event.
-     *
-     * @deprecated Use {@link DynamicEvent#HEADSET}.
-     */
-    @Deprecated
-    public static final String EVENT_HEADSET = "2";
-
-    /**
-     * Constant for the charging event.
-     *
-     * @deprecated Use {@link DynamicEvent#CHARGING}.
-     */
-    @Deprecated
-    public static final String EVENT_CHARGING = "3";
-
-    /**
-     * Constant for the dock event.
-     *
-     * @deprecated Use {@link DynamicEvent#DOCK}.
-     */
-    @Deprecated
-    public static final String EVENT_DOCK = "4";
-
-    /**
-     * Constant for the app event.
-     *
-     * @deprecated Use {@link DynamicEvent#APP}.
-     */
-    @Deprecated
-    public static final String EVENT_APP = "5";
+    public static final String ADE_PRIORITY_SPLIT = ",";
 
     /**
      * Default priority for the events.
@@ -107,10 +58,10 @@ public class DynamicPriority {
      * <br />5. Dock
      * <br />6. App (lowest)
      */
-    private static final String DAS_DEFAULT_EVENTS_PRIORITY = DynamicEvent.DOCK
-            + PRIORITY_SPLIT + DynamicEvent.CHARGING + PRIORITY_SPLIT
-            + DynamicEvent.HEADSET + PRIORITY_SPLIT + DynamicEvent.LOCK
-            + PRIORITY_SPLIT + DynamicEvent.CALL;
+    private static final String ADE_DEFAULT_EVENTS_PRIORITY = DynamicEvent.DOCK
+            + ADE_PRIORITY_SPLIT + DynamicEvent.CHARGING + ADE_PRIORITY_SPLIT
+            + DynamicEvent.HEADSET + ADE_PRIORITY_SPLIT + DynamicEvent.LOCK
+            + ADE_PRIORITY_SPLIT + DynamicEvent.CALL;
 
     /**
      * Get shared preferences of the app engine for a given context.
@@ -120,7 +71,7 @@ public class DynamicPriority {
      * @see Context
      */
     private static SharedPreferences getSharedPreferences(@NonNull Context context) {
-       return context.getSharedPreferences(DAS_PREF_ENGINE, MODE_PRIVATE);
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     /**
@@ -128,10 +79,11 @@ public class DynamicPriority {
      *
      * @param context Context to get shared preferences.
      *
-     * @see #DAS_DEFAULT_EVENTS_PRIORITY
+     * @see #ADE_DEFAULT_EVENTS_PRIORITY
      */
     public static void resetPriority(@NonNull Context context) {
-        getSharedPreferences(context).edit().clear().apply();
+        getSharedPreferences(context).edit().putString(
+                ADE_PREF_EVENTS_PRIORITY, ADE_DEFAULT_EVENTS_PRIORITY).apply();
     }
 
     /**
@@ -145,11 +97,11 @@ public class DynamicPriority {
         Collections.reverse(eventsPriority);
         StringBuilder priorities = new StringBuilder();
         for (int i = 0; i < eventsPriority.size(); i++) {
-            priorities.append(eventsPriority.get(i)).append(PRIORITY_SPLIT);
+            priorities.append(eventsPriority.get(i)).append(ADE_PRIORITY_SPLIT);
         }
 
-        getSharedPreferences(context).edit().clear().putString(
-                DAS_PREF_EVENTS_PRIORITY, priorities.toString()).apply();
+        getSharedPreferences(context).edit().putString(
+                ADE_PREF_EVENTS_PRIORITY, priorities.toString()).apply();
     }
 
     /**
@@ -159,9 +111,9 @@ public class DynamicPriority {
      *
      * @return Default events priority.
      */
-    public static ArrayList<String> getDefaultEventsPriority(Context context) {
+    public static ArrayList<String> getDefaultEventsPriority(@NonNull Context context) {
         return returnAfterDeviceCheck(context, new ArrayList<>(
-                convertStringToArrayList(DAS_DEFAULT_EVENTS_PRIORITY)));
+                convertStringToArrayList(ADE_DEFAULT_EVENTS_PRIORITY)));
     }
 
     /**
@@ -172,10 +124,10 @@ public class DynamicPriority {
      *
      * @return Saved events priority.
      */
-    public static ArrayList<String> getEventsPriority(Context context) {
+    public static ArrayList<String> getEventsPriority(@NonNull Context context) {
         return returnAfterDeviceCheck(context,
                 new ArrayList<>(convertStringToArrayList(getSharedPreferences(context)
-                        .getString(DAS_PREF_EVENTS_PRIORITY, DAS_DEFAULT_EVENTS_PRIORITY))));
+                        .getString(ADE_PREF_EVENTS_PRIORITY, ADE_DEFAULT_EVENTS_PRIORITY))));
     }
 
     /**
@@ -208,6 +160,6 @@ public class DynamicPriority {
      * @return String converted from the ArrayList.
      */
     private static ArrayList<String> convertStringToArrayList(String string) {
-        return new ArrayList<>(Arrays.asList(string.split(PRIORITY_SPLIT)));
+        return new ArrayList<>(Arrays.asList(string.split(ADE_PRIORITY_SPLIT)));
     }
 }
