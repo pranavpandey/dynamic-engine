@@ -148,14 +148,14 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     /**
      * Getter for {@link #mDynamicEventListener}.
      */
-    public DynamicEventListener getSpecialEventListener() {
+    public @NonNull DynamicEventListener getSpecialEventListener() {
         return mDynamicEventListener;
     }
 
     /**
      * Getter for {@link #mDynamicAppMonitor}.
      */
-    public DynamicAppMonitor getAppMonitor() {
+    public @NonNull DynamicAppMonitor getAppMonitor() {
         return mDynamicAppMonitor;
     }
 
@@ -188,9 +188,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
             unregisterReceiver(mSpecialEventReceiver);
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mSpecialEventReceiver);
             setAppMonitorTask(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) { }
     }
 
     /**
@@ -292,7 +290,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      * @see DynamicEngineUtils#ACTION_ON_CALL
      * @see DynamicEngineUtils#ACTION_CALL_IDLE
      */
-    private class SpecialEventReceiver extends BroadcastReceiver {
+    class SpecialEventReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(@NonNull Context context, @Nullable Intent intent) {
@@ -343,7 +341,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     /**
      * Get a list of current ongoing events.
      */
-    protected ArrayList<String> getCurrentEvents() {
+    protected @NonNull ArrayList<String> getCurrentEvents() {
         ArrayList<String> currentEvents = new ArrayList<>();
         ArrayList<String> eventsPriority = DynamicPriority.getEventsPriority(this);
 

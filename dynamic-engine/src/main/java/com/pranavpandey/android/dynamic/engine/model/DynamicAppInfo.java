@@ -21,6 +21,7 @@ import android.content.pm.ApplicationInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Collection of various properties for a given package for an easy
@@ -49,7 +50,7 @@ public class DynamicAppInfo implements Parcelable {
     private String label;
 
     /**
-     * Default constructor to initialize DynamicAppInfo.
+     * Default constructor to initialize the dynamic app info.
      */
     public DynamicAppInfo() { }
 
@@ -79,6 +80,9 @@ public class DynamicAppInfo implements Parcelable {
         }
     };
 
+    /**
+     * De-parcel {@link DynamicAppInfo} object.
+     */
     public DynamicAppInfo(Parcel in) {
         this.applicationInfo = in.readParcelable(ApplicationInfo.class.getClassLoader());
         this.topActivity = in.readParcelable(ComponentName.class.getClassLoader());
@@ -87,58 +91,58 @@ public class DynamicAppInfo implements Parcelable {
     }
 
     /**
-     * Getter fot {@link #applicationInfo}.
+     * Getter for {@link #applicationInfo}.
      */
-    public ApplicationInfo getApplicationInfo() {
+    public @Nullable ApplicationInfo getApplicationInfo() {
         return applicationInfo;
     }
 
     /**
-     * Setter fot {@link #applicationInfo}.
+     * Setter for {@link #applicationInfo}.
      */
-    public void setApplicationInfo(ApplicationInfo applicationInfo) {
+    public void setApplicationInfo(@Nullable ApplicationInfo applicationInfo) {
         this.applicationInfo = applicationInfo;
     }
 
     /**
-     * Getter fot {@link #topActivity}.
+     * Getter for {@link #topActivity}.
      */
-    public ComponentName getTopActivity() {
+    public @Nullable ComponentName getTopActivity() {
         return topActivity;
     }
 
     /**
-     * Setter fot {@link #topActivity}.
+     * Setter for {@link #topActivity}.
      */
-    public void setTopActivity(ComponentName topActivity) {
+    public void setTopActivity(@Nullable ComponentName topActivity) {
         this.topActivity = topActivity;
     }
 
     /**
-     * Getter fot {@link #packageName}.
+     * Getter for {@link #packageName}.
      */
-    public String getPackageName() {
+    public @Nullable String getPackageName() {
         return packageName;
     }
 
     /**
-     * Setter fot {@link #packageName}.
+     * Setter for {@link #packageName}.
      */
-    public void setPackageName(String packageName) {
+    public void setPackageName(@Nullable String packageName) {
         this.packageName = packageName;
     }
 
     /**
-     * Getter fot {@link #label}.
+     * Getter for {@link #label}.
      */
-    public String getLabel() {
+    public @Nullable String getLabel() {
         return label;
     }
 
     /**
-     * Setter fot {@link #label}.
+     * Setter for {@link #label}.
      */
-    public void setLabel(String label) {
+    public void setLabel(@Nullable String label) {
         this.label = label;
     }
 
@@ -150,6 +154,7 @@ public class DynamicAppInfo implements Parcelable {
      * @return {@code true} if the two DynamicAppInfo are equal.
      */
     public boolean equals(@NonNull DynamicAppInfo dynamicAppInfo) {
-        return getPackageName().equals(dynamicAppInfo.getPackageName());
+        return !(getPackageName() != null && dynamicAppInfo.getPackageName() != null)
+                || getPackageName().equals(dynamicAppInfo.getPackageName());
     }
 }

@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
@@ -55,21 +56,21 @@ public class DynamicEngineUtils {
      * @param context Context to get {@link PackageManager}.
      * @param packageName Package name to build the {@link DynamicAppInfo}.
      */
-    public static DynamicAppInfo getAppInfoFromPackage(
-            @NonNull Context context, String packageName) {
+    public static @Nullable DynamicAppInfo getAppInfoFromPackage(
+            @NonNull Context context, @Nullable String packageName) {
         if (packageName != null) {
             DynamicAppInfo dynamicAppInfo = new DynamicAppInfo();
             try {
                 dynamicAppInfo.setApplicationInfo(
                         context.getPackageManager().getApplicationInfo(
-                        packageName, PackageManager.GET_META_DATA));
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
+                                packageName, PackageManager.GET_META_DATA));
 
-            dynamicAppInfo.setPackageName(packageName);
-            dynamicAppInfo.setLabel(dynamicAppInfo.getApplicationInfo().
-                    loadLabel(context.getPackageManager()).toString());
+                dynamicAppInfo.setPackageName(packageName);
+                if (dynamicAppInfo.getApplicationInfo() != null) {
+                    dynamicAppInfo.setLabel(dynamicAppInfo.getApplicationInfo().
+                            loadLabel(context.getPackageManager()).toString());
+                }
+            } catch (PackageManager.NameNotFoundException ignored) { }
 
             return dynamicAppInfo;
         }
@@ -83,7 +84,7 @@ public class DynamicEngineUtils {
      *
      * @see DynamicEngine
      */
-    public static IntentFilter getEventsIntentFilter() {
+    public static @NonNull IntentFilter getEventsIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
         intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
@@ -102,7 +103,7 @@ public class DynamicEngineUtils {
      *
      * @see DynamicEngine
      */
-    public static IntentFilter getCallIntentFilter() {
+    public static @NonNull IntentFilter getCallIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_ON_CALL);
         intentFilter.addAction(ACTION_CALL_IDLE);
@@ -114,7 +115,7 @@ public class DynamicEngineUtils {
      * Get intent filter to register a broadcast receiver which can
      * listen package added or removed broadcasts.
      */
-    public static IntentFilter getPackageIntentFilter() {
+    public static @NonNull IntentFilter getPackageIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);

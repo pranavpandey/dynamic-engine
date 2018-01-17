@@ -71,7 +71,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private boolean mRunning;
 
     /**
-     * DynamicAppInfo for the foreground package.
+     * Dynamic app info for the foreground package.
      */
     private DynamicAppInfo mDynamicAppInfo;
 
@@ -131,9 +131,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
                 }
 
                 Thread.sleep(ADE_THREAD_SLEEP_INTERVAL);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception ignored) { }
         }
 
         return null;
@@ -165,14 +163,14 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * Getter for {@link #mDynamicAppInfo}.
      */
-    public DynamicAppInfo getCurrentAppInfo() {
+    public @Nullable DynamicAppInfo getCurrentAppInfo() {
         return mDynamicAppInfo;
     }
 
     /**
      * Setter for {@link #mDynamicAppInfo}.
      */
-    private void setCurrentAppInfo(@Nullable DynamicAppInfo dynamicAppInfo) {
+    public void setCurrentAppInfo(@Nullable DynamicAppInfo dynamicAppInfo) {
         this.mDynamicAppInfo = dynamicAppInfo;
     }
 
@@ -184,9 +182,9 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     }
 
     /**
-     * Get DynamicAppInfo from the foreground package name.
+     * Get dynamic app info from the foreground package name.
      */
-    private DynamicAppInfo getForegroundAppInfo() {
+    private @Nullable DynamicAppInfo getForegroundAppInfo() {
         String packageName = null;
         DynamicAppInfo dynamicAppInfo = null;
 
@@ -213,7 +211,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * Get foreground package name on Android L and above devices.
      */
-    private String getForegroundPackage(long time, long interval) {
+    private @Nullable String getForegroundPackage(long time, long interval) {
         String packageName = null;
 
         UsageEvents usageEvents = mUsageStatsManager.queryEvents(time - interval * 1000, time);

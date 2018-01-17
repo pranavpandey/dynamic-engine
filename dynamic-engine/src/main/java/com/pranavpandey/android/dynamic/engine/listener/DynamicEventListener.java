@@ -16,7 +16,6 @@
 
 package com.pranavpandey.android.dynamic.engine.listener;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
@@ -35,9 +34,9 @@ public interface DynamicEventListener {
      * charging, headset and dock state.
      *
      * @param charging {@code true} if the device is charging or connected
-     *                   to a power source.
+     *                 to a power source.
      * @param headset {@code true} if the device is connected to a headset
-     *                  or a audio output device.
+     *                or a audio output device.
      * @param docked {@code true} if the device is docked.
      */
     void onInitialize(boolean charging, boolean headset, boolean docked);
@@ -46,7 +45,7 @@ public interface DynamicEventListener {
      * On call state changed. Either on call or the device is idle.
      *
      * @param call {@code true} if the device is on call. Either ringing
-     *               or answered.
+     *             or answered.
      */
     void onCallStateChange(boolean call);
 
@@ -55,7 +54,7 @@ public interface DynamicEventListener {
      * state independent of the PIN, password or any other security lock.
      *
      * @param locked {@code true} if the device is in the locked state or
-     *                  the lock screen is shown.
+     *               the lock screen is shown.
      */
     void onLockStateChange(boolean locked);
 
@@ -64,7 +63,7 @@ public interface DynamicEventListener {
      * output device or volume is routed through the internal speaker.
      *
      * @param connected {@code true} if the device is connected to a headset
-     *                    or a audio output device.
+     *                  or a audio output device.
      */
     void onHeadsetStateChange(boolean connected);
 
@@ -73,7 +72,7 @@ public interface DynamicEventListener {
      * source using the battery.
      *
      * @param charging {@code true} if the device is charging or connected
-     *                   to a power source.
+     *                 to a power source.
      */
     void onChargingStateChange(boolean charging);
 
@@ -96,8 +95,9 @@ public interface DynamicEventListener {
      * On app package added or changed. Useful to show a notification if
      * an app is updated or a new app is installed.
      *
-     * @param dynamicAppInfo {@link DynamicAppInfo} of the updated or added package.
+     * @param dynamicAppInfo {@link DynamicAppInfo} of the updated or added
+     *                       package.
      * @param newPackage {@code true} if the package is newly added.
      */
-    void onPackageUpdated(@NonNull DynamicAppInfo dynamicAppInfo, boolean newPackage);
+    void onPackageUpdated(@Nullable DynamicAppInfo dynamicAppInfo, boolean newPackage);
 }
