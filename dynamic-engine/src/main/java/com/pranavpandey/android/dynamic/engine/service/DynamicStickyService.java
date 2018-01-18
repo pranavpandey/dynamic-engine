@@ -43,7 +43,7 @@ public abstract class DynamicStickyService extends Service {
      * default interval.
      *
      * @return Interval in milliseconds after which service will be
-     * restarted.
+     *         restarted.
      *
      * @see #ADE_DEFAULT_RESTART_INTERVAL
      */
