@@ -148,14 +148,16 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     /**
      * Getter for {@link #mDynamicEventListener}.
      */
-    public @NonNull DynamicEventListener getSpecialEventListener() {
+    public @NonNull
+    DynamicEventListener getSpecialEventListener() {
         return mDynamicEventListener;
     }
 
     /**
      * Getter for {@link #mDynamicAppMonitor}.
      */
-    public @NonNull DynamicAppMonitor getAppMonitor() {
+    public @NonNull
+    DynamicAppMonitor getAppMonitor() {
         return mDynamicAppMonitor;
     }
 
@@ -188,7 +190,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
             unregisterReceiver(mSpecialEventReceiver);
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mSpecialEventReceiver);
             setAppMonitorTask(false);
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     /**
@@ -392,7 +395,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      *
      * @return The event according to its priority.
      */
-    protected @DynamicEvent String getEventByPriority(
+    protected @DynamicEvent
+    String getEventByPriority(
             @NonNull List<String> currentEvents, int priority) {
         if (!currentEvents.isEmpty() && priority > 0 && priority <= currentEvents.size()) {
             return currentEvents.get(currentEvents.size() - priority);
@@ -404,7 +408,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     /**
      * @return The highest priority event event that has been occurred.
      */
-    protected @DynamicEvent String getHighestPriorityEvent() {
+    protected @DynamicEvent
+    String getHighestPriorityEvent() {
         return getEventByPriority(getCurrentEvents(), 1);
     }
 }

@@ -56,21 +56,23 @@ public class DynamicEngineUtils {
      * @param context Context to get {@link PackageManager}.
      * @param packageName Package name to build the {@link DynamicAppInfo}.
      */
-    public static @Nullable DynamicAppInfo getAppInfoFromPackage(
+    public static @Nullable
+    DynamicAppInfo getAppInfoFromPackage(
             @NonNull Context context, @Nullable String packageName) {
         if (packageName != null) {
             DynamicAppInfo dynamicAppInfo = new DynamicAppInfo();
             try {
                 dynamicAppInfo.setApplicationInfo(
                         context.getPackageManager().getApplicationInfo(
-                                packageName, PackageManager.GET_META_DATA));
+                        packageName, PackageManager.GET_META_DATA));
 
                 dynamicAppInfo.setPackageName(packageName);
                 if (dynamicAppInfo.getApplicationInfo() != null) {
                     dynamicAppInfo.setLabel(dynamicAppInfo.getApplicationInfo().
                             loadLabel(context.getPackageManager()).toString());
                 }
-            } catch (PackageManager.NameNotFoundException ignored) { }
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
 
             return dynamicAppInfo;
         }

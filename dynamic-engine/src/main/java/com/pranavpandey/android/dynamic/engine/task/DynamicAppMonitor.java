@@ -131,7 +131,8 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
                 }
 
                 Thread.sleep(ADE_THREAD_SLEEP_INTERVAL);
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
         }
 
         return null;
@@ -163,7 +164,8 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * Getter for {@link #mDynamicAppInfo}.
      */
-    public @Nullable DynamicAppInfo getCurrentAppInfo() {
+    public @Nullable
+    DynamicAppInfo getCurrentAppInfo() {
         return mDynamicAppInfo;
     }
 
@@ -184,7 +186,8 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * Get dynamic app info from the foreground package name.
      */
-    private @Nullable DynamicAppInfo getForegroundAppInfo() {
+    private @Nullable
+    DynamicAppInfo getForegroundAppInfo() {
         String packageName = null;
         DynamicAppInfo dynamicAppInfo = null;
 
