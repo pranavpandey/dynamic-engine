@@ -42,13 +42,13 @@ dependencies {
 ## Usage
 
 It is a collection of different tasks which can monitor various events by running a service in 
-the background. Initially, can monitor call, lock, headset, charging, dock and foreground related
+the background. Initially, it an monitor call, lock, headset, charging, dock and foreground related
 events. I will do my best to add more tasks later.
 
 ### Monitor special events
 
-Extend the `DynamicEngine` service and implement the interface functions to monitor monitor 
-call, lock, headset, charging and dock related events.
+Extend the `DynamicEngine` service and implement the interface functions to monitor call, lock,
+headset, charging and dock related events.
 
 On Android M (Marshmallow) or above devices, `READ_PHONE_STATE` permission must be granted for 
 the app `package` to monitor call events. If this permission is not granted then,
