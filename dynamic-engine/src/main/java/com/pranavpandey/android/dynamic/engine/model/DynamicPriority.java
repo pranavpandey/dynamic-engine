@@ -28,8 +28,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * Helper class to manage priority of the different events in case
- * two or more events will occur simultaneously.
+ * Helper class to manage priority of the different events
+ * in case two or more events will occur simultaneously.
  */
 public class DynamicPriority {
 
@@ -51,12 +51,12 @@ public class DynamicPriority {
     /**
      * Default priority for the events.
      *
-     * <br />1. Call (highest)
-     * <br />2. Lock
-     * <br />3. Headset
-     * <br />4. Charging
-     * <br />5. Dock
-     * <br />6. App (lowest)
+     * <p>1. Call (highest)
+     * <br>2. Lock
+     * <br>3. Headset
+     * <br>4. Charging
+     * <br>5. Dock
+     * <br>6. App (lowest)</p>
      */
     private static final String ADE_DEFAULT_EVENTS_PRIORITY = DynamicEvent.DOCK
             + ADE_PRIORITY_SPLIT + DynamicEvent.CHARGING + ADE_PRIORITY_SPLIT
@@ -64,11 +64,10 @@ public class DynamicPriority {
             + ADE_PRIORITY_SPLIT + DynamicEvent.CALL;
 
     /**
-     * Get shared preferences of the app engine for a given context.
+     * @return The shared preferences of the app engine for a
+     *         given context.
      *
-     * @param context Context to get shared preferences.
-     *
-     * @see Context
+     * @param context The context to get shared preferences.
      */
     private static SharedPreferences getSharedPreferences(@NonNull Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -77,7 +76,7 @@ public class DynamicPriority {
     /**
      * Reset events priority to default.
      *
-     * @param context Context to get shared preferences.
+     * @param context The context to get shared preferences.
      *
      * @see #ADE_DEFAULT_EVENTS_PRIORITY
      */
@@ -89,11 +88,11 @@ public class DynamicPriority {
     /**
      * Save events priority.
      *
-     * @param context Context to get shared preferences.
+     * @param context The context to get shared preferences.
      * @param eventsPriority ArrayList containing events priority.
      */
     public static void saveEventsPriority(@NonNull Context context,
-                                          ArrayList<String> eventsPriority) {
+                                          @NonNull ArrayList<String> eventsPriority) {
         Collections.reverse(eventsPriority);
         StringBuilder priorities = new StringBuilder();
         for (int i = 0; i < eventsPriority.size(); i++) {
@@ -105,11 +104,12 @@ public class DynamicPriority {
     }
 
     /**
-     * Get default events priority after checking the telephony functionality.
+     * Get default events priority after checking the telephony
+     * functionality.
      *
-     * @param context Context to get shared preferences.
+     * @param context The context to get shared preferences.
      *
-     * @return Default events priority.
+     * @return The default events priority.
      */
     public static ArrayList<String> getDefaultEventsPriority(@NonNull Context context) {
         return returnAfterDeviceCheck(context, new ArrayList<>(
@@ -117,12 +117,12 @@ public class DynamicPriority {
     }
 
     /**
-     * Get saved events priority after checking the device for telephony
-     * and per app functionality.
+     * Get saved events priority after checking the device
+     * for telephony and per app functionality.
      *
-     * @param context Context to get shared preferences.
+     * @param context The context to get shared preferences.
      *
-     * @return Saved events priority.
+     * @return The saved events priority.
      */
     public static ArrayList<String> getEventsPriority(@NonNull Context context) {
         return returnAfterDeviceCheck(context,
@@ -131,16 +131,17 @@ public class DynamicPriority {
     }
 
     /**
-     * Get events priority after checking the device for telephony and
-     * per app functionality.
+     * Get events priority after checking the device for telephony
+     * and per app functionality.
      *
-     * @param context Context to get shared preferences.
-     * @param eventsPriority ArrayList containing events priority.
+     * @param context The context to get shared preferences.
+     * @param eventsPriority The array list containing events
+     *                       priority.
      *
-     * @return Events priority after device check.
+     * @return The events priority after device check.
      */
-    private static ArrayList<String> returnAfterDeviceCheck(Context context,
-                                                            ArrayList<String> eventsPriority) {
+    private static ArrayList<String> returnAfterDeviceCheck(
+            @NonNull Context context, @NonNull ArrayList<String> eventsPriority) {
         if (!DynamicDeviceUtils.hasTelephony(context)
                 && eventsPriority.contains(DynamicEvent.CALL)) {
             eventsPriority.remove(DynamicEvent.CALL);
@@ -157,9 +158,9 @@ public class DynamicPriority {
      * Convert string to array list according to the priority splitter.
      * It will be used for the easy retrieval.
      *
-     * @return String converted from the ArrayList.
+     * @return The array list converted from the string.
      */
-    private static ArrayList<String> convertStringToArrayList(String string) {
+    private static ArrayList<String> convertStringToArrayList(@NonNull String string) {
         return new ArrayList<>(Arrays.asList(string.split(ADE_PRIORITY_SPLIT)));
     }
 }

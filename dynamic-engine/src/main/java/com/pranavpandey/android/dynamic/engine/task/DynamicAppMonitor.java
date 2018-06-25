@@ -24,6 +24,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
@@ -60,7 +61,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private static final int ADE_THREAD_SLEEP_INTERVAL = 250;
 
     /**
-     * DynamicEngine object to initialize usage stats service.
+     * Dynamic engine to initialize usage stats service.
      */
     @SuppressLint("StaticFieldLeak")
     private DynamicEngine mDynamicEngine;
@@ -76,7 +77,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private DynamicAppInfo mDynamicAppInfo;
 
     /**
-     * ActivityManager to detect foreground package activities.
+     * Activity manager to detect foreground package activities.
      */
     private ActivityManager mActivityManager;
 
@@ -90,10 +91,14 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private UsageStatsManager mUsageStatsManager;
 
     /**
-     * Constructor to initialize DynamicAppMonitor for the give DynamicEngine.
+     * Constructor to initialize DynamicAppMonitor for the give
+     * DynamicEngine.
+     *
+     * @param dynamicEngine The dynamic engine using which is
+     *                      using this task.
      */
     @SuppressLint("WrongConstant")
-    public DynamicAppMonitor(DynamicEngine dynamicEngine) {
+    public DynamicAppMonitor(@NonNull DynamicEngine dynamicEngine) {
         this.mDynamicEngine = dynamicEngine;
         this.mActivityManager = (ActivityManager)
                 dynamicEngine.getSystemService(Context.ACTIVITY_SERVICE);
@@ -155,39 +160,42 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     }
 
     /**
-     * Getter for {@link #mRunning}.
+     * @return {@code true} if this task is running.
      */
     public boolean isRunning() {
         return mRunning;
     }
 
     /**
-     * Getter for {@link #mDynamicAppInfo}.
-     */
-    public @Nullable
-    DynamicAppInfo getCurrentAppInfo() {
-        return mDynamicAppInfo;
-    }
-
-    /**
-     * Setter for {@link #mDynamicAppInfo}.
-     */
-    public void setCurrentAppInfo(@Nullable DynamicAppInfo dynamicAppInfo) {
-        this.mDynamicAppInfo = dynamicAppInfo;
-    }
-
-    /**
-     * Setter for {@link #mRunning}.
+     * Set the running status of this task.
+     *
+     * @param running {@code true} if this task is running.
      */
     public void setRunning(boolean running) {
         this.mRunning = running;
     }
 
     /**
-     * Get dynamic app info from the foreground package name.
+     * @return The Dynamic app info for the foreground package.
      */
-    private @Nullable
-    DynamicAppInfo getForegroundAppInfo() {
+    public @Nullable DynamicAppInfo getCurrentAppInfo() {
+        return mDynamicAppInfo;
+    }
+
+    /**
+     * Set the dynamic app info.
+     *
+     * @param dynamicAppInfo The Dynamic app info for the foreground
+     *                       package to be set.
+     */
+    public void setCurrentAppInfo(@Nullable DynamicAppInfo dynamicAppInfo) {
+        this.mDynamicAppInfo = dynamicAppInfo;
+    }
+
+    /**
+     * @return The dynamic app info from the foreground package name.
+     */
+    private @Nullable DynamicAppInfo getForegroundAppInfo() {
         String packageName = null;
         DynamicAppInfo dynamicAppInfo = null;
 
@@ -212,7 +220,11 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     }
 
     /**
-     * Get foreground package name on Android L and above devices.
+     * @return The foreground package name on Android L and above
+     *         devices.
+     *
+     * @param time The start time to get the recent apps.
+     * @param interval The interval for the requested events.
      */
     private @Nullable String getForegroundPackage(long time, long interval) {
         String packageName = null;

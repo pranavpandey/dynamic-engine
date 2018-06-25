@@ -23,9 +23,7 @@ import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
 
 /**
  * Interface to listen various system events with the help of
- * DynamicEngine.
- *
- * @see DynamicEngine
+ * {@link DynamicEngine}.
  */
 public interface DynamicEventListener {
 
@@ -87,7 +85,8 @@ public interface DynamicEventListener {
      * On foreground app changed. Use it to provide the app specific
      * functionality in the app.
      *
-     * @param dynamicAppInfo {@link DynamicAppInfo} of the foreground package.
+     * @param dynamicAppInfo The dynamic app info of the foreground
+     *                       package.
      */
     void onAppChange(@Nullable DynamicAppInfo dynamicAppInfo);
 
@@ -95,7 +94,7 @@ public interface DynamicEventListener {
      * On app package added or changed. Useful to show a notification if
      * an app is updated or a new app is installed.
      *
-     * @param dynamicAppInfo {@link DynamicAppInfo} of the updated or added
+     * @param dynamicAppInfo The dynamic app info of the updated or added
      *                       package.
      * @param newPackage {@code true} if the package is newly added.
      */

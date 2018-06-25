@@ -42,8 +42,8 @@ public abstract class DynamicStickyService extends Service {
      * Override this function int he extended class to change the
      * default interval.
      *
-     * @return Interval in milliseconds after which service will be
-     *         restarted.
+     * @return The Interval in milliseconds after which service
+     *         will be restarted.
      *
      * @see #ADE_DEFAULT_RESTART_INTERVAL
      */

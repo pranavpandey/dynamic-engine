@@ -24,8 +24,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * Collection of various properties for a given package for an easy
- * data interchange.
+ * Collection of various properties for a given package for
+ * an easy data interchange.
  */
 public class DynamicAppInfo implements Parcelable {
 
@@ -82,6 +82,8 @@ public class DynamicAppInfo implements Parcelable {
 
     /**
      * De-parcel {@link DynamicAppInfo} object.
+     *
+     * @param in The parcel to read the values.
      */
     public DynamicAppInfo(Parcel in) {
         this.applicationInfo = in.readParcelable(ApplicationInfo.class.getClassLoader());
@@ -91,56 +93,65 @@ public class DynamicAppInfo implements Parcelable {
     }
 
     /**
-     * Getter for {@link #applicationInfo}.
+     * @return The application info.
      */
     public @Nullable ApplicationInfo getApplicationInfo() {
         return applicationInfo;
     }
 
     /**
-     * Setter for {@link #applicationInfo}.
+     * Set the application info.
+     *
+     * @param applicationInfo The application info to be set.
      */
     public void setApplicationInfo(@Nullable ApplicationInfo applicationInfo) {
         this.applicationInfo = applicationInfo;
     }
 
     /**
-     * Getter for {@link #topActivity}.
-     */
-    public @Nullable ComponentName getTopActivity() {
-        return topActivity;
-    }
-
-    /**
-     * Setter for {@link #topActivity}.
-     */
-    public void setTopActivity(@Nullable ComponentName topActivity) {
-        this.topActivity = topActivity;
-    }
-
-    /**
-     * Getter for {@link #packageName}.
+     * @return The package name.
      */
     public @Nullable String getPackageName() {
         return packageName;
     }
 
     /**
-     * Setter for {@link #packageName}.
+     * Set the package name.
+     *
+     * @param packageName The package name to be set.
      */
     public void setPackageName(@Nullable String packageName) {
         this.packageName = packageName;
     }
 
     /**
-     * Getter for {@link #label}.
+     * @return The top activity component name.
+     */
+    public @Nullable ComponentName getTopActivity() {
+        return topActivity;
+    }
+
+    /**
+     * Set the top activity component name.
+     *
+     * @param topActivity The top activity component name
+     *                    to be set.
+     */
+    public void setTopActivity(@Nullable ComponentName topActivity) {
+        this.topActivity = topActivity;
+    }
+
+    /**
+     * @return The application label or name.
      */
     public @Nullable String getLabel() {
         return label;
     }
 
     /**
-     * Setter for {@link #label}.
+     * Set the application label or name.
+     *
+     * @param label The application label or name to be set.
      */
     public void setLabel(@Nullable String label) {
         this.label = label;
@@ -149,7 +160,7 @@ public class DynamicAppInfo implements Parcelable {
     /**
      * Compare this DynamicAppInfo with other.
      *
-     * @param dynamicAppInfo Other DynamicAppInfo to compare.
+     * @param dynamicAppInfo The other DynamicAppInfo to compare.
      *
      * @return {@code true} if the two DynamicAppInfo are equal.
      */

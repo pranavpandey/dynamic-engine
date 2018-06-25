@@ -68,21 +68,10 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     private DynamicAppMonitor mDynamicAppMonitor;
 
     /**
-     * {@code true} if the device is charging or connected
-     * to a power source.
+     * {@code true} if the device is on call. Either ringing
+     * or answered.
      */
-    private boolean mCharging;
-
-    /**
-     * {@code true} if the device is connected to a headset
-     * or a audio output device.
-     */
-    private boolean mHeadset;
-
-    /**
-     * {@code true} if the device is docked.
-     */
-    private boolean mDocked;
+    private boolean mCall;
 
     /**
      * {@code true} if the device is in the locked state or
@@ -91,10 +80,21 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     private boolean mLocked;
 
     /**
-     * {@code true} if the device is on call. Either ringing
-     * or answered.
+     * {@code true} if the device is connected to a headset
+     * or a audio output device.
      */
-    private boolean mCall;
+    private boolean mHeadset;
+
+    /**
+     * {@code true} if the device is charging or connected
+     * to a power source.
+     */
+    private boolean mCharging;
+
+    /**
+     * {@code true} if the device is docked.
+     */
+    private boolean mDocked;
 
     /**
      * Keyguard manager to detect the lock screen state.
@@ -146,18 +146,16 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * Getter for {@link #mDynamicEventListener}.
+     * @return The listener to listen special events.
      */
-    public @NonNull
-    DynamicEventListener getSpecialEventListener() {
+    public @NonNull DynamicEventListener getSpecialEventListener() {
         return mDynamicEventListener;
     }
 
     /**
-     * Getter for {@link #mDynamicAppMonitor}.
+     * @return The task to monitor foreground app.
      */
-    public @NonNull
-    DynamicAppMonitor getAppMonitor() {
+    public @NonNull DynamicAppMonitor getAppMonitor() {
         return mDynamicAppMonitor;
     }
 
@@ -165,7 +163,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      * Enable or disable foreground app monitor.
      *
      * @param running {@code true} to start monitoring the foreground app
-     *                  and receive listener callback.
+     *                and receive listener callback.
      *
      * @see DynamicEventListener#onAppChange(DynamicAppInfo)
      */
@@ -195,14 +193,18 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * Getter for {@link #mCall}.
+     * @return {@code true} if the device is on call.
+     *         Either ringing or answered.
      */
     public boolean isCall() {
         return mCall;
     }
 
     /**
-     * Setter for {@link #mCall}.
+     * Set the status of call event.
+     *
+     * @param call {@code true} if the device is on
+     *             call. Either ringing or answered.
      */
     public void setCall(boolean call) {
         if (call != isCall()) {
@@ -212,14 +214,18 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * Getter for {@link #mLocked}.
+     * @return {@code true} if the device is in the
+     *         locked state or the lock screen is shown.
      */
     public boolean isLocked() {
         return mLocked;
     }
 
     /**
-     * Setter for {@link #mLocked}.
+     * Set the status of lock event.
+     *
+     * @param locked {@code true} if the device is in the
+     *               locked state or the lock screen is shown.
      */
     public void setLocked(boolean locked) {
         if (locked != isLocked()) {
@@ -229,14 +235,18 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * Getter for {@link #mHeadset}.
+     * @return {@code true} if the device is connected to a
+     *         headset or a audio output device.
      */
     public boolean isHeadset() {
         return mHeadset;
     }
 
     /**
-     * Setter for {@link #mHeadset}.
+     * Set the status of headset event.
+     *
+     * @param headset {@code true} if the device is connected
+     *                to a headset or a audio output device.
      */
     public void setHeadset(boolean headset) {
         if (headset != isHeadset()) {
@@ -246,14 +256,18 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * Getter for {@link #mCharging}.
+     * @return {@code true} if the device is charging or
+     *         connected to a power source.
      */
     public boolean isCharging() {
         return mCharging;
     }
 
     /**
-     * Setter for {@link #mCharging}.
+     * Set the status of charging event.
+     *
+     * @param charging {@code true} if the device is charging
+     *                 or connected to a power source.
      */
     public void setCharging(boolean charging) {
         if (charging != mCharging) {
@@ -263,14 +277,16 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * Getter for {@link #mDocked}.
+     * @return {@code true} if the device is docked.
      */
     public boolean isDocked() {
         return mDocked;
     }
 
     /**
-     * Setter for {@link #mDocked}.
+     * Set the status of dock event.
+     *
+     * @param docked {@code true} if the device is docked.
      */
     public void setDocked(boolean docked) {
         if (docked != isDocked()) {
@@ -342,7 +358,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * Get a list of current ongoing events.
+     * @return The list of current ongoing events.
      */
     protected @NonNull ArrayList<String> getCurrentEvents() {
         ArrayList<String> currentEvents = new ArrayList<>();
@@ -390,13 +406,12 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     /**
      * Get the event according to its priority.
      *
-     * @param currentEvents A list of events.
+     * @param currentEvents The list of events.
      * @param priority The event priority to find event.
      *
      * @return The event according to its priority.
      */
-    protected @DynamicEvent
-    String getEventByPriority(
+    protected @DynamicEvent String getEventByPriority(
             @NonNull List<String> currentEvents, int priority) {
         if (!currentEvents.isEmpty() && priority > 0 && priority <= currentEvents.size()) {
             return currentEvents.get(currentEvents.size() - priority);
@@ -406,10 +421,10 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * @return The highest priority event event that has been occurred.
+     * @return The highest priority event event that has been
+     *         occurred.
      */
-    protected @DynamicEvent
-    String getHighestPriorityEvent() {
+    protected @DynamicEvent String getHighestPriorityEvent() {
         return getEventByPriority(getCurrentEvents(), 1);
     }
 }

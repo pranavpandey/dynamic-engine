@@ -45,6 +45,8 @@ It is a collection of different tasks which can monitor various events by runnin
 the background. Initially, it an monitor call, lock, headset, charging, dock and foreground related
 events. I will do my best to add more tasks later.
 
+> For complete reference, please read the [documentation](https://pranavpandey.github.io/dynamic-engine).
+
 ### Monitor special events
 
 Extend the `DynamicEngine` service and implement the interface functions to monitor call, lock,
@@ -170,7 +172,8 @@ public class MonitorService extends DynamicEngine {
      * On foreground app changed. Use it to provide the app specific
      * functionality in the app.
      *
-     * @param dynamicAppInfo {@link DynamicAppInfo} of the foreground package.
+     * @param dynamicAppInfo The dynamic app info of the foreground
+     *                       package.
      */
     @Override
     public void onAppChange(dynamicAppInfo);
@@ -192,7 +195,8 @@ public class MonitorService extends DynamicEngine {
      * On app package added or changed. Useful to show a notification if
      * an app is updated or a new app is installed.
      *
-     * @param dynamicAppInfo {@link DynamicAppInfo} of the updated or added package.
+     * @param dynamicAppInfo The dynamic app info of the updated or
+     *                       added package.
      * @param isNewPackage {@code true} if the package is newly added.
      */
     public void onPackageUpdated(dynamicAppInfo, isNewPackage);
@@ -214,36 +218,36 @@ public class DynamicPriority {
     /**
      * Default priority for the events.
      *
-     * <br />1. Call (highest)
-     * <br />2. Lock
-     * <br />3. Headset
-     * <br />4. Charging
-     * <br />5. Dock
-     * <br />6. App (lowest)
+     * 1. Call (highest)
+     * 2. Lock
+     * 3. Headset
+     * 4. Charging
+     * 5. Dock
+     * 6. App (lowest)
      */
     
     /**
      * Save events priority.
      *
-     * @param context Context to get shared preferences.
+     * @param context The context to get shared preferences.
      * @param eventsPriority ArrayList containing events priority.
      */
     public static void saveEventsPriority(context, eventsPriority)
     
     /**
-     * Get saved events priority after checking the device for telephony
-     * and per app functionality.
+     * Get saved events priority after checking the device for
+     * telephony and per app functionality.
      *
-     * @param context Context to get shared preferences.
+     * @param context The context to get shared preferences.
      *
-     * @return Saved events priority.
+     * @return The saved events priority.
      */
     public static ArrayList<String> getEventsPriority(context)
     
     /**
      * Reset events priority to default.
      *
-     * @param context Context to get shared preferences.
+     * @param context The context to get shared preferences.
      */
     public static void resetPriority(context)
     
@@ -259,12 +263,12 @@ public abstract class DynamicEngine {
     ...
     
     /**
-     * Get a list of current ongoing events.
+     * @return The list of current ongoing events.
      */
     protected ArrayList<String> getCurrentEvents()
     
     /**
-     * Get the highest priority event.
+     * @return The highest priority event.
      */
     protected String getHighestPriorityEvent()
 
