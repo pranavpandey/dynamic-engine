@@ -91,10 +91,9 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private UsageStatsManager mUsageStatsManager;
 
     /**
-     * Constructor to initialize DynamicAppMonitor for the give
-     * DynamicEngine.
+     * Constructor to initialize an object of this class.
      *
-     * @param dynamicEngine The dynamic engine using which is
+     * @param dynamicEngine The dynamic engine which is
      *                      using this task.
      */
     @SuppressLint("WrongConstant")

@@ -336,6 +336,11 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                         }
                         break;
                     case Intent.ACTION_PACKAGE_REMOVED:
+                        if (intent.getData() != null
+                                && intent.getData().getSchemeSpecificPart() != null) {
+                            mDynamicEventListener.onPackageRemoved(
+                                    intent.getData().getSchemeSpecificPart());
+                        }
                         break;
                     case Intent.ACTION_PACKAGE_ADDED:
                         if (intent.getData() != null
