@@ -33,7 +33,7 @@ It can be installed by adding the following dependency to your `build.gradle` fi
 
 ```groovy
 dependencies {
-    implementation 'com.pranavpandey.android:dynamic-engine:1.1.1'
+    implementation 'com.pranavpandey.android:dynamic-engine:1.2.0'
 }
 ```
 
@@ -63,75 +63,79 @@ public class MonitorService extends DynamicEngine {
     ...
     
     /**
-     * On initialize the service so that we can get the current
-     * charging, headset and dock state.
+     * Called on initialize the service so that we can get the
+     * current charging, headset and dock state.
      *
-     * @param isCharging {@code true} if the device is charging or connected
-     *                   to a power source.
-     * @param isHeadset {@code true} if the device is connected to a headset
-     *                  or a audio output device.
-     * @param isDocked {@code true} if the device is docked.
+     * @param charging {@code true} if the device is charging
+     *                 or connected to a power source.
+     * @param headset {@code true} if the device is connected to
+     *                a headset or a audio output device.
+     * @param docked {@code true} if the device is docked.
      */
     @Override
-    public void onInitialize(isCharging, isHeadset, isDocked) {
-    
+    public void onInitialize(charging, headset, docked) {
+        // TODO: Do any work here.
     }
-    
+
     /**
-     * On call state changed. Either on call or the device is idle.
+     * Called on call state changed. Either on call or the device
+     * is idle.
      *
-     * @param isCall {@code true} if the device is on call. Either ringing
-     *               or answered.
-     */    
-    @Override
-    public void onCallStateChange(isCall) {
-    
-    }
-    
-    /**
-     * On lock state changed. Either the device is in the locked or unlocked
-     * state independent of the PIN, password or any other security lock.
-     *
-     * @param isLocked {@code true} if the device is in the locked state or
-     *                  the lock screen is shown.
+     * @param call {@code true} if the device is on call.
+     *             Either ringing or answered.
      */
     @Override
-    public void onLockStateChange(isLocked) {
-    
+    public void onCallStateChange(call) {
+        // TODO: Do any work here.
     }
-    
+
     /**
-     * On headset state changed. Either the device is connected to a audio
-     * output device or volume is routed through the internal speaker.
+     * Called on lock state changed. Either the device is in the
+     * locked or unlocked state independent of the PIN, password
+     * or any other security lock.
      *
-     * @param isConnected {@code true} if the device is connected to a headset
-     *                    or a audio output device.
+     * @param locked {@code true} if the device is in the locked
+     *               state or the lock screen is shown.
      */
     @Override
-    public void onHeadsetStateChange(isConnected) {
-    
+    public void onLockStateChange(locked) {
+        // TODO: Do any work here.
     }
-    
+
     /**
-     * On charging state changed. Either the device is connected to a power
-     * source using the battery.
+     * Called on headset state changed. Either the device is
+     * connected to a audio output device or volume is routed
+     * through the internal speaker.
      *
-     * @param isCharging {@code true} if the device is charging or connected
-     *                   to a power source.
+     * @param connected {@code true} if the device is connected to
+     *                  a headset or a audio output device.
      */
     @Override
-    public void onChargingStateChange(isCharging) {
-    
+    public void onHeadsetStateChange(connected) {
+        // TODO: Do any work here.
     }
-    
+
     /**
-     * On dock state changed. Either the device is docked or not.
+     * Called on charging state changed. Either the device
+     * is connected to a power source using the battery.
      *
-     * @param isDocked {@code true} if the device is docked.
+     * @param charging {@code true} if the device is charging
+     *                 or connected to a power source.
      */
     @Override
-    public void onDockStateChange(isDocked) {
-    
+    public void onChargingStateChange(charging) {
+        // TODO: Do any work here.
+    }
+
+    /**
+     * Called on dock state changed. Either the device is docked
+     * or not.
+     *
+     * @param docked {@code true} if the device is docked.
+     */
+    @Override
+    public void onDockStateChange(docked) {
+        // TODO: Do any work here.
     }
     
     ...
@@ -159,8 +163,8 @@ public class MonitorService extends DynamicEngine {
     /**
      * Enable or disable foreground app monitor.
      *
-     * @param isRunning {@code true} to start monitoring the foreground app
-     *                  and receive listener callback.
+     * @param isRunning {@code true} to start monitoring the foreground
+     *                  app and receive listener callback.
      *
      * @see DynamicEventListener#onAppChange(DynamicAppInfo)
      */
@@ -169,14 +173,16 @@ public class MonitorService extends DynamicEngine {
     ...
     
     /**
-     * On foreground app changed. Use it to provide the app specific
-     * functionality in the app.
+     * Called on foreground app changed. Use it to provide the app
+     * specific functionality in the app.
      *
      * @param dynamicAppInfo The dynamic app info of the foreground
      *                       package.
      */
     @Override
-    public void onAppChange(dynamicAppInfo);
+    public void onAppChange(dynamicAppInfo) {
+        // TODO: Do any work here.
+    }
     
     ...
 }
@@ -192,14 +198,28 @@ public class MonitorService extends DynamicEngine {
     ...
     
     /**
-     * On app package added or changed. Useful to show a notification if
-     * an app is updated or a new app is installed.
+     * Called on app package added or changed. Useful to show a
+     * notification if an app is updated or a new app is installed.
      *
      * @param dynamicAppInfo The dynamic app info of the updated or
      *                       added package.
-     * @param isNewPackage {@code true} if the package is newly added.
+     * @param newPackage {@code true} if the package is newly added.
      */
-    public void onPackageUpdated(dynamicAppInfo, isNewPackage);
+    @Override
+    public void onPackageUpdated(dynamicAppInfo, newPackage) {
+        // TODO: Do any work here.
+    }
+
+    /**
+     * On app package removed. Useful to show some work when a
+     * package is removed.
+     *
+     * @param packageName The package which was removed.
+     */
+    @Override
+    public void onPackageRemoved(packageName) {
+        // TODO: Do any work here.
+    }
     
     ...
 }
