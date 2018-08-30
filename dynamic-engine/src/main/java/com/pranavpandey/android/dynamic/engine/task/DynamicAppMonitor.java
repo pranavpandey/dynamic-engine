@@ -127,11 +127,9 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
         while(isRunning()) {
             try {
                 DynamicAppInfo dynamicAppInfo = getForegroundAppInfo();
-                if (dynamicAppInfo != null && dynamicAppInfo.getPackageName() != null) {
-                    if (mDynamicAppInfo == null
-                            || !mDynamicAppInfo.equals(dynamicAppInfo)) {
-                        publishProgress(dynamicAppInfo);
-                    }
+                if (dynamicAppInfo != null && dynamicAppInfo.getPackageName() != null
+                        && (mDynamicAppInfo == null || !mDynamicAppInfo.equals(dynamicAppInfo))) {
+                    publishProgress(dynamicAppInfo);
                 }
 
                 Thread.sleep(ADE_THREAD_SLEEP_INTERVAL);

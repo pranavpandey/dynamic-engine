@@ -315,6 +315,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         public void onReceive(@NonNull Context context, @Nullable Intent intent) {
             if (intent != null && intent.getAction() != null) {
                 switch (intent.getAction()) {
+                    default:
+                        break;
                     case Intent.ACTION_POWER_CONNECTED:
                         setCharging(true);
                         break;
@@ -372,6 +374,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         currentEvents.add(DynamicEvent.NONE);
         for (String eventPriority : eventsPriority) {
             switch (eventPriority) {
+                default:
+                    break;
                 case DynamicEvent.CALL:
                     if (isCall()) {
                         currentEvents.add(DynamicEvent.CALL);
