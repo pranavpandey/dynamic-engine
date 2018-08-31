@@ -15,6 +15,14 @@
  */
 
 buildscript {
+    ext.versions = [
+            'compileSdk'    : 28,
+            'minSdk'        : 14,
+            'targetSdk'     : 28,
+            'buildTools'    : '28.0.2',
+            'androidSupport': '27.1.1'
+    ]
+
     repositories {
         jcenter()
         google()
@@ -46,18 +54,19 @@ ext {
     versionDesc = 'A collection of tasks to monitor various events including call, lock, ' +
             'headset, charging, dock and foreground app via service on Android 14+ ' +
             '(ICS or above) devices.'
+    referenceTitle = 'Dynamic Engine Reference'
+
     siteUrl = 'https://github.com/pranavpandey/dynamic-engine'
     gitUrl = 'https://github.com/pranavpandey/dynamic-engine'
     issueUrl = 'https://github.com/pranavpandey/dynamic-engine/issues'
-
     githubUrl = 'pranavpandey/dynamic-engine'
-    referenceTitle = 'Dynamic Engine Reference'
 
+    mavenRepo = 'android'
     mavenGroup = 'com.pranavpandey.android'
-    mavenVersion = '1.2.0'
-    mavenInceptionYear = 2017
     mavenArtifactId = 'dynamic-engine'
-    bintrayRepo = 'android'
+    mavenInceptionYear = 2017
+    mavenVersion = '1.2.0'
+    mavenVersionCode = 13
 
     developerId = 'pranavpandey'
     developerName = 'Pranav Pandey'
@@ -67,13 +76,4 @@ ext {
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     licenseDistribution = 'repo'
     allLicenses = ["Apache-2.0"]
-
-    versionCode = 13
-
-    buildTools = '28.0.2'
-    minSdk = 14
-    compileSdk = 28
-    targetSdk = 28
-
-    androidSupport = '27.1.1'
 }

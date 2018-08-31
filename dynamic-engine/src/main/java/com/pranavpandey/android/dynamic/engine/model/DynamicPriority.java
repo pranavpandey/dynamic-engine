@@ -34,11 +34,6 @@ import java.util.Collections;
 public class DynamicPriority {
 
     /**
-     * Shared preference key for the engine preferences.
-     */
-    private static final String ADE_PREF_ENGINE = "ade_engine_preferences";
-
-    /**
      * Shared preference key for the event priorities.
      */
     private static final String ADE_PREF_EVENTS_PRIORITY = "ade_pref_events_priority";
