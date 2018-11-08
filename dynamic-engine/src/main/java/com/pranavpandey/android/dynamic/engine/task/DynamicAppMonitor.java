@@ -24,20 +24,21 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicVersionUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+
 /**
  * AsyncTask to monitor foreground to provide app specific functionality.
  *
- * <p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
- * permission to detect foreground app on Android L and above devices.</p>
+ * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
+ * permission to detect the foreground app on Android L and above devices.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -58,7 +59,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     /**
      * Default thread sleep interval.
      */
-    private static final int ADE_THREAD_SLEEP_INTERVAL = 250;
+    private static final int ADE_THREAD_SLEEP_INTERVAL = 300;
 
     /**
      * Dynamic engine to initialize usage stats service.
@@ -72,6 +73,11 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private boolean mRunning;
 
     /**
+     * {@code true} if this task is paused.
+     */
+    private boolean mPaused;
+
+    /**
      * Dynamic app info for the foreground package.
      */
     private DynamicAppInfo mDynamicAppInfo;
@@ -82,19 +88,17 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private ActivityManager mActivityManager;
 
     /**
-     * UsageStatsManager to detect foreground package on Android L
-     * and above devices.
+     * UsageStatsManager to detect foreground package on Android L and above devices.
      *
-     * <p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
-     * permission to detect foreground app on Android L and above devices.</p>
+     * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
+     * permission to detect foreground app on Android L and above devices.
      */
     private UsageStatsManager mUsageStatsManager;
 
     /**
      * Constructor to initialize an object of this class.
      *
-     * @param dynamicEngine The dynamic engine which is
-     *                      using this task.
+     * @param dynamicEngine The dynamic engine using which is using this task.
      */
     @SuppressLint("WrongConstant")
     public DynamicAppMonitor(@NonNull DynamicEngine dynamicEngine) {
@@ -124,12 +128,14 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        while(isRunning()) {
+        while (mRunning) {
             try {
-                DynamicAppInfo dynamicAppInfo = getForegroundAppInfo();
-                if (dynamicAppInfo != null && dynamicAppInfo.getPackageName() != null
-                        && (mDynamicAppInfo == null || !mDynamicAppInfo.equals(dynamicAppInfo))) {
-                    publishProgress(dynamicAppInfo);
+                if (!mPaused) {
+                    DynamicAppInfo dynamicAppInfo = getForegroundAppInfo();
+                    if (dynamicAppInfo != null && dynamicAppInfo.getPackageName() != null
+                            && (mDynamicAppInfo == null || !mDynamicAppInfo.equals(dynamicAppInfo))) {
+                        publishProgress(dynamicAppInfo);
+                    }
                 }
 
                 Thread.sleep(ADE_THREAD_SLEEP_INTERVAL);
@@ -157,6 +163,8 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     }
 
     /**
+     * Get the running status of this task.
+     *
      * @return {@code true} if this task is running.
      */
     public boolean isRunning() {
@@ -173,23 +181,44 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     }
 
     /**
-     * @return The Dynamic app info for the foreground package.
+     * Get the paused status of this task.
+     *
+     * @return {@code true} if this task is paused.
+     */
+    public boolean isPaused() {
+        return mPaused;
+    }
+
+    /**
+     * Set the paused status of this task.
+     *
+     * @param paused {@code true} if this task is paused.
+     */
+    public void setPaused(boolean paused) {
+        this.mPaused = paused;
+    }
+
+    /**
+     * Get the current dynamic app info.
+     *
+     * @return The current dynamic app info.
      */
     public @Nullable DynamicAppInfo getCurrentAppInfo() {
         return mDynamicAppInfo;
     }
 
     /**
-     * Set the dynamic app info.
+     * Set the current dynamic app info.
      *
-     * @param dynamicAppInfo The Dynamic app info for the foreground
-     *                       package to be set.
+     * @param dynamicAppInfo The current dynamic app info to be set.
      */
     public void setCurrentAppInfo(@Nullable DynamicAppInfo dynamicAppInfo) {
         this.mDynamicAppInfo = dynamicAppInfo;
     }
 
     /**
+     * Retrieve the dynamic app info for the foreground package.
+     *
      * @return The dynamic app info from the foreground package name.
      */
     private @Nullable DynamicAppInfo getForegroundAppInfo() {
@@ -217,11 +246,12 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     }
 
     /**
-     * @return The foreground package name on Android L and above
-     *         devices.
+     * Retrieve the foreground package.
      *
      * @param time The start time to get the recent apps.
      * @param interval The interval for the requested events.
+     *
+     * @return The foreground package name on Android L and above devices.
      */
     private @Nullable String getForegroundPackage(long time, long interval) {
         String packageName = null;

@@ -20,12 +20,12 @@ import android.content.ComponentName;
 import android.content.pm.ApplicationInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
- * Collection of various properties for a given package for
- * an easy data interchange.
+ * Collection of various properties for a given package for an easy data interchange.
  */
 public class DynamicAppInfo implements Parcelable {
 
@@ -54,6 +54,34 @@ public class DynamicAppInfo implements Parcelable {
      */
     public DynamicAppInfo() { }
 
+    /**
+     * Parcelable creator to create from parcel.
+     */
+    public static final Parcelable.Creator<DynamicAppInfo> CREATOR =
+            new Parcelable.Creator<DynamicAppInfo>() {
+        @Override
+        public DynamicAppInfo createFromParcel(Parcel in) {
+            return new DynamicAppInfo(in);
+        }
+
+        @Override
+        public DynamicAppInfo[] newArray(int size) {
+            return new DynamicAppInfo[size];
+        }
+    };
+
+    /**
+     * Read an object of this class from the parcel.
+     *
+     * @param in The parcel to read the values.
+     */
+    public DynamicAppInfo(Parcel in) {
+        this.applicationInfo = in.readParcelable(ApplicationInfo.class.getClassLoader());
+        this.topActivity = in.readParcelable(ComponentName.class.getClassLoader());
+        this.packageName = in.readString();
+        this.label = in.readString();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -68,31 +96,8 @@ public class DynamicAppInfo implements Parcelable {
     }
 
     /**
-     * Parcelable creator to create from parcel.
-     */
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public DynamicAppInfo createFromParcel(Parcel in) {
-            return new DynamicAppInfo(in);
-        }
-
-        public DynamicAppInfo[] newArray(int size) {
-            return new DynamicAppInfo[size];
-        }
-    };
-
-    /**
-     * De-parcel {@link DynamicAppInfo} object.
+     * Get the application info.
      *
-     * @param in The parcel to read the values.
-     */
-    public DynamicAppInfo(Parcel in) {
-        this.applicationInfo = in.readParcelable(ApplicationInfo.class.getClassLoader());
-        this.topActivity = in.readParcelable(ComponentName.class.getClassLoader());
-        this.packageName = in.readString();
-        this.label = in.readString();
-    }
-
-    /**
      * @return The application info.
      */
     public @Nullable ApplicationInfo getApplicationInfo() {
@@ -109,6 +114,8 @@ public class DynamicAppInfo implements Parcelable {
     }
 
     /**
+     * Get the package name.
+     *
      * @return The package name.
      */
     public @Nullable String getPackageName() {
@@ -125,6 +132,8 @@ public class DynamicAppInfo implements Parcelable {
     }
 
     /**
+     * Get the top activity component name.
+     *
      * @return The top activity component name.
      */
     public @Nullable ComponentName getTopActivity() {
@@ -134,14 +143,15 @@ public class DynamicAppInfo implements Parcelable {
     /**
      * Set the top activity component name.
      *
-     * @param topActivity The top activity component name
-     *                    to be set.
+     * @param topActivity The top activity component name to be set.
      */
     public void setTopActivity(@Nullable ComponentName topActivity) {
         this.topActivity = topActivity;
     }
 
     /**
+     * Get the application label or name.
+     *
      * @return The application label or name.
      */
     public @Nullable String getLabel() {
@@ -158,11 +168,11 @@ public class DynamicAppInfo implements Parcelable {
     }
 
     /**
-     * Compare this DynamicAppInfo with other.
+     * Compare the object of this class with another object.
      *
      * @param dynamicAppInfo The other DynamicAppInfo to compare.
      *
-     * @return {@code true} if the two DynamicAppInfo are equal.
+     * @return {@code true} if the two objects are equal.
      */
     public boolean equals(@NonNull DynamicAppInfo dynamicAppInfo) {
         return !(getPackageName() != null && dynamicAppInfo.getPackageName() != null)

@@ -16,97 +16,93 @@
 
 package com.pranavpandey.android.dynamic.engine.listener;
 
-import android.support.annotation.Nullable;
-
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
 
+import androidx.annotation.Nullable;
+
 /**
- * Interface to listen various system events with the help of
- * {@link DynamicEngine}.
+ * Interface to listen various system events with the help of {@link DynamicEngine}.
  */
 public interface DynamicEventListener {
 
     /**
-     * Called on initialize the service so that we can get the
-     * current charging, headset and dock state.
+     * Called on initialize the service so that we can get the current charging, headset
+     * and dock state.
      *
-     * @param charging {@code true} if the device is charging
-     *                 or connected to a power source.
-     * @param headset {@code true} if the device is connected to
-     *                a headset or a audio output device.
+     * @param charging {@code true} if the device is charging or connected to a power source.
+     * @param headset {@code true} if the device is connected to a headset or a audio output
+     *                device.
      * @param docked {@code true} if the device is docked.
      */
     void onInitialize(boolean charging, boolean headset, boolean docked);
 
     /**
-     * Called on call state changed. Either on call or the device
-     * is idle.
+     * Called on call state changed. Either on call or the device is idle.
      *
      * @param call {@code true} if the device is on call.
-     *             Either ringing or answered.
+     *             <p><Either ringing or answered.
      */
     void onCallStateChange(boolean call);
 
     /**
-     * Called on lock state changed. Either the device is in the
-     * locked or unlocked state independent of the PIN, password
-     * or any other security lock.
+     * Called on screen state changed. Either the device screen is off or on.
      *
-     * @param locked {@code true} if the device is in the locked
-     *               state or the lock screen is shown.
+     * @param screenOff {@code true} if the device screen is off.
+     */
+    void onScreenStateChange(boolean screenOff);
+
+    /**
+     * Called on lock state changed. Either the device is in the locked or unlocked state
+     * independent of the PIN, password or any other security lock.
+     *
+     * @param locked {@code true} if the device is in the locked state or the lock screen is shown.
      */
     void onLockStateChange(boolean locked);
 
     /**
-     * Called on headset state changed. Either the device is
-     * connected to a audio output device or volume is routed
-     * through the internal speaker.
+     * Called on headset state changed. Either the device is connected to a audio output device
+     * or volume is routed through the internal speaker.
      *
-     * @param connected {@code true} if the device is connected to
-     *                  a headset or a audio output device.
+     * @param connected {@code true} if the device is connected to a headset or a audio output
+     *                  device.
      */
     void onHeadsetStateChange(boolean connected);
 
     /**
-     * Called on charging state changed. Either the device
-     * is connected to a power source using the battery.
+     * Called on charging state changed. Either the device is connected to a power source using
+     * the battery.
      *
-     * @param charging {@code true} if the device is charging
-     *                 or connected to a power source.
+     * @param charging {@code true} if the device is charging or connected to a power source.
      */
     void onChargingStateChange(boolean charging);
 
     /**
-     * Called on dock state changed. Either the device is docked
-     * or not.
+     * Called on dock state changed. Either the device is docked or not.
      *
      * @param docked {@code true} if the device is docked.
      */
     void onDockStateChange(boolean docked);
 
     /**
-     * Called on foreground app changed. Use it to provide the app
-     * specific functionality in the app.
+     * Called on foreground app changed. Use it to provide the app specific functionality
+     * in the app.
      *
-     * @param dynamicAppInfo The dynamic app info of the foreground
-     *                       package.
+     * @param dynamicAppInfo The dynamic app info of the foreground package.
      */
     void onAppChange(@Nullable DynamicAppInfo dynamicAppInfo);
 
     /**
-     * Called on app package added or changed. Useful to show a
-     * notification if an app is updated or a new app is installed.
+     * Called on app package added or changed. Useful to show a notification if an app is
+     * updated or a new app is installed.
      *
-     * @param dynamicAppInfo The dynamic app info of the updated or
-     *                       added package.
+     * @param dynamicAppInfo The dynamic app info of the updated or added package.
      * @param newPackage {@code true} if the package is newly added.
      */
     void onPackageUpdated(@Nullable DynamicAppInfo dynamicAppInfo, boolean newPackage);
 
     /**
-     * On app package removed. Useful to show some work when a
-     * package is removed.
+     * On app package removed. Useful to show some work when a package is removed.
      *
      * @param packageName The package which was removed.
      */
