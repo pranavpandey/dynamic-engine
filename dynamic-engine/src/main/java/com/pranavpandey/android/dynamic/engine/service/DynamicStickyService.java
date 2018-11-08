@@ -18,12 +18,13 @@ package com.pranavpandey.android.dynamic.engine.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 /**
- * Sticky service which will restart automatically if killed by the
- * system. Useful in low RAM or similar situations where we need to
- * run the service continuously in the background.
+ * Sticky service which will restart automatically if killed by the system.
+ * <p>Useful in low RAM or similar situations where we need to run the service continuously
+ * in the background.
  */
 public abstract class DynamicStickyService extends Service {
 
@@ -39,11 +40,9 @@ public abstract class DynamicStickyService extends Service {
 
     /**
      * Get restart interval after which try to restart the service.
-     * Override this function int he extended class to change the
-     * default interval.
+     * <p>Override this method in the extended class to change the default interval.
      *
-     * @return The Interval in milliseconds after which service
-     *         will be restarted.
+     * @return The Interval in milliseconds after which service will be restarted.
      *
      * @see #ADE_DEFAULT_RESTART_INTERVAL
      */

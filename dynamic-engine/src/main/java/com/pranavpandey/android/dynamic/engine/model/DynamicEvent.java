@@ -16,10 +16,10 @@
 
 package com.pranavpandey.android.dynamic.engine.model;
 
-import android.support.annotation.StringDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.StringDef;
 
 import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.APP;
 import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.CALL;
@@ -30,8 +30,7 @@ import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.LOCK;
 import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.NONE;
 
 /**
- * Events supported by the
- * {@link com.pranavpandey.android.dynamic.engine.service.DynamicEngine}.
+ * Events supported by the {@link com.pranavpandey.android.dynamic.engine.service.DynamicEngine}.
  */
 @StringDef(value = {NONE, CALL, LOCK, HEADSET, HEADSET, CHARGING, DOCK, APP})
 @Retention(RetentionPolicy.SOURCE)

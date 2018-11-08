@@ -11,6 +11,8 @@ foreground app via service on Android 9+ (Gingerbread or above) devices.
 
 > Since v0.4.0, it uses [26.x.x support libraries](https://developer.android.com/topic/libraries/support-library/revisions.html#26-0-0)
 so, minimum SDK will be Android 14+ (ICS or above).
+<br/>Since v2.0.0, it uses [AndroidX](https://developer.android.com/jetpack/androidx/) so, first
+[migrate](https://developer.android.com/jetpack/androidx/migrate) your project to AndroidX.
 
 ---
 
@@ -33,7 +35,11 @@ It can be installed by adding the following dependency to your `build.gradle` fi
 
 ```groovy
 dependencies {
-    implementation 'com.pranavpandey.android:dynamic-engine:1.3.0'
+    // For AndroidX enabled projects
+    implementation 'com.pranavpandey.android:dynamic-utils:2.0.0'
+
+    // For legacy projects
+    implementation 'com.pranavpandey.android:dynamic-utils:1.3.0'
 }
 ```
 

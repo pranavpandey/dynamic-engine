@@ -20,15 +20,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
- * Collection of useful functions used by the
- * {@link DynamicEngine}.
+ * Helper class used for the {@link DynamicEngine}.
  */
 public class DynamicEngineUtils {
 
@@ -50,22 +50,21 @@ public class DynamicEngineUtils {
     private static final String PACKAGE_SCHEME = "package";
 
     /**
-     * Get dynamic app info from the package name.
+     * Load dynamic app info from the package name.
      *
      * @param context The context to get {@link PackageManager}.
-     * @param packageName The Package name to build the
-     *                    dynamic app info.
+     * @param packageName The Package name to build the dynamic app info.
      *
      * @return The dynamic app info from the package name.
      */
-    public static @Nullable DynamicAppInfo getAppInfoFromPackage(
-            @NonNull Context context, @Nullable String packageName) {
+    public static @Nullable DynamicAppInfo getAppInfoFromPackage(@NonNull Context context,
+            @Nullable String packageName) {
         if (packageName != null) {
             DynamicAppInfo dynamicAppInfo = new DynamicAppInfo();
             try {
                 dynamicAppInfo.setApplicationInfo(
                         context.getPackageManager().getApplicationInfo(
-                        packageName, PackageManager.GET_META_DATA));
+                                packageName, PackageManager.GET_META_DATA));
 
                 dynamicAppInfo.setPackageName(packageName);
                 if (dynamicAppInfo.getApplicationInfo() != null) {
@@ -82,9 +81,10 @@ public class DynamicEngineUtils {
     }
 
     /**
-     * @return The intent filter to register a broadcast receiver
-     *         which can listen special actions of the
-     *         {@link DynamicEngine}.
+     * Returns the intent filter to register various events.
+     *
+     * @return The intent filter to register a broadcast receiver which can listen special
+     *         actions of the {@link DynamicEngine}.
      */
     public static @NonNull IntentFilter getEventsIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
@@ -100,9 +100,10 @@ public class DynamicEngineUtils {
     }
 
     /**
-     * @return The intent filter to register a broadcast receiver
-     *         which can listen call events of the
-     *         {@link DynamicEngine}.
+     * Returns the intent filter to register the call event.
+     *
+     * @return The intent filter to register a broadcast receiver which can listen call events
+     *         of the {@link DynamicEngine}.
      */
     public static @NonNull IntentFilter getCallIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
@@ -113,8 +114,10 @@ public class DynamicEngineUtils {
     }
 
     /**
-     * @return The intent filter to register a broadcast receiver
-     *         which can listen package added or removed broadcasts.
+     * Returns the intent filter to register package intent.
+     *
+     * @return The intent filter to register a broadcast receiver which can listen package
+     *         added or removed broadcasts.
      */
     public static @NonNull IntentFilter getPackageIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();

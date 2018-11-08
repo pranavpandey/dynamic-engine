@@ -19,20 +19,21 @@ package com.pranavpandey.android.dynamic.engine.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 /**
- * Broadcast receiver to listen call events. It is added in the manifest and
+ * Broadcast receiver to listen call events. It has been already added in the manifest and
  * should be registered dynamically at the runtime.
  *
- * <p>Package must be granted {@link android.Manifest.permission_group#PHONE}
- * permission to listen call events on Android M and above devices.</p>
+ * <p><p>Package must be granted {@link android.Manifest.permission_group#PHONE}
+ * permission to listen call events on Android M and above devices.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public class DynamicStateReceiver extends BroadcastReceiver {
