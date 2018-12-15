@@ -21,12 +21,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
 
-import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 
 /**
  * Broadcast receiver to listen call events. It has been already added in the manifest and

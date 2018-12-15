@@ -20,13 +20,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
+
 import com.pranavpandey.android.dynamic.utils.DynamicDeviceUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
-import androidx.annotation.NonNull;
 
 /**
  * Helper class to manage priority of the different events in case two or more events will

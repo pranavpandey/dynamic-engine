@@ -21,11 +21,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 
-import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
-import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
+import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
 
 /**
  * Helper class used for the {@link DynamicEngine}.
@@ -71,7 +71,7 @@ public class DynamicEngineUtils {
                     dynamicAppInfo.setLabel(dynamicAppInfo.getApplicationInfo().
                             loadLabel(context.getPackageManager()).toString());
                 }
-            } catch (PackageManager.NameNotFoundException ignored) {
+            } catch (Exception ignored) {
             }
 
             return dynamicAppInfo;

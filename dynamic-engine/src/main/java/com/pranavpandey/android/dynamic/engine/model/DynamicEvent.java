@@ -16,10 +16,10 @@
 
 package com.pranavpandey.android.dynamic.engine.model;
 
+import androidx.annotation.StringDef;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
-import androidx.annotation.StringDef;
 
 import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.APP;
 import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.CALL;
