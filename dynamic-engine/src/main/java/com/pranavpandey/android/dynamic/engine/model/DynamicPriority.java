@@ -113,8 +113,8 @@ public class DynamicPriority {
     }
 
     /**
-     * Get saved events priority after checking the device
-     * for telephony and per app functionality.
+     * Get saved events priority after checking the device for telephony and per app
+     * functionality.
      *
      * @param context The context to get shared preferences.
      *

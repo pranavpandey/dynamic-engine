@@ -27,8 +27,8 @@ import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
 public interface DynamicEventListener {
 
     /**
-     * Called on initialize the service so that we can get the current charging, headset
-     * and dock state.
+     * This method will be called on initializing the service so that we can get the current
+     * charging, headset and dock state.
      *
      * @param charging {@code true} if the device is charging or connected to a power source.
      * @param headset {@code true} if the device is connected to a headset or a audio output
@@ -38,7 +38,8 @@ public interface DynamicEventListener {
     void onInitialize(boolean charging, boolean headset, boolean docked);
 
     /**
-     * Called on call state changed. Either on call or the device is idle.
+     * This method will be called when call state is changed.
+     * <p>Either on call or the device is idle.
      *
      * @param call {@code true} if the device is on call.
      *             <p><Either ringing or answered.
@@ -46,23 +47,26 @@ public interface DynamicEventListener {
     void onCallStateChange(boolean call);
 
     /**
-     * Called on screen state changed. Either the device screen is off or on.
+     * This method will be called when screen state is changed.
+     * <p>Either the device screen is off or on.
      *
      * @param screenOff {@code true} if the device screen is off.
      */
     void onScreenStateChange(boolean screenOff);
 
     /**
-     * Called on lock state changed. Either the device is in the locked or unlocked state
-     * independent of the PIN, password or any other security lock.
+     * This method will be called when lock state is changed.
+     * <p>Either the device is in the locked or unlocked state independent of the PIN,
+     * password or any other security lock.
      *
      * @param locked {@code true} if the device is in the locked state or the lock screen is shown.
      */
     void onLockStateChange(boolean locked);
 
     /**
-     * Called on headset state changed. Either the device is connected to a audio output device
-     * or volume is routed through the internal speaker.
+     * This method will be called when headset state is changed.
+     * <p>Either the device is connected to a audio output device or volume is routed through
+     * the internal speaker.
      *
      * @param connected {@code true} if the device is connected to a headset or a audio output
      *                  device.
@@ -70,31 +74,32 @@ public interface DynamicEventListener {
     void onHeadsetStateChange(boolean connected);
 
     /**
-     * Called on charging state changed. Either the device is connected to a power source using
-     * the battery.
+     * This method will be called when charging state is changed.
+     * <p>Either the device is connected to a power source using the battery.
      *
      * @param charging {@code true} if the device is charging or connected to a power source.
      */
     void onChargingStateChange(boolean charging);
 
     /**
-     * Called on dock state changed. Either the device is docked or not.
+     * This method will be called when dock state is changed.
+     * <p>Either the device is docked or not.
      *
      * @param docked {@code true} if the device is docked.
      */
     void onDockStateChange(boolean docked);
 
     /**
-     * Called on foreground app changed. Use it to provide the app specific functionality
-     * in the app.
+     * This method will be called when foreground app is changed.
+     * <p>Use it to provide the app specific functionality in the app.
      *
      * @param dynamicAppInfo The dynamic app info of the foreground package.
      */
     void onAppChange(@Nullable DynamicAppInfo dynamicAppInfo);
 
     /**
-     * Called on app package added or changed. Useful to show a notification if an app is
-     * updated or a new app is installed.
+     * This method will be called when an app package is added or changed.
+     * <p>Useful to show a notification if an app is updated or a new app is installed.
      *
      * @param dynamicAppInfo The dynamic app info of the updated or added package.
      * @param newPackage {@code true} if the package is newly added.
@@ -102,7 +107,8 @@ public interface DynamicEventListener {
     void onPackageUpdated(@Nullable DynamicAppInfo dynamicAppInfo, boolean newPackage);
 
     /**
-     * On app package removed. Useful to show some work when a package is removed.
+     * This method will be called when an app package is removed.
+     * <p>Useful to show some work when a package is removed.
      *
      * @param packageName The package which was removed.
      */
