@@ -361,6 +361,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      */
     class SpecialEventReceiver extends BroadcastReceiver {
 
+        private boolean isReplacing;
+
         @Override
         public void onReceive(@NonNull Context context, @Nullable Intent intent) {
             if (intent != null && intent.getAction() != null) {
@@ -404,17 +406,21 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                     case Intent.ACTION_PACKAGE_REMOVED:
                         if (intent.getData() != null
                                 && intent.getData().getSchemeSpecificPart() != null) {
-                            mDynamicEventListener.onPackageRemoved(
-                                    intent.getData().getSchemeSpecificPart());
+                            isReplacing = intent.getBooleanExtra(
+                                    Intent.EXTRA_REPLACING, false);
+
+                            if (!isReplacing) {
+                                mDynamicEventListener.onPackageRemoved(
+                                        intent.getData().getSchemeSpecificPart());
+                            }
                         }
                         break;
                     case Intent.ACTION_PACKAGE_ADDED:
                         if (intent.getData() != null
                                 && intent.getData().getSchemeSpecificPart() != null) {
                             mDynamicEventListener.onPackageUpdated(
-                                    DynamicEngineUtils.getAppInfoFromPackage(
-                                            context, intent.getData().getSchemeSpecificPart()),
-                                    !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false));
+                                    DynamicEngineUtils.getAppInfoFromPackage(context,
+                                            intent.getData().getSchemeSpecificPart()), !isReplacing);
                         }
                         break;
                     case DynamicEngineUtils.ACTION_ON_CALL:
