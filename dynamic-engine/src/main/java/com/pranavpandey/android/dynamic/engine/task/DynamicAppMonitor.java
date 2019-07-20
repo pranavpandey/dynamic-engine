@@ -41,7 +41,7 @@ import com.pranavpandey.android.dynamic.utils.DynamicVersionUtils;
  * permission to detect the foreground app on Android L and above devices.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-@TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+@TargetApi(Build.VERSION_CODES.Q)
 public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
 
     /**
