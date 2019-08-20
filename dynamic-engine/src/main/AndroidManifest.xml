@@ -30,11 +30,6 @@
     <!-- Permissions used by the call state listener. -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <!-- Telephony is not necessary so that we can support more devices.
-         App engine will automatically disable the call event if device
-         does not supports telephony feature. -->
-    <uses-feature android:name="android.hardware.telephony" android:required="false" />
-
     <application>
 
         <!-- Receiver to receive call events. -->

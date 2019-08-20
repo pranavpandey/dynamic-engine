@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  * Service to monitor various system events to provide event specific functionality in the app.
- * <p>Extend this service and implement the interface functions to monitor the different events.
+ * <p>Extend this service and implement the interface methods to monitor the different events.
  *
  * <p><p>Package must be granted {@link android.Manifest.permission_group#PHONE}
  * permission to listen call events on Android M and above devices.
