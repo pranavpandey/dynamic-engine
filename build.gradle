@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Pranav Pandey
+ * Copyright 2019 Pranav Pandey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,11 +50,10 @@ task clean(type: Delete) {
 ext {
     projectName = 'dynamic-engine'
     projectDesc = 'A collection of tasks to monitor various events including call, lock, ' +
-            'headset, charging, dock and foreground app via service on Android ' +
-            'devices.'
+            'headset, charging, dock and foreground app via service on Android devices.'
     versionDesc = 'A collection of tasks to monitor various events including call, lock, ' +
-            'headset, charging, dock and foreground app via service on Android 14+ ' +
-            '(ICS or above) devices.'
+            'headset, charging, dock and foreground app via service on Android 4 (API 14) ' +
+            'and above devices.'
     referenceTitle = 'Dynamic Engine Reference'
 
     siteUrl = 'https://github.com/pranavpandey/dynamic-engine'

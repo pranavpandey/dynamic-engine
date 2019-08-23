@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Pranav Pandey
+ * Copyright 2019 Pranav Pandey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
  * should be registered dynamically at the runtime.
  *
  * <p><p>Package must be granted {@link android.Manifest.permission_group#PHONE}
- * permission to listen call events on Android M and above devices.
+ * permission to listen call events on API 23 and above devices.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public class DynamicStateReceiver extends BroadcastReceiver {

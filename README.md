@@ -7,10 +7,10 @@
 [![Download](https://api.bintray.com/packages/pranavpandey/android/dynamic-engine/images/download.svg)](https://bintray.com/pranavpandey/android/dynamic-engine/_latestVersion)
 
 A collection of tasks to monitor various events including call, lock, headset, charging, dock and 
-foreground app via service on Android 9+ (Gingerbread or above) devices.
+foreground app via service on Android 2.3 (API 9) and above devices.
 
 > Since v0.4.0, it uses [26.x.x support libraries](https://developer.android.com/topic/libraries/support-library/revisions.html#26-0-0)
-so, minimum SDK will be Android 14+ (ICS or above).
+so, minimum SDK will be Android 4 (API 14).
 <br/>Since v2.0.0, it uses [AndroidX](https://developer.android.com/jetpack/androidx/) so, first
 [migrate](https://developer.android.com/jetpack/androidx/migrate) your project to AndroidX.
 
@@ -58,7 +58,7 @@ events. I will do my best to add more tasks later.
 Extend the `DynamicEngine` service and implement the interface functions to monitor call, lock,
 headset, charging and dock related events.
 
-On Android M (Marshmallow) or above devices, `READ_PHONE_STATE` permission must be granted for 
+On Android 6 (API 23) and above devices, `READ_PHONE_STATE` permission must be granted for 
 the app `package` to monitor call events. If this permission is not granted then,
 `onCallStateChange(isCall)` method will never be called. For more information on the 
 `runtime permissions`, please read official documentation [here](https://developer.android.com/training/permissions/requesting.html).
@@ -164,7 +164,7 @@ currently in `beta` stage so, more improvements will be done in the future.
 It will not run by default to save resources. It should be started explicitly by calling the
 `setAppMonitorTask(running)`.
 
-On Android L (Lollipop) or above devices, `PACKAGE_USAGE_STATS` permission must be granted for 
+On Android 5 (API 21) and above devices, `PACKAGE_USAGE_STATS` permission must be granted for 
 the app `package` to monitor foreground app. If this permission is not granted then,
 `onAppChange(dynamicAppInfo)` method will never be called. For more information on 
 `UsageStatsManager`, please read the official documentation [here](https://developer.android.com/reference/android/app/usage/UsageStatsManager.html).
@@ -320,7 +320,7 @@ various internal operations. So, its functions can also be used to perform other
 
 ## License
 
-    Copyright 2017 Pranav Pandey
+    Copyright 2019 Pranav Pandey
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

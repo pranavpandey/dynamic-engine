@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Pranav Pandey
+ * Copyright 2019 Pranav Pandey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import com.pranavpandey.android.dynamic.utils.DynamicVersionUtils;
  * AsyncTask to monitor foreground to provide app specific functionality.
  *
  * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
- * permission to detect the foreground app on Android L and above devices.
+ * permission to detect the foreground app on API 21 and above devices.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @TargetApi(Build.VERSION_CODES.Q)
@@ -88,10 +88,10 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private ActivityManager mActivityManager;
 
     /**
-     * UsageStatsManager to detect foreground package on Android L and above devices.
+     * UsageStatsManager to detect foreground package on API 21 and above devices.
      *
      * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
-     * permission to detect foreground app on Android L and above devices.
+     * permission to detect foreground app on API 21 and above devices.
      */
     private UsageStatsManager mUsageStatsManager;
 
@@ -251,7 +251,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
      * @param time The start time to get the recent apps.
      * @param interval The interval for the requested events.
      *
-     * @return The foreground package name on Android L and above devices.
+     * @return The foreground package name on API 21 and above devices.
      */
     private @Nullable String getForegroundPackage(long time, long interval) {
         String packageName = null;
