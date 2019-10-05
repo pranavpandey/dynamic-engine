@@ -25,6 +25,7 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Build;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -38,6 +39,8 @@ import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicTaskUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -45,10 +48,10 @@ import java.util.List;
  * <p>Extend this service and implement the interface methods to monitor the different events.
  *
  * <p><p>Package must be granted {@link android.Manifest.permission_group#PHONE}
- * permission to listen call events on Android M and above devices.
+ * permission to listen call events on API 23 and above devices.
  *
  * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
- * permission to detect the foreground app on Android L and above devices.
+ * permission to detect the foreground app on API 21 and above devices.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 public abstract class DynamicEngine extends DynamicStickyService implements DynamicEventListener {
@@ -108,6 +111,16 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      */
     private KeyguardManager mKeyguardManager;
 
+    /**
+     * Array list to store the events priority.
+     */
+    private ArrayList<String> mEventsPriority;
+
+    /**
+     * Hash map to store the active events.
+     */
+    private HashMap<String, String> mEventsMap;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -121,6 +134,11 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getPackageIntentFilter());
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mSpecialEventReceiver, DynamicEngineUtils.getCallIntentFilter());
+
+        updateEventsPriority();
+
+        mEventsMap = new LinkedHashMap<>();
+        updateEventsMap(DynamicEvent.NONE, true);
     }
 
     /**
@@ -149,6 +167,27 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         }
 
         mDynamicEventListener.onInitialize(mCharging, mHeadset, mDocked);
+    }
+
+    /**
+     * Update the events priority.
+     */
+    public void updateEventsPriority() {
+        mEventsPriority = DynamicPriority.getEventsPriority(this);
+    }
+
+    /**
+     * Update the status of an event.
+     *
+     * @param event The event to update the status.
+     * @param active {@code true} to if the event is currently active.
+     */
+    public void updateEventsMap(@DynamicEvent @NonNull String event, boolean active) {
+        mEventsMap.remove(event);
+
+        if (active) {
+            mEventsMap.put(event, event);
+        }
     }
 
     /**
@@ -187,6 +226,10 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                 mDynamicAppMonitor.setRunning(false);
                 DynamicTaskUtils.cancelTask(mDynamicAppMonitor);
             }
+        }
+
+        if (mDynamicAppMonitor != null) {
+            updateEventsMap(DynamicEvent.APP, mDynamicAppMonitor.isRunning());
         }
     }
 
@@ -248,15 +291,6 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
-     * Get the status of lock event.
-     *
-     * @return {@code true} if the device is in the locked state or the lock screen is shown.
-     */
-    public boolean isLocked() {
-        return mLocked;
-    }
-
-    /**
      * Set the status of screen off event.
      *
      * @param screenOff {@code true} if the device screen is off.
@@ -266,6 +300,15 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
             this.mScreenOff = screenOff;
             mDynamicEventListener.onScreenStateChange(screenOff);
         }
+    }
+
+    /**
+     * Get the status of lock event.
+     *
+     * @return {@code true} if the device is in the locked state or the lock screen is shown.
+     */
+    public boolean isLocked() {
+        return mLocked;
     }
 
     /**
@@ -434,50 +477,70 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         }
     }
 
+    @CallSuper
+    @Override
+    public void onInitialize(boolean charging, boolean headset, boolean docked) {
+        updateEventsMap(DynamicEvent.CHARGING, charging);
+        updateEventsMap(DynamicEvent.HEADSET, headset);
+        updateEventsMap(DynamicEvent.DOCK, docked);
+    }
+
+    @CallSuper
+    @Override
+    public void onCallStateChange(boolean call) {
+        updateEventsMap(DynamicEvent.CALL, call);
+    }
+
+    @CallSuper
+    @Override
+    public void onScreenStateChange(boolean screenOff) { }
+
+    @CallSuper
+    @Override
+    public void onLockStateChange(boolean locked) {
+        updateEventsMap(DynamicEvent.LOCK, locked);
+    }
+
+    @CallSuper
+    @Override
+    public void onHeadsetStateChange(boolean connected) {
+        updateEventsMap(DynamicEvent.HEADSET, connected);
+    }
+
+    @CallSuper
+    @Override
+    public void onChargingStateChange(boolean charging) {
+        updateEventsMap(DynamicEvent.CHARGING, charging);
+    }
+
+    @CallSuper
+    @Override
+    public void onDockStateChange(boolean docked) {
+        updateEventsMap(DynamicEvent.DOCK, docked);
+    }
+
+    @CallSuper
+    @Override
+    public void onAppChange(@Nullable DynamicAppInfo dynamicAppInfo) {
+        updateEventsMap(DynamicEvent.APP, mDynamicAppMonitor.isRunning());
+    }
+
     /**
      * Retrieve the current ongoing events.
      *
      * @return The list of current ongoing events.
      */
     protected @NonNull ArrayList<String> getCurrentEvents() {
-        ArrayList<String> currentEvents = new ArrayList<>();
-        ArrayList<String> eventsPriority = DynamicPriority.getEventsPriority(this);
+        if (mEventsPriority == null) {
+            updateEventsPriority();
+        }
 
+        ArrayList<String> currentEvents = new ArrayList<>();
         currentEvents.add(DynamicEvent.NONE);
-        for (String eventPriority : eventsPriority) {
-            switch (eventPriority) {
-                default:
-                    break;
-                case DynamicEvent.CALL:
-                    if (isCall()) {
-                        currentEvents.add(DynamicEvent.CALL);
-                    }
-                    break;
-                case DynamicEvent.LOCK:
-                    if (isLocked()) {
-                        currentEvents.add(DynamicEvent.LOCK);
-                    }
-                    break;
-                case DynamicEvent.HEADSET:
-                    if (isHeadset()) {
-                        currentEvents.add(DynamicEvent.HEADSET);
-                    }
-                    break;
-                case DynamicEvent.CHARGING:
-                    if (isCharging()) {
-                        currentEvents.add(DynamicEvent.CHARGING);
-                    }
-                    break;
-                case DynamicEvent.DOCK:
-                    if (isDocked()) {
-                        currentEvents.add(DynamicEvent.DOCK);
-                    }
-                    break;
-                case DynamicEvent.APP:
-                    if (getAppMonitor().isRunning()) {
-                        currentEvents.add(DynamicEvent.APP);
-                    }
-                    break;
+
+        for (String eventPriority : mEventsPriority) {
+            if (mEventsMap.containsKey(eventPriority)) {
+                currentEvents.add(mEventsMap.get(eventPriority));
             }
         }
 

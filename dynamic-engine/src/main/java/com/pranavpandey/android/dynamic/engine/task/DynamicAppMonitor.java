@@ -32,7 +32,7 @@ import androidx.annotation.RestrictTo;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
-import com.pranavpandey.android.dynamic.utils.DynamicVersionUtils;
+import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
 
 /**
  * AsyncTask to monitor foreground to provide app specific functionality.
@@ -106,8 +106,8 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
         this.mActivityManager = (ActivityManager)
                 dynamicEngine.getSystemService(Context.ACTIVITY_SERVICE);
 
-        if (DynamicVersionUtils.isLollipop()) {
-            if (DynamicVersionUtils.isLollipopMR1()) {
+        if (DynamicSdkUtils.is21()) {
+            if (DynamicSdkUtils.is22()) {
                 this.mUsageStatsManager = (UsageStatsManager)
                         dynamicEngine.getSystemService(Context.USAGE_STATS_SERVICE);
             }
@@ -160,6 +160,15 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
 
         mDynamicAppInfo = null;
         mDynamicEngine = null;
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onProgressUpdate();
+
+        if (mDynamicEngine != null) {
+            mDynamicEngine.getSpecialEventListener().onAppChange(mDynamicAppInfo);
+        }
     }
 
     /**
@@ -225,7 +234,7 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
         String packageName = null;
         DynamicAppInfo dynamicAppInfo = null;
 
-        if (DynamicVersionUtils.isLollipop()) {
+        if (DynamicSdkUtils.is21()) {
             packageName = getForegroundPackage(
                     System.currentTimeMillis(), ADE_USAGE_STATS_INTERVAL);
         } else {
