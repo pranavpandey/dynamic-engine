@@ -80,6 +80,7 @@ public class MonitorService extends DynamicEngine {
     @Override
     public void onInitialize(boolean charging, boolean headset, boolean docked) {
         super.onInitialize(charging, headset, docked);
+
         // TODO: Do any work here.        
     }
 
@@ -93,6 +94,7 @@ public class MonitorService extends DynamicEngine {
     @Override
     public void onCallStateChange(boolean call) {
         super.onCallStateChange(call);
+
         // TODO: Do any work here.        
     }
 
@@ -105,6 +107,7 @@ public class MonitorService extends DynamicEngine {
     @Override
     public void onScreenStateChange(boolean screenOff) {
         super.onScreenStateChange(screenOff);
+
         // TODO: Do any work here.        
     }
 
@@ -118,6 +121,7 @@ public class MonitorService extends DynamicEngine {
     @Override
     public void onLockStateChange(boolean locked) {
         super.onLockStateChange(locked);
+
         // TODO: Do any work here.        
     }
 
@@ -132,6 +136,7 @@ public class MonitorService extends DynamicEngine {
     @Override
     public void onHeadsetStateChange(boolean connected) {
         super.onHeadsetStateChange(connected);
+
         // TODO: Do any work here.        
     }
 
@@ -144,6 +149,7 @@ public class MonitorService extends DynamicEngine {
     @Override
     public void onChargingStateChange(boolean charging) {
         super.onChargingStateChange(charging);
+
         // TODO: Do any work here.        
     }
 
@@ -156,6 +162,7 @@ public class MonitorService extends DynamicEngine {
     @Override
     public void onDockStateChange(boolean docked) {
         super.onDockStateChange(docked);
+
         // TODO: Do any work here.  
     }
     
@@ -200,6 +207,7 @@ public class MonitorService extends DynamicEngine {
     @Override
     public void onAppChange(@Nullable DynamicAppInfo dynamicAppInfo) {
         super.onAppChange(dynamicAppInfo);
+
         // TODO: Do any work here.
     }
     
@@ -323,6 +331,15 @@ public abstract class DynamicEngine {
 
 It depends on the [dynamic-utils](https://github.com/pranavpandey/dynamic-utils) to perform
 various internal operations. So, its functions can also be used to perform other useful operations.
+
+---
+
+## Apps using Dynamic Engine
+
+Please email me if you are using this library and want to feature your app here. Also, please 
+checkout the `Rotation` app to experience the full potential of this library.
+
+- [Rotation - Orientation Manager](https://play.google.com/store/apps/details?id=com.pranavpandey.rotation)
 
 ---
 
