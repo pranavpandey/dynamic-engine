@@ -52,7 +52,7 @@ ext {
     projectDesc = 'A collection of tasks to monitor various events including call, lock, ' +
             'headset, charging, dock and foreground app via service on Android devices.'
     versionDesc = 'A collection of tasks to monitor various events including call, lock, ' +
-            'headset, charging, dock and foreground app via service on Android 4 (API 14) ' +
+            'headset, charging, dock and foreground app via service on Android 4.0 (API 14) ' +
             'and above devices.'
     referenceTitle = 'Dynamic Engine Reference'
 
@@ -65,8 +65,8 @@ ext {
     mavenGroup = 'com.pranavpandey.android'
     mavenArtifactId = 'dynamic-engine'
     mavenInceptionYear = 2017
-    mavenVersion = '2.3.0'
-    mavenVersionCode = 19
+    mavenVersion = '3.0.0'
+    mavenVersionCode = 20
 
     developerId = 'pranavpandey'
     developerName = 'Pranav Pandey'

@@ -10,7 +10,7 @@ A collection of tasks to monitor various events including call, lock, headset, c
 foreground app via service on Android 2.3 (API 9) and above devices.
 
 > Since v0.4.0, it uses [26.x.x support libraries](https://developer.android.com/topic/libraries/support-library/revisions.html#26-0-0)
-so, minimum SDK will be Android 4 (API 14).
+so, minimum SDK will be Android 4.0 (API 14).
 <br/>Since v2.0.0, it uses [AndroidX](https://developer.android.com/jetpack/androidx/) so, first
 [migrate](https://developer.android.com/jetpack/androidx/migrate) your project to AndroidX.
 
@@ -58,7 +58,7 @@ events. I will do my best to add more tasks later.
 Extend the `DynamicEngine` service and implement the interface functions to monitor call, lock,
 headset, charging and dock related events.
 
-On Android 6 (API 23) and above devices, `READ_PHONE_STATE` permission must be granted for 
+On Android 6.0 (API 23) and above devices, `READ_PHONE_STATE` permission must be granted for 
 the app `package` to monitor call events. If this permission is not granted then,
 `onCallStateChange(isCall)` method will never be called. For more information on the 
 `runtime permissions`, please read official documentation [here](https://developer.android.com/training/permissions/requesting.html).
@@ -79,6 +79,7 @@ public class MonitorService extends DynamicEngine {
      */
     @Override
     public void onInitialize(boolean charging, boolean headset, boolean docked) {
+        super.onInitialize(charging, headset, docked);
         // TODO: Do any work here.        
     }
 
@@ -91,6 +92,7 @@ public class MonitorService extends DynamicEngine {
      */
     @Override
     public void onCallStateChange(boolean call) {
+        super.onCallStateChange(call);
         // TODO: Do any work here.        
     }
 
@@ -102,6 +104,7 @@ public class MonitorService extends DynamicEngine {
      */
     @Override
     public void onScreenStateChange(boolean screenOff) {
+        super.onScreenStateChange(screenOff);
         // TODO: Do any work here.        
     }
 
@@ -114,6 +117,7 @@ public class MonitorService extends DynamicEngine {
      */
     @Override
     public void onLockStateChange(boolean locked) {
+        super.onLockStateChange(locked);
         // TODO: Do any work here.        
     }
 
@@ -127,6 +131,7 @@ public class MonitorService extends DynamicEngine {
      */
     @Override
     public void onHeadsetStateChange(boolean connected) {
+        super.onHeadsetStateChange(connected);
         // TODO: Do any work here.        
     }
 
@@ -138,6 +143,7 @@ public class MonitorService extends DynamicEngine {
      */
     @Override
     public void onChargingStateChange(boolean charging) {
+        super.onChargingStateChange(charging);
         // TODO: Do any work here.        
     }
 
@@ -149,6 +155,7 @@ public class MonitorService extends DynamicEngine {
      */
     @Override
     public void onDockStateChange(boolean docked) {
+        super.onDockStateChange(docked);
         // TODO: Do any work here.  
     }
     
@@ -164,7 +171,7 @@ currently in `beta` stage so, more improvements will be done in the future.
 It will not run by default to save resources. It should be started explicitly by calling the
 `setAppMonitorTask(running)`.
 
-On Android 5 (API 21) and above devices, `PACKAGE_USAGE_STATS` permission must be granted for 
+On Android 5.0 (API 21) and above devices, `PACKAGE_USAGE_STATS` permission must be granted for 
 the app `package` to monitor foreground app. If this permission is not granted then,
 `onAppChange(dynamicAppInfo)` method will never be called. For more information on 
 `UsageStatsManager`, please read the official documentation [here](https://developer.android.com/reference/android/app/usage/UsageStatsManager.html).
@@ -192,6 +199,7 @@ public class MonitorService extends DynamicEngine {
      */
     @Override
     public void onAppChange(@Nullable DynamicAppInfo dynamicAppInfo) {
+        super.onAppChange(dynamicAppInfo);
         // TODO: Do any work here.
     }
     
