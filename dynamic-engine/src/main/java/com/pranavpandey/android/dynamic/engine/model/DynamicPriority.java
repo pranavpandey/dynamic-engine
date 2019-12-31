@@ -18,9 +18,9 @@ package com.pranavpandey.android.dynamic.engine.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 import com.pranavpandey.android.dynamic.utils.DynamicDeviceUtils;
 
