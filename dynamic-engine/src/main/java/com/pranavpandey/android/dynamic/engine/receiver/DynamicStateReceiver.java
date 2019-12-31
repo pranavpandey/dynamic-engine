@@ -24,7 +24,6 @@ import android.telephony.TelephonyManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 
@@ -46,11 +45,9 @@ public class DynamicStateReceiver extends BroadcastReceiver {
 
             if (state != null && (state.equals(TelephonyManager.EXTRA_STATE_RINGING)
                     || state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK))) {
-                LocalBroadcastManager.getInstance(context).sendBroadcast(
-                        new Intent(DynamicEngineUtils.ACTION_ON_CALL));
+                context.sendBroadcast(new Intent(DynamicEngineUtils.ACTION_ON_CALL));
             } else {
-                LocalBroadcastManager.getInstance(context).sendBroadcast(
-                        new Intent(DynamicEngineUtils.ACTION_CALL_IDLE));
+                context.sendBroadcast(new Intent(DynamicEngineUtils.ACTION_CALL_IDLE));
             }
         }
     }

@@ -28,7 +28,6 @@ import android.os.Build;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.pranavpandey.android.dynamic.engine.listener.DynamicEventListener;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
@@ -132,8 +131,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
 
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getEventsIntentFilter());
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getPackageIntentFilter());
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mSpecialEventReceiver, DynamicEngineUtils.getCallIntentFilter());
+        registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getCallIntentFilter());
 
         updateEventsPriority();
 
@@ -251,7 +249,6 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void onDestroy() {
         try {
             unregisterReceiver(mSpecialEventReceiver);
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(mSpecialEventReceiver);
             setAppMonitorTask(false);
         } catch (Exception ignored) {
         }
