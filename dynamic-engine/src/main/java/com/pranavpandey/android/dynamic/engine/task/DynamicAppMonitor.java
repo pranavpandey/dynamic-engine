@@ -30,7 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
-import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
+import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
 

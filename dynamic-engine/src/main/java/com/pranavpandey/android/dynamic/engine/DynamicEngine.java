@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pranavpandey.android.dynamic.engine.service;
+package com.pranavpandey.android.dynamic.engine;
 
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
@@ -33,6 +33,7 @@ import com.pranavpandey.android.dynamic.engine.listener.DynamicEventListener;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.model.DynamicEvent;
 import com.pranavpandey.android.dynamic.engine.model.DynamicPriority;
+import com.pranavpandey.android.dynamic.engine.service.DynamicStickyService;
 import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicTaskUtils;

@@ -19,7 +19,7 @@ package com.pranavpandey.android.dynamic.engine.listener;
 import androidx.annotation.Nullable;
 
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
-import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
+import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 
 /**
  * Interface to listen various system events with the help of {@link DynamicEngine}.

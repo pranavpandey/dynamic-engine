@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
-import com.pranavpandey.android.dynamic.engine.service.DynamicEngine;
+import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 
 /**
  * Helper class used for the {@link DynamicEngine}.
