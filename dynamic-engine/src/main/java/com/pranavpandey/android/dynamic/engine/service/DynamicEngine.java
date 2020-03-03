@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Pranav Pandey
+ * Copyright 2020 Pranav Pandey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,9 +38,9 @@ import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicTaskUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service to monitor various system events to provide event specific functionality in the app.
@@ -113,12 +113,12 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     /**
      * Array list to store the events priority.
      */
-    private ArrayList<String> mEventsPriority;
+    private List<String> mEventsPriority;
 
     /**
      * Hash map to store the active events.
      */
-    private HashMap<String, String> mEventsMap;
+    private Map<String, String> mEventsMap;
 
     @Override
     public void onCreate() {
@@ -527,12 +527,12 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      *
      * @return The list of current ongoing events.
      */
-    protected @NonNull ArrayList<String> getCurrentEvents() {
+    protected @NonNull List<String> getCurrentEvents() {
         if (mEventsPriority == null) {
             updateEventsPriority();
         }
 
-        ArrayList<String> currentEvents = new ArrayList<>();
+        List<String> currentEvents = new ArrayList<>();
         currentEvents.add(DynamicEvent.NONE);
 
         for (String eventPriority : mEventsPriority) {

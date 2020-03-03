@@ -27,6 +27,7 @@ import com.pranavpandey.android.dynamic.utils.DynamicDeviceUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Helper class to manage priority of the different events in case two or more events will
@@ -86,10 +87,10 @@ public class DynamicPriority {
      * Save events priority.
      *
      * @param context The context to get shared preferences.
-     * @param eventsPriority ArrayList containing events priority.
+     * @param eventsPriority The list containing events priority.
      */
     public static void saveEventsPriority(@NonNull Context context,
-            @NonNull ArrayList<String> eventsPriority) {
+            @NonNull List<String> eventsPriority) {
         Collections.reverse(eventsPriority);
         StringBuilder priorities = new StringBuilder();
         for (int i = 0; i < eventsPriority.size(); i++) {
@@ -107,7 +108,7 @@ public class DynamicPriority {
      *
      * @return The default events priority.
      */
-    public static ArrayList<String> getDefaultEventsPriority(@NonNull Context context) {
+    public static List<String> getDefaultEventsPriority(@NonNull Context context) {
         return returnAfterDeviceCheck(context, new ArrayList<>(
                 convertStringToArrayList(ADE_DEFAULT_EVENTS_PRIORITY)));
     }
@@ -120,12 +121,9 @@ public class DynamicPriority {
      *
      * @return The saved events priority.
      */
-    public static @NonNull ArrayList<String> getEventsPriority(@NonNull Context context) {
+    public static @NonNull List<String> getEventsPriority(@NonNull Context context) {
         String eventsPriority = getSharedPreferences(context).getString(
                 ADE_PREF_EVENTS_PRIORITY, ADE_DEFAULT_EVENTS_PRIORITY);
-        if (eventsPriority == null) {
-            eventsPriority = ADE_DEFAULT_EVENTS_PRIORITY;
-        }
 
         return returnAfterDeviceCheck(context,
                 new ArrayList<>(convertStringToArrayList(eventsPriority)));
@@ -139,8 +137,8 @@ public class DynamicPriority {
      *
      * @return The events priority after device check.
      */
-    private static @NonNull ArrayList<String> returnAfterDeviceCheck(@NonNull Context context,
-            @NonNull ArrayList<String> eventsPriority) {
+    private static @NonNull List<String> returnAfterDeviceCheck(@NonNull Context context,
+            @NonNull List<String> eventsPriority) {
         if (!DynamicDeviceUtils.hasTelephony(context)) {
             eventsPriority.remove(DynamicEvent.CALL);
         }
@@ -158,7 +156,7 @@ public class DynamicPriority {
      *
      * @return The array list converted from the string.
      */
-    private static @NonNull ArrayList<String> convertStringToArrayList(@NonNull String string) {
+    private static @NonNull List<String> convertStringToArrayList(@NonNull String string) {
         return new ArrayList<>(Arrays.asList(string.split(ADE_PRIORITY_SPLIT)));
     }
 }
