@@ -23,18 +23,22 @@
     <!-- Permissions used by the foreground app monitor. -->
     <uses-permission android:name="android.permission.GET_TASKS"
         android:maxSdkVersion="19" />
-    <!-- This permission must be granted on Android L and above devices. -->
+    <!-- This permission must be allowed on API 21 and above devices. -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+    <!-- This permission is required to query all packages on API 30 and above devices. -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
 
     <!-- Permissions used by the call state listener. -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application>
 
-        <!-- Receiver to receive call events. -->
+        <!-- Broadcast receiver to receive call events. -->
         <receiver
-            android:name="com.pranavpandey.android.dynamic.engine.receiver.DynamicStateReceiver">
+            android:name="com.pranavpandey.android.dynamic.engine.receiver.DynamicStateReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>

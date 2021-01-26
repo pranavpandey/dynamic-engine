@@ -22,27 +22,28 @@ import android.app.ActivityManager;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 
-import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
+import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
+import com.pranavpandey.android.dynamic.utils.concurrent.DynamicResult;
+import com.pranavpandey.android.dynamic.utils.concurrent.DynamicTask;
 
 /**
- * AsyncTask to monitor foreground to provide app specific functionality.
+ * A {@link DynamicTask} to monitor foreground to provide app specific functionality.
  *
  * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
  * permission to detect the foreground app on API 21 and above devices.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @TargetApi(Build.VERSION_CODES.Q)
-public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
+public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
 
     /**
      * Context constant for usage stats service.
@@ -57,9 +58,9 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     private static final int ADE_USAGE_STATS_INTERVAL = 50;
 
     /**
-     * Default thread sleep interval.
+     * The minimal period in milliseconds between two events.
      */
-    private static final int ADE_THREAD_SLEEP_INTERVAL = 300;
+    public static final int ADE_NOTIFICATION_TIMEOUT = 200;
 
     /**
      * Dynamic engine to initialize usage stats service.
@@ -127,18 +128,18 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Void doInBackground(@Nullable Void params) {
         while (mRunning) {
             try {
                 if (!mPaused) {
-                    DynamicAppInfo dynamicAppInfo = getForegroundAppInfo();
-                    if (dynamicAppInfo != null && dynamicAppInfo.getPackageName() != null
-                            && (mDynamicAppInfo == null || !mDynamicAppInfo.equals(dynamicAppInfo))) {
-                        publishProgress(dynamicAppInfo);
+                    DynamicAppInfo appInfo = getForegroundAppInfo();
+                    if (appInfo != null && appInfo.getPackageName() != null
+                            && (mDynamicAppInfo == null || !mDynamicAppInfo.equals(appInfo))) {
+                        publishProgress(new DynamicResult.Progress<>(appInfo));
                     }
                 }
 
-                Thread.sleep(ADE_THREAD_SLEEP_INTERVAL);
+                Thread.sleep(ADE_NOTIFICATION_TIMEOUT);
             } catch (Exception ignored) {
             }
         }
@@ -147,16 +148,18 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
     }
 
     @Override
-    protected void onProgressUpdate(DynamicAppInfo... dynamicAppInfo) {
-        super.onProgressUpdate(dynamicAppInfo);
+    protected void onProgressUpdate(@Nullable DynamicResult<DynamicAppInfo> progress) {
+        super.onProgressUpdate(progress);
 
-        mDynamicAppInfo = dynamicAppInfo[0];
+        if (progress != null) {
+            mDynamicAppInfo = progress.getData();
+        }
         mDynamicEngine.getSpecialEventListener().onAppChange(mDynamicAppInfo);
     }
 
     @Override
-    protected void onPostExecute(Void param) {
-        super.onPostExecute(param);
+    protected void onPostExecute(@Nullable DynamicResult<Void> result) {
+        super.onPostExecute(result);
 
         mDynamicAppInfo = null;
         mDynamicEngine = null;
@@ -164,7 +167,9 @@ public class DynamicAppMonitor extends AsyncTask<Void, DynamicAppInfo, Void> {
 
     @Override
     protected void onCancelled() {
-        super.onProgressUpdate();
+        super.onCancelled();
+
+        onProgressUpdate(new DynamicResult.Progress<DynamicAppInfo>(null));
 
         if (mDynamicEngine != null) {
             mDynamicEngine.getSpecialEventListener().onAppChange(mDynamicAppInfo);

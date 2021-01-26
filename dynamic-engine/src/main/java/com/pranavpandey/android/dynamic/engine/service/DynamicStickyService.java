@@ -16,22 +16,49 @@
 
 package com.pranavpandey.android.dynamic.engine.service;
 
-import android.app.Service;
+import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 
 import androidx.annotation.Nullable;
+
+import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
+import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
 
 /**
  * Sticky service which will restart automatically if killed by the system.
  * <p>Useful in low RAM or similar situations where we need to run the service continuously
  * in the background.
  */
-public abstract class DynamicStickyService extends Service {
+public abstract class DynamicStickyService extends AccessibilityService {
 
     /**
      * Default interval after which try to restart the service.
      */
     public static final long ADE_DEFAULT_RESTART_INTERVAL = 2000;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        try {
+            AccessibilityManager am = (AccessibilityManager) getSystemService(
+                    Context.ACCESSIBILITY_SERVICE);
+            am.addAccessibilityStateChangeListener(
+                    new AccessibilityManager.AccessibilityStateChangeListener() {
+                @Override
+                public void onAccessibilityStateChanged(boolean enabled) {
+                    DynamicStickyService.this.onAccessibilityStateChanged(enabled);
+                }
+            });
+        } catch (Exception ignored) {
+        }
+    }
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
@@ -49,4 +76,35 @@ public abstract class DynamicStickyService extends Service {
     protected long getRestartInterval() {
         return ADE_DEFAULT_RESTART_INTERVAL;
     }
+
+    @Override
+    public void onAccessibilityEvent(AccessibilityEvent event) { }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    protected void onServiceConnected() {
+        super.onServiceConnected();
+
+        if (DynamicSdkUtils.is16()) {
+            AccessibilityServiceInfo info = getServiceInfo();
+            if (info != null) {
+                info.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+                        | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
+                info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
+                info.notificationTimeout = DynamicAppMonitor.ADE_NOTIFICATION_TIMEOUT;
+                setServiceInfo(info);
+            }
+        }
+
+    }
+
+    @Override
+    public void onInterrupt() { }
+
+    /**
+     * Called back on change in the accessibility state.
+     *
+     * @param enabled Whether accessibility is enabled.
+     */
+    protected void onAccessibilityStateChanged(boolean enabled) { }
 }

@@ -223,7 +223,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         } else {
             if (mDynamicAppMonitor != null) {
                 mDynamicAppMonitor.setRunning(false);
-                DynamicTaskUtils.cancelTask(mDynamicAppMonitor);
+                DynamicTaskUtils.cancelTask(mDynamicAppMonitor, true);
             }
         }
 
@@ -408,8 +408,6 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         public void onReceive(@NonNull Context context, @Nullable Intent intent) {
             if (intent != null && intent.getAction() != null) {
                 switch (intent.getAction()) {
-                    default:
-                        break;
                     case Intent.ACTION_POWER_CONNECTED:
                         setCharging(true);
                         break;

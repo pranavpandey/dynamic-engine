@@ -72,7 +72,7 @@ public class DynamicPriority {
     }
 
     /**
-     * Reset events priority to default.
+     * Reset the events priority to default.
      *
      * @param context The context to get shared preferences.
      *
@@ -84,7 +84,7 @@ public class DynamicPriority {
     }
 
     /**
-     * Save events priority.
+     * Save the events priority.
      *
      * @param context The context to get shared preferences.
      * @param eventsPriority The list containing events priority.
@@ -102,7 +102,7 @@ public class DynamicPriority {
     }
 
     /**
-     * Get default events priority after checking the telephony functionality.
+     * Get the default events priority after checking the telephony functionality.
      *
      * @param context The context to get shared preferences.
      *
@@ -114,7 +114,7 @@ public class DynamicPriority {
     }
 
     /**
-     * Get saved events priority after checking the device for telephony and per app
+     * Get the saved events priority after checking the device for telephony and per app
      * functionality.
      *
      * @param context The context to get shared preferences.
