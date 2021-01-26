@@ -19,7 +19,7 @@ buildscript {
             'compileSdk': 29,
             'minSdk'    : 14,
             'targetSdk' : 29,
-            'buildTools': '29.0.3',
+            'buildTools': '30.0.3',
             'dynamic'   : '3.2.0',
             'preference': '1.1.0'
     ]
@@ -30,9 +30,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0-alpha02'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha04'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     }
 }
 
@@ -63,6 +62,7 @@ ext {
 
     mavenRepo = 'android'
     mavenGroup = 'com.pranavpandey.android'
+    mavenDir = 'com/pranavpandey/android'
     mavenArtifactId = 'dynamic-engine'
     mavenInceptionYear = 2017
     mavenVersion = '3.2.0'

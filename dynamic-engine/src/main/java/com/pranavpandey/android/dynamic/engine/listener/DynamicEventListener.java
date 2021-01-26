@@ -42,7 +42,7 @@ public interface DynamicEventListener {
      * <p>Either on call or the device is idle.
      *
      * @param call {@code true} if the device is on call.
-     *             <p><Either ringing or answered.
+     *             <p>Either ringing or answered.
      */
     void onCallStateChange(boolean call);
 
