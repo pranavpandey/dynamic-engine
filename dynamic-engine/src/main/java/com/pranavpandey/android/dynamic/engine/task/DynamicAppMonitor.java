@@ -38,7 +38,7 @@ import com.pranavpandey.android.dynamic.utils.concurrent.DynamicTask;
 /**
  * A {@link DynamicTask} to monitor foreground to provide app specific functionality.
  *
- * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
+ * <p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
  * permission to detect the foreground app on API 21 and above devices.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -91,7 +91,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     /**
      * UsageStatsManager to detect foreground package on API 21 and above devices.
      *
-     * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
+     * <p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
      * permission to detect foreground app on API 21 and above devices.
      */
     private UsageStatsManager mUsageStatsManager;

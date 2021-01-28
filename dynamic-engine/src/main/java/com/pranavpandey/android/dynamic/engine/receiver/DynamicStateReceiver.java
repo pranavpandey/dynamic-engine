@@ -31,7 +31,7 @@ import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
  * Broadcast receiver to listen call events. It has been already added in the manifest and
  * should be registered dynamically at the runtime.
  *
- * <p><p>Package must be granted {@link android.Manifest.permission_group#PHONE}
+ * <p>Package must be granted {@link android.Manifest.permission_group#PHONE}
  * permission to listen call events on API 23 and above devices.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)

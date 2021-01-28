@@ -47,10 +47,10 @@ import java.util.Map;
  * Service to monitor various system events to provide event specific functionality in the app.
  * <p>Extend this service and implement the interface methods to monitor the different events.
  *
- * <p><p>Package must be granted {@link android.Manifest.permission_group#PHONE}
+ * <p>Package must be granted {@link android.Manifest.permission_group#PHONE}
  * permission to listen call events on API 23 and above devices.
  *
- * <p><p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
+ * <p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
  * permission to detect the foreground app on API 21 and above devices.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)

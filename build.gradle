@@ -30,7 +30,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha04'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha05'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     }
 }
@@ -53,7 +53,7 @@ ext {
     versionDesc = 'A collection of tasks to monitor various events including call, lock, ' +
             'headset, charging, dock and foreground app via service on Android 4.0 (API 14) ' +
             'and above devices.'
-    referenceTitle = 'Dynamic Engine Reference'
+    referenceTitle = 'Dynamic Engine API reference'
 
     siteUrl = 'https://github.com/pranavpandey/dynamic-engine'
     gitUrl = 'https://github.com/pranavpandey/dynamic-engine'
