@@ -16,16 +16,20 @@
 
 package com.pranavpandey.android.dynamic.engine.utils;
 
+import android.annotation.TargetApi;
+import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
+import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
+import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
 
 /**
  * Helper class used for the {@link DynamicEngine}.
@@ -48,6 +52,11 @@ public class DynamicEngineUtils {
      * Constant for the package scheme.
      */
     private static final String PACKAGE_SCHEME = "package";
+
+    /**
+     * Constant for the unknown event type.
+     */
+    private static final int EVENT_UNKNOWN = -1;
 
     /**
      * Load dynamic app info from the package name.
@@ -126,5 +135,24 @@ public class DynamicEngineUtils {
         intentFilter.addDataScheme(PACKAGE_SCHEME);
 
         return intentFilter;
+    }
+
+    /**
+     * Returns the correct type for the foreground event.
+     *
+     * @return The correct type for the foreground event.
+     *
+     * @see UsageEvents.Event#ACTIVITY_RESUMED
+     * @see UsageEvents.Event#MOVE_TO_FOREGROUND
+     */
+    @SuppressWarnings("deprecation")
+    @TargetApi(Build.VERSION_CODES.Q)
+    public static int getForegroundEventType() {
+        if (!DynamicSdkUtils.is21()) {
+            return EVENT_UNKNOWN;
+        }
+
+        return DynamicSdkUtils.is29() ? UsageEvents.Event.ACTIVITY_RESUMED
+                : UsageEvents.Event.MOVE_TO_FOREGROUND;
     }
 }

@@ -235,6 +235,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
      *
      * @return The dynamic app info from the foreground package name.
      */
+    @SuppressWarnings("deprecation")
     private @Nullable DynamicAppInfo getForegroundAppInfo() {
         String packageName = null;
         DynamicAppInfo dynamicAppInfo = null;
@@ -243,7 +244,6 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
             packageName = getForegroundPackage(
                     System.currentTimeMillis(), ADE_USAGE_STATS_INTERVAL);
         } else {
-            @SuppressWarnings("deprecation")
             ActivityManager.RunningTaskInfo runningTaskInfo =
                     mActivityManager.getRunningTasks(1).get(0);
             if (runningTaskInfo.topActivity != null) {
@@ -277,7 +277,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
         while (usageEvents.hasNextEvent()) {
             usageEvents.getNextEvent(event);
 
-            if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+            if (event.getEventType() == DynamicEngineUtils.getForegroundEventType()) {
                 packageName = event.getPackageName();
             }
         }

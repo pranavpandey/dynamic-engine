@@ -36,6 +36,7 @@ import com.pranavpandey.android.dynamic.engine.model.DynamicPriority;
 import com.pranavpandey.android.dynamic.engine.service.DynamicStickyService;
 import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
 import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
+import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicTaskUtils;
 
 import java.util.ArrayList;
@@ -426,7 +427,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                         setAppMonitorTaskPaused(true);
 
                         if (mKeyguardManager != null) {
-                            setLocked(mKeyguardManager.inKeyguardRestrictedInputMode());
+                            setLocked(isKeyguardLocked());
                         }
                         break;
                     case Intent.ACTION_SCREEN_ON:
@@ -434,12 +435,12 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                         setAppMonitorTaskPaused(false);
 
                         if (mKeyguardManager != null) {
-                            setLocked(mKeyguardManager.inKeyguardRestrictedInputMode());
+                            setLocked(isKeyguardLocked());
                         }
                         break;
                     case Intent.ACTION_USER_PRESENT:
                         if (mKeyguardManager != null) {
-                            setLocked(mKeyguardManager.inKeyguardRestrictedInputMode());
+                            setLocked(isKeyguardLocked());
                         }
                         break;
                     case Intent.ACTION_PACKAGE_REMOVED:
@@ -470,6 +471,21 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                         break;
                 }
             }
+        }
+
+        /**
+         * Checks whether the keyguard is in the locked state.
+         *
+         * @return {@code true} if the keyguard is in the locked state.
+         */
+        @SuppressWarnings("deprecation")
+        private boolean isKeyguardLocked() {
+            if (mKeyguardManager == null) {
+                return false;
+            }
+
+            return DynamicSdkUtils.is16() ? mKeyguardManager.isKeyguardLocked()
+                    : mKeyguardManager.inKeyguardRestrictedInputMode();
         }
     }
 
