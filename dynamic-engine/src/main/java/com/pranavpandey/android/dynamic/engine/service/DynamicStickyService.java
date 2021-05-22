@@ -32,7 +32,7 @@ import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
 
 /**
  * Sticky service which will restart automatically if killed by the system.
- * <p>Useful in low RAM or similar situations where we need to run the service continuously
+ * <p>Useful in low memory or similar situations where we need to run the service continuously
  * in the background.
  */
 public abstract class DynamicStickyService extends AccessibilityService {

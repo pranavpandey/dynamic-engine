@@ -49,10 +49,10 @@ import java.util.Map;
  * <p>Extend this service and implement the interface methods to monitor the different events.
  *
  * <p>Package must be granted {@link android.Manifest.permission_group#PHONE}
- * permission to listen call events on API 23 and above devices.
+ * permission to listen call events on API 23 and above.
  *
  * <p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
- * permission to detect the foreground app on API 21 and above devices.
+ * permission to detect the foreground app on API 21 and above.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 public abstract class DynamicEngine extends DynamicStickyService implements DynamicEventListener {

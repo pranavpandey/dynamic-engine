@@ -32,7 +32,7 @@ import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
  * should be registered dynamically at the runtime.
  *
  * <p>Package must be granted {@link android.Manifest.permission_group#PHONE}
- * permission to listen call events on API 23 and above devices.
+ * permission to listen call events on API 23 and above.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public class DynamicStateReceiver extends BroadcastReceiver {
