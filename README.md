@@ -4,10 +4,10 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![Build Status](https://travis-ci.org/pranavpandey/dynamic-engine.svg?branch=master)](https://travis-ci.org/pranavpandey/dynamic-engine)
-[![Download](https://api.bintray.com/packages/pranavpandey/android/dynamic-engine/images/download.svg)](https://bintray.com/pranavpandey/android/dynamic-engine/_latestVersion)
+[![Release](https://img.shields.io/maven-central/v/com.pranavpandey.android/dynamic-engine)](https://search.maven.org/artifact/com.pranavpandey.android/dynamic-engine)
 
 A collection of tasks to monitor various events including call, lock, headset, charging, dock and 
-foreground app via service on Android 2.3 (API 9) and above devices.
+foreground app via service on Android 2.3 (API 9) and above.
 
 > Since v0.4.0, it uses [26.x.x support libraries](https://developer.android.com/topic/libraries/support-library/revisions.html#26-0-0)
 so, minimum SDK will be Android 4.0 (API 14).
@@ -58,7 +58,7 @@ events. I will do my best to add more tasks later.
 Extend the `DynamicEngine` service and implement the interface functions to monitor call, lock,
 headset, charging and dock related events.
 
-On Android 6.0 (API 23) and above devices, `READ_PHONE_STATE` permission must be granted for 
+On Android 6.0 (API 23) and above, `READ_PHONE_STATE` permission must be granted for 
 the app `package` to monitor call events. If this permission is not granted then,
 `onCallStateChange(isCall)` method will never be called. For more information on the 
 `runtime permissions`, please read official documentation [here](https://developer.android.com/training/permissions/requesting.html).
@@ -178,7 +178,7 @@ currently in `beta` stage so, more improvements will be done in the future.
 It will not run by default to save resources. It should be started explicitly by calling the
 `setAppMonitorTask(running)`.
 
-On Android 5.0 (API 21) and above devices, `PACKAGE_USAGE_STATS` permission must be granted for 
+On Android 5.0 (API 21) and above, `PACKAGE_USAGE_STATS` permission must be granted for 
 the app `package` to monitor foreground app. If this permission is not granted then,
 `onAppChange(dynamicAppInfo)` method will never be called. For more information on 
 `UsageStatsManager`, please read the official documentation [here](https://developer.android.com/reference/android/app/usage/UsageStatsManager.html).

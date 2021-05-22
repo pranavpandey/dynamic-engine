@@ -23,10 +23,10 @@
     <!-- Permissions used by the foreground app monitor. -->
     <uses-permission android:name="android.permission.GET_TASKS"
         android:maxSdkVersion="19" />
-    <!-- This permission must be allowed on API 21 and above devices. -->
+    <!-- This permission must be allowed on API 21 and above. -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
-    <!-- This permission is required to query all packages on API 30 and above devices. -->
+    <!-- This permission is required to query all packages on API 30 and above. -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
 
