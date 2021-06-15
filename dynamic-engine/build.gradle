@@ -37,8 +37,8 @@ dependencies {
     api "androidx.preference:preference:${versions.preference}"
 }
 
-if (project.rootProject.file('local.properties').exists()) {
-    apply from: 'bintray.gradle'
+if (project.rootProject.file("${publication}").exists()) {
+    apply from: 'maven.gradle'
 }
 
 task generateJavadoc() {
