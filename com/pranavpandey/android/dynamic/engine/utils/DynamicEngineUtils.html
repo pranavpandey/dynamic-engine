@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9};
+var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -230,6 +230,13 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>static int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getForegroundEventType()">getForegroundEventType</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the correct type for the foreground event.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>static <a href="https://developer.android.com/reference/android/content/IntentFilter.html?is-external=true" title="class or interface in android.content" class="externalLink">IntentFilter</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPackageIntentFilter()">getPackageIntentFilter</a></span>()</code></th>
 <td class="colLast">
@@ -373,7 +380,7 @@ public static&nbsp;<a href="https://developer.android.com/reference/android/cont
 <a id="getPackageIntentFilter()">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getPackageIntentFilter</h4>
 <pre class="methodSignature">@NonNull
@@ -383,6 +390,23 @@ public static&nbsp;<a href="https://developer.android.com/reference/android/cont
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The intent filter to register a broadcast receiver which can listen package
          added or removed broadcasts.</dd>
+</dl>
+</li>
+</ul>
+<a id="getForegroundEventType()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getForegroundEventType</h4>
+<pre class="methodSignature">public static&nbsp;int&nbsp;getForegroundEventType()</pre>
+<div class="block">Returns the correct type for the foreground event.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The correct type for the foreground event.</dd>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="https://developer.android.com/reference/android/app/usage/UsageEvents.Event.html?is-external=true#ACTIVITY_RESUMED" title="class or interface in android.app.usage" class="externalLink"><code>UsageEvents.Event.ACTIVITY_RESUMED</code></a>, 
+<a href="https://developer.android.com/reference/android/app/usage/UsageEvents.Event.html?is-external=true#MOVE_TO_FOREGROUND" title="class or interface in android.app.usage" class="externalLink"><code>UsageEvents.Event.MOVE_TO_FOREGROUND</code></a></dd>
 </dl>
 </li>
 </ul>
@@ -414,7 +438,7 @@ public static&nbsp;<a href="https://developer.android.com/reference/android/cont
 <li><a href="../../../../../../index-all.html">Index</a></li>
 <li><a href="../../../../../../help-doc.html">Help</a></li>
 </ul>
-<div class="aboutLanguage"><h5>3.3.1</h5></div>
+<div class="aboutLanguage"><h5>4.0.0</h5></div>
 </div>
 <div class="subNav">
 <ul class="navList" id="allclasses_navbar_bottom">
