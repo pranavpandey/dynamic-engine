@@ -28,6 +28,7 @@ import android.os.Build;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.pranavpandey.android.dynamic.engine.listener.DynamicEventListener;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
@@ -129,7 +130,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         mDynamicEventListener = this;
         mSpecialEventReceiver = new SpecialEventReceiver();
         mDynamicAppMonitor = new DynamicAppMonitor(this);
-        mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        mKeyguardManager = ContextCompat.getSystemService(this, KeyguardManager.class);
 
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getEventsIntentFilter());
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getPackageIntentFilter());

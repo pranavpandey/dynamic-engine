@@ -19,13 +19,13 @@ package com.pranavpandey.android.dynamic.engine.service;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
@@ -47,15 +47,18 @@ public abstract class DynamicStickyService extends AccessibilityService {
         super.onCreate();
 
         try {
-            AccessibilityManager am = (AccessibilityManager) getSystemService(
-                    Context.ACCESSIBILITY_SERVICE);
-            am.addAccessibilityStateChangeListener(
-                    new AccessibilityManager.AccessibilityStateChangeListener() {
-                @Override
-                public void onAccessibilityStateChanged(boolean enabled) {
-                    DynamicStickyService.this.onAccessibilityStateChanged(enabled);
-                }
-            });
+            AccessibilityManager am = ContextCompat.getSystemService(
+                    this, AccessibilityManager.class);
+
+            if (am != null) {
+                am.addAccessibilityStateChangeListener(
+                        new AccessibilityManager.AccessibilityStateChangeListener() {
+                            @Override
+                            public void onAccessibilityStateChanged(boolean enabled) {
+                                DynamicStickyService.this.onAccessibilityStateChanged(enabled);
+                            }
+                        });
+            }
         } catch (Exception ignored) {
         }
     }

@@ -27,6 +27,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.core.content.ContextCompat;
 
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
@@ -104,13 +105,13 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     @SuppressLint("WrongConstant")
     public DynamicAppMonitor(@NonNull DynamicEngine dynamicEngine) {
         this.mDynamicEngine = dynamicEngine;
-        this.mActivityManager = (ActivityManager)
-                dynamicEngine.getSystemService(Context.ACTIVITY_SERVICE);
+        this.mActivityManager = ContextCompat.getSystemService(
+                dynamicEngine, ActivityManager.class);
 
         if (DynamicSdkUtils.is21()) {
             if (DynamicSdkUtils.is22()) {
-                this.mUsageStatsManager = (UsageStatsManager)
-                        dynamicEngine.getSystemService(Context.USAGE_STATS_SERVICE);
+                this.mUsageStatsManager = ContextCompat.getSystemService(
+                        dynamicEngine, UsageStatsManager.class);
             }
 
             if (mUsageStatsManager == null) {
