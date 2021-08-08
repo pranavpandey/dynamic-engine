@@ -22,7 +22,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
-import com.pranavpandey.android.dynamic.utils.DynamicDeviceUtils;
+import com.pranavpandey.android.dynamic.util.DynamicDeviceUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

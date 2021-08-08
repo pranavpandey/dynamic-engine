@@ -28,7 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
-import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
+import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
 
 /**
  * Sticky service which will restart automatically if killed by the system.

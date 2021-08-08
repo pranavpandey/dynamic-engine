@@ -29,7 +29,7 @@ import androidx.annotation.Nullable;
 
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
-import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
+import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
 
 /**
  * Helper class used for the {@link DynamicEngine}.

@@ -32,9 +32,9 @@ import androidx.core.content.ContextCompat;
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.util.DynamicEngineUtils;
-import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
-import com.pranavpandey.android.dynamic.utils.concurrent.DynamicResult;
-import com.pranavpandey.android.dynamic.utils.concurrent.DynamicTask;
+import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
+import com.pranavpandey.android.dynamic.util.concurrent.DynamicResult;
+import com.pranavpandey.android.dynamic.util.concurrent.DynamicTask;
 
 /**
  * A {@link DynamicTask} to monitor foreground to provide app specific functionality.

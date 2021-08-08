@@ -37,8 +37,8 @@ import com.pranavpandey.android.dynamic.engine.model.DynamicPriority;
 import com.pranavpandey.android.dynamic.engine.service.DynamicStickyService;
 import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
 import com.pranavpandey.android.dynamic.engine.util.DynamicEngineUtils;
-import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
-import com.pranavpandey.android.dynamic.utils.DynamicTaskUtils;
+import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
+import com.pranavpandey.android.dynamic.util.DynamicTaskUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
