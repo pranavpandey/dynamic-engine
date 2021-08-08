@@ -124,6 +124,9 @@ public class DynamicPriority {
     public static @NonNull List<String> getEventsPriority(@NonNull Context context) {
         String eventsPriority = getSharedPreferences(context).getString(
                 ADE_PREF_EVENTS_PRIORITY, ADE_DEFAULT_EVENTS_PRIORITY);
+        if (eventsPriority == null) {
+            eventsPriority = ADE_DEFAULT_EVENTS_PRIORITY;
+        }
 
         return returnAfterDeviceCheck(context,
                 new ArrayList<>(convertStringToArrayList(eventsPriority)));

@@ -55,6 +55,18 @@ public class DynamicAppInfo implements Parcelable {
     public DynamicAppInfo() { }
 
     /**
+     * Read an object of this class from the parcel.
+     *
+     * @param in The parcel to read the values.
+     */
+    public DynamicAppInfo(@NonNull Parcel in) {
+        this.applicationInfo = in.readParcelable(ApplicationInfo.class.getClassLoader());
+        this.topActivity = in.readParcelable(ComponentName.class.getClassLoader());
+        this.packageName = in.readString();
+        this.label = in.readString();
+    }
+
+    /**
      * Parcelable creator to create from parcel.
      */
     public static final Parcelable.Creator<DynamicAppInfo> CREATOR =
@@ -70,21 +82,9 @@ public class DynamicAppInfo implements Parcelable {
         }
     };
 
-    /**
-     * Read an object of this class from the parcel.
-     *
-     * @param in The parcel to read the values.
-     */
-    public DynamicAppInfo(Parcel in) {
-        this.applicationInfo = in.readParcelable(ApplicationInfo.class.getClassLoader());
-        this.topActivity = in.readParcelable(ComponentName.class.getClassLoader());
-        this.packageName = in.readString();
-        this.label = in.readString();
-    }
-
     @Override
     public int describeContents() {
-        return 0;
+        return hashCode();
     }
 
     @Override
