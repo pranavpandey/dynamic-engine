@@ -13,6 +13,8 @@ foreground app via service on Android 2.3 (API 9) and above.
 so, minimum SDK will be Android 4.0 (API 14).
 <br/>Since v2.0.0, it uses [AndroidX](https://developer.android.com/jetpack/androidx/) so, first
 [migrate](https://developer.android.com/jetpack/androidx/migrate) your project to AndroidX.
+<br/>Since v4.1.0, it is dependent on Java 8 due to the dependency on
+[Dynamic Utils](https://github.com/pranavpandey/dynamic-utils).
 
 ---
 
@@ -36,7 +38,7 @@ It can be installed by adding the following dependency to your `build.gradle` fi
 ```groovy
 dependencies {
     // For AndroidX enabled projects.
-    implementation 'com.pranavpandey.android:dynamic-engine:4.0.0'
+    implementation 'com.pranavpandey.android:dynamic-engine:4.1.0'
 
     // For legacy projects.
     implementation 'com.pranavpandey.android:dynamic-engine:1.3.0'
