@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pranavpandey.android.dynamic.engine.utils;
+package com.pranavpandey.android.dynamic.engine.util;
 
 import android.annotation.TargetApi;
 import android.app.usage.UsageEvents;

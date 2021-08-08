@@ -36,7 +36,7 @@ import com.pranavpandey.android.dynamic.engine.model.DynamicEvent;
 import com.pranavpandey.android.dynamic.engine.model.DynamicPriority;
 import com.pranavpandey.android.dynamic.engine.service.DynamicStickyService;
 import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
-import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
+import com.pranavpandey.android.dynamic.engine.util.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicTaskUtils;
 

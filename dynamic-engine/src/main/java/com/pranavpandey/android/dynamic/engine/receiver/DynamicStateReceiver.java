@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 
-import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
+import com.pranavpandey.android.dynamic.engine.util.DynamicEngineUtils;
 
 /**
  * Broadcast receiver to listen call events. It has been already added in the manifest and

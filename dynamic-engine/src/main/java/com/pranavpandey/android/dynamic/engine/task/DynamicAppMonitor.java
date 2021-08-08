@@ -31,7 +31,7 @@ import androidx.core.content.ContextCompat;
 
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
-import com.pranavpandey.android.dynamic.engine.utils.DynamicEngineUtils;
+import com.pranavpandey.android.dynamic.engine.util.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils;
 import com.pranavpandey.android.dynamic.utils.concurrent.DynamicResult;
 import com.pranavpandey.android.dynamic.utils.concurrent.DynamicTask;
