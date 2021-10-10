@@ -20,7 +20,7 @@ buildscript {
             'minSdk'    : 14,
             'targetSdk' : 31,
             'buildTools': '31.0.0',
-            'dynamic'   : '4.2.0',
+            'dynamic'   : '4.3.1',
             'preference': '1.1.1'
     ]
 
@@ -68,8 +68,8 @@ ext {
     mavenDir = 'com/pranavpandey/android'
     mavenArtifactId = 'dynamic-engine'
     mavenInceptionYear = '2017'
-    mavenVersion = '4.1.0'
-    mavenVersionCode = 26
+    mavenVersion = '4.1.1'
+    mavenVersionCode = 27
 
     developerId = 'pranavpandey'
     developerName = 'Pranav Pandey'

@@ -38,7 +38,7 @@ import com.pranavpandey.android.dynamic.engine.util.DynamicEngineUtils;
 public class DynamicStateReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(final @NonNull Context context, @Nullable Intent intent) {
+    public void onReceive(@NonNull Context context, @Nullable Intent intent) {
         if (intent != null
                 && TelephonyManager.ACTION_PHONE_STATE_CHANGED.equals(intent.getAction())) {
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);

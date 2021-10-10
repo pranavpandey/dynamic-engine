@@ -98,7 +98,6 @@ public abstract class DynamicStickyService extends AccessibilityService {
                 setServiceInfo(info);
             }
         }
-
     }
 
     @Override

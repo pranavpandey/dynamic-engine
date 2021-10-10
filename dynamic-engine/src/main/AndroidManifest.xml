@@ -20,7 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pranavpandey.android.dynamic.engine">
 
-    <!-- Permissions used by the foreground app monitor. -->
+    <!-- Permission used by the foreground app monitor. -->
     <uses-permission android:name="android.permission.GET_TASKS"
         android:maxSdkVersion="19" />
     <!-- This permission must be allowed on API 21 and above. -->
@@ -29,8 +29,7 @@
     <!-- This permission is required to query all packages on API 30 and above. -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
-
-    <!-- Permissions used by the call state listener. -->
+    <!-- Permission used by the call state listener. -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application>
