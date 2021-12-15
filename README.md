@@ -50,8 +50,8 @@ dependencies {
 ## Usage
 
 It is a collection of different tasks which can monitor various events by running a service in 
-the background. Initially, it an monitor call, lock, headset, charging, dock and foreground related
-events. I will do my best to add more tasks later.
+the background. Initially, it can monitor call, lock, headset, charging, dock and foreground app 
+related events. I will do my best to add more tasks later.
 
 > For complete reference, please read the [documentation](https://pranavpandey.github.io/dynamic-engine).
 
