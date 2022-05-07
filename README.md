@@ -38,7 +38,7 @@ It can be installed by adding the following dependency to your `build.gradle` fi
 ```groovy
 dependencies {
     // For AndroidX enabled projects.
-    implementation 'com.pranavpandey.android:dynamic-engine:4.1.1'
+    implementation 'com.pranavpandey.android:dynamic-engine:4.2.0'
 
     // For legacy projects.
     implementation 'com.pranavpandey.android:dynamic-engine:1.3.0'
