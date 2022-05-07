@@ -17,7 +17,10 @@
 package com.pranavpandey.android.dynamic.engine.util;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.app.usage.UsageEvents;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -30,6 +33,10 @@ import androidx.annotation.Nullable;
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
+
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Helper class used for the {@link DynamicEngine}.
@@ -154,5 +161,85 @@ public class DynamicEngineUtils {
 
         return DynamicSdkUtils.is29() ? UsageEvents.Event.ACTIVITY_RESUMED
                 : UsageEvents.Event.MOVE_TO_FOREGROUND;
+    }
+
+    /**
+     * Retrieve the foreground package.
+     *
+     * @param usageStatsManager The usage stats manager instance.
+     * @param time The start time to get the recent apps.
+     * @param interval The interval for the requested events.
+     *
+     * @return The foreground package name on API 21 and above.
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static @Nullable String getForegroundPackage(
+            @Nullable UsageStatsManager usageStatsManager, long time, long interval) {
+        if (!DynamicSdkUtils.is21() || usageStatsManager == null) {
+            return null;
+        }
+
+        UsageEvents usageEvents = usageStatsManager.queryEvents(time - interval, time);
+        UsageEvents.Event event = new UsageEvents.Event();
+        String packageName = null;
+
+        while (usageEvents.hasNextEvent()) {
+            usageEvents.getNextEvent(event);
+
+            if (event.getEventType() == getForegroundEventType()) {
+                packageName = event.getPackageName();
+            }
+        }
+
+        // Alternate method
+        if (packageName == null) {
+            List<UsageStats> usageStats = usageStatsManager.queryUsageStats(
+                    UsageStatsManager.INTERVAL_DAILY, time - interval, time);
+
+            if (usageStats != null && !usageStats.isEmpty()) {
+                SortedMap<Long, UsageStats> tasks = new TreeMap<>();
+                UsageStats usage = null;
+
+                for (UsageStats usageStat : usageStats) {
+                    if (usageStat.getTotalTimeInForeground() > 0) {
+                        tasks.put(usageStat.getLastTimeUsed(), usageStat);
+                    }
+                }
+
+                if (!tasks.isEmpty()) {
+                    usage = tasks.get(tasks.lastKey());
+                }
+
+                if (usage != null) {
+                    packageName = usage.getPackageName();
+                }
+            }
+        }
+
+        return packageName;
+    }
+
+    /**
+     * Retrieve the foreground package.
+     *
+     * @param activityManager The activity manager instance.
+     *
+     * @return The foreground package name on API 20 and below.
+     */
+    @SuppressWarnings("deprecation")
+    public static @Nullable String getForegroundPackage(
+            @Nullable ActivityManager activityManager) {
+        if (activityManager == null) {
+            return null;
+        }
+
+        ActivityManager.RunningTaskInfo runningTaskInfo =
+                activityManager.getRunningTasks(1).get(0);
+
+        if (runningTaskInfo.topActivity != null) {
+            return runningTaskInfo.topActivity.getPackageName();
+        }
+
+        return null;
     }
 }

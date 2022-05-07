@@ -19,7 +19,6 @@ package com.pranavpandey.android.dynamic.engine.task;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
-import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.os.Build;
@@ -43,7 +42,7 @@ import com.pranavpandey.android.dynamic.util.concurrent.DynamicTask;
  * permission to detect the foreground app on API 21 and above.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-@TargetApi(Build.VERSION_CODES.Q)
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
 
     /**
@@ -54,14 +53,14 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     private static final String ADE_USAGE_STATS = "usagestats";
 
     /**
-     * Default usage stats interval.
+     * Default usage stats interval in milliseconds.
      */
-    private static final int ADE_USAGE_STATS_INTERVAL = 50;
+    private static final long ADE_USAGE_STATS_INTERVAL = 2500L;
 
     /**
      * The minimal period in milliseconds between two events.
      */
-    public static final int ADE_NOTIFICATION_TIMEOUT = 200;
+    public static final long ADE_NOTIFICATION_TIMEOUT = 200L;
 
     /**
      * Dynamic engine to initialize usage stats service.
@@ -87,7 +86,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     /**
      * Activity manager to detect foreground package activities.
      */
-    private ActivityManager mActivityManager;
+    private final ActivityManager mActivityManager;
 
     /**
      * UsageStatsManager to detect foreground package on API 21 and above.
@@ -115,7 +114,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
             }
 
             if (mUsageStatsManager == null) {
-                mUsageStatsManager = (UsageStatsManager)
+                this.mUsageStatsManager = (UsageStatsManager)
                         dynamicEngine.getSystemService(ADE_USAGE_STATS);
             }
         }
@@ -170,7 +169,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     protected void onCancelled() {
         super.onCancelled();
 
-        onProgressUpdate(new DynamicResult.Progress<DynamicAppInfo>(null));
+        onProgressUpdate(new DynamicResult.Progress<>(null));
 
         if (mDynamicEngine != null) {
             mDynamicEngine.getSpecialEventListener().onAppChange(mDynamicAppInfo);
@@ -236,53 +235,19 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
      *
      * @return The dynamic app info from the foreground package name.
      */
-    @SuppressWarnings("deprecation")
     private @Nullable DynamicAppInfo getForegroundAppInfo() {
-        String packageName = null;
-        DynamicAppInfo dynamicAppInfo = null;
-
+        String packageName;
         if (DynamicSdkUtils.is21()) {
-            packageName = getForegroundPackage(
+            packageName = DynamicEngineUtils.getForegroundPackage(mUsageStatsManager,
                     System.currentTimeMillis(), ADE_USAGE_STATS_INTERVAL);
         } else {
-            ActivityManager.RunningTaskInfo runningTaskInfo =
-                    mActivityManager.getRunningTasks(1).get(0);
-            if (runningTaskInfo.topActivity != null) {
-                packageName = runningTaskInfo.topActivity.getPackageName();
-            }
+            packageName = DynamicEngineUtils.getForegroundPackage(mActivityManager);
         }
 
         if (packageName != null) {
-            dynamicAppInfo = DynamicEngineUtils.getAppInfoFromPackage(
-                    mDynamicEngine, packageName);
+            return DynamicEngineUtils.getAppInfoFromPackage(mDynamicEngine, packageName);
         }
 
-        return dynamicAppInfo;
-    }
-
-    /**
-     * Retrieve the foreground package.
-     *
-     * @param time The start time to get the recent apps.
-     * @param interval The interval for the requested events.
-     *
-     * @return The foreground package name on API 21 and above.
-     */
-    private @Nullable String getForegroundPackage(long time, long interval) {
-        String packageName = null;
-
-        UsageEvents usageEvents = mUsageStatsManager.queryEvents(time - interval * 1000, time);
-        UsageEvents.Event event = new UsageEvents.Event();
-
-        // get last event
-        while (usageEvents.hasNextEvent()) {
-            usageEvents.getNextEvent(event);
-
-            if (event.getEventType() == DynamicEngineUtils.getForegroundEventType()) {
-                packageName = event.getPackageName();
-            }
-        }
-
-        return packageName;
+        return null;
     }
 }
