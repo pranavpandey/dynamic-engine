@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
+import com.pranavpandey.android.dynamic.engine.model.DynamicHinge;
 
 /**
  * Interface to listen various system events with the help of {@link DynamicEngine}.
@@ -38,7 +39,16 @@ public interface DynamicEventListener {
     void onInitialize(boolean charging, boolean headset, boolean docked);
 
     /**
-     * This method will be called when call state is changed.
+     * This method will be called when the hinge state is changed.
+     *
+     * @param state The current hinge state.
+     *
+     * @see DynamicHinge
+     */
+    void onHingeStateChange(@DynamicHinge int state);
+
+    /**
+     * This method will be called when the call state is changed.
      * <p>Either on call or the device is idle.
      *
      * @param call {@code true} if the device is on call.
@@ -47,7 +57,7 @@ public interface DynamicEventListener {
     void onCallStateChange(boolean call);
 
     /**
-     * This method will be called when screen state is changed.
+     * This method will be called when the screen state is changed.
      * <p>Either the device screen is off or on.
      *
      * @param screenOff {@code true} if the device screen is off.
@@ -55,7 +65,7 @@ public interface DynamicEventListener {
     void onScreenStateChange(boolean screenOff);
 
     /**
-     * This method will be called when lock state is changed.
+     * This method will be called when the lock state is changed.
      * <p>Either the device is in the locked or unlocked state independent of the PIN,
      * password or any other security lock.
      *
@@ -64,7 +74,7 @@ public interface DynamicEventListener {
     void onLockStateChange(boolean locked);
 
     /**
-     * This method will be called when headset state is changed.
+     * This method will be called when the headset state is changed.
      * <p>Either the device is connected to a audio output device or volume is routed through
      * the internal speaker.
      *
@@ -74,7 +84,7 @@ public interface DynamicEventListener {
     void onHeadsetStateChange(boolean connected);
 
     /**
-     * This method will be called when charging state is changed.
+     * This method will be called when the charging state is changed.
      * <p>Either the device is connected to a power source using the battery.
      *
      * @param charging {@code true} if the device is charging or connected to a power source.
@@ -82,7 +92,7 @@ public interface DynamicEventListener {
     void onChargingStateChange(boolean charging);
 
     /**
-     * This method will be called when dock state is changed.
+     * This method will be called when the dock state is changed.
      * <p>Either the device is docked or not.
      *
      * @param docked {@code true} if the device is docked.
@@ -90,7 +100,7 @@ public interface DynamicEventListener {
     void onDockStateChange(boolean docked);
 
     /**
-     * This method will be called when foreground app is changed.
+     * This method will be called when the foreground app is changed.
      * <p>Use it to provide the app specific functionality in the app.
      *
      * @param dynamicAppInfo The dynamic app info of the foreground package.

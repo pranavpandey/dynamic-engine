@@ -22,6 +22,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Build;
 
@@ -33,10 +37,12 @@ import androidx.core.content.ContextCompat;
 import com.pranavpandey.android.dynamic.engine.listener.DynamicEventListener;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.engine.model.DynamicEvent;
+import com.pranavpandey.android.dynamic.engine.model.DynamicHinge;
 import com.pranavpandey.android.dynamic.engine.model.DynamicPriority;
 import com.pranavpandey.android.dynamic.engine.service.DynamicStickyService;
 import com.pranavpandey.android.dynamic.engine.task.DynamicAppMonitor;
 import com.pranavpandey.android.dynamic.engine.util.DynamicEngineUtils;
+import com.pranavpandey.android.dynamic.util.DynamicDeviceUtils;
 import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
 import com.pranavpandey.android.dynamic.util.DynamicTaskUtils;
 
@@ -55,8 +61,9 @@ import java.util.Map;
  * <p>Package must be granted {@link android.Manifest.permission#PACKAGE_USAGE_STATS}
  * permission to detect the foreground app on API 21 and above.
  */
-@TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-public abstract class DynamicEngine extends DynamicStickyService implements DynamicEventListener {
+@TargetApi(Build.VERSION_CODES.R)
+public abstract class DynamicEngine extends DynamicStickyService
+        implements SensorEventListener, DynamicEventListener {
 
     /**
      * Intent extra for headset state.
@@ -64,9 +71,19 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     private static final String ADE_EXTRA_HEADSET_STATE = "state";
 
     /**
-     * Listener to listen special events.
+     * Sensor manager to register listeners.
      */
-    private DynamicEventListener mDynamicEventListener;
+    private SensorManager mSensorManager;
+
+    /**
+     * Keyguard manager to detect the lock screen state.
+     */
+    private KeyguardManager mKeyguardManager;
+
+    /**
+     * Task to monitor foreground app.
+     */
+    private DynamicAppMonitor mDynamicAppMonitor;
 
     /**
      * Broadcast receiver to receive special events.
@@ -74,9 +91,9 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     private SpecialEventReceiver mSpecialEventReceiver;
 
     /**
-     * Task to monitor foreground app.
+     * The dynamic hinge state.
      */
-    private DynamicAppMonitor mDynamicAppMonitor;
+    private @DynamicHinge int mHinge;
 
     /**
      * {@code true} if the device is on call. Either ringing or answered.
@@ -109,11 +126,6 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     private boolean mDocked;
 
     /**
-     * Keyguard manager to detect the lock screen state.
-     */
-    private KeyguardManager mKeyguardManager;
-
-    /**
      * Array list to store the events priority.
      */
     private List<String> mEventsPriority;
@@ -127,15 +139,14 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void onCreate() {
         super.onCreate();
 
-        mDynamicEventListener = this;
-        mSpecialEventReceiver = new SpecialEventReceiver();
-        mDynamicAppMonitor = new DynamicAppMonitor(this);
+        mSensorManager = ContextCompat.getSystemService(this, SensorManager.class);
         mKeyguardManager = ContextCompat.getSystemService(this, KeyguardManager.class);
-
+        mDynamicAppMonitor = new DynamicAppMonitor(this);
+        mSpecialEventReceiver = new SpecialEventReceiver();
+        
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getEventsIntentFilter());
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getPackageIntentFilter());
         registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getCallIntentFilter());
-
         updateEventsPriority();
 
         mEventsMap = new LinkedHashMap<>();
@@ -146,6 +157,14 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      * Initialize special events and check for some already occurred and ongoing events.
      */
     public void initializeEvents() {
+        if (DynamicDeviceUtils.hasHingeFeature(this)) {
+            mSensorManager.registerListener(this,
+                    mSensorManager.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            setHinge(DynamicHinge.UNKNOWN);
+        }
+
         Intent chargingIntent = registerReceiver(null,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         if (chargingIntent != null) {
@@ -167,7 +186,7 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                     != Intent.EXTRA_DOCK_STATE_UNDOCKED;
         }
 
-        mDynamicEventListener.onInitialize(mCharging, mHeadset, mDocked);
+        onInitialize(mCharging, mHeadset, mDocked);
     }
 
     /**
@@ -192,12 +211,21 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     }
 
     /**
+     * Get the sensor manager used by this service.
+     *
+     * @return The sensor manager used by this service.
+     */
+    public @NonNull SensorManager getSensorManager() {
+        return mSensorManager;
+    }
+
+    /**
      * Get the listener to listen special events.
      *
      * @return The listener to listen special events.
      */
     public @NonNull DynamicEventListener getSpecialEventListener() {
-        return mDynamicEventListener;
+        return this;
     }
 
     /**
@@ -253,9 +281,25 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         try {
             unregisterReceiver(mSpecialEventReceiver);
             setAppMonitorTask(false);
+
+            if (DynamicSdkUtils.is30()) {
+                mSensorManager.unregisterListener(this);
+            }
         } catch (Exception ignored) {
         }
         super.onDestroy();
+    }
+
+    public @DynamicHinge int getHinge() {
+        return mHinge;
+    }
+
+    public void setHinge(@DynamicHinge int hinge) {
+        if (hinge != getHinge()) {
+            this.mHinge = hinge;
+            
+            onHingeStateChange(hinge);
+        }
     }
 
     /**
@@ -277,7 +321,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void setCall(boolean call) {
         if (call != isCall()) {
             this.mCall = call;
-            mDynamicEventListener.onCallStateChange(call);
+
+            onCallStateChange(call);
         }
     }
 
@@ -298,7 +343,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void setScreenOff(boolean screenOff) {
         if (screenOff != isScreenOff()) {
             this.mScreenOff = screenOff;
-            mDynamicEventListener.onScreenStateChange(screenOff);
+
+            onScreenStateChange(screenOff);
         }
     }
 
@@ -320,7 +366,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void setLocked(boolean locked) {
         if (locked != isLocked()) {
             this.mLocked = locked;
-            mDynamicEventListener.onLockStateChange(locked);
+
+            onLockStateChange(locked);
         }
     }
 
@@ -342,7 +389,8 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void setHeadset(boolean headset) {
         if (headset != isHeadset()) {
             this.mHeadset = headset;
-            mDynamicEventListener.onHeadsetStateChange(headset);
+
+            onHeadsetStateChange(headset);
         }
     }
 
@@ -361,9 +409,10 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
      * @param charging {@code true} if the device is charging or connected to a power source.
      */
     public void setCharging(boolean charging) {
-        if (charging != mCharging) {
+        if (charging != isCharging()) {
             this.mCharging = charging;
-            mDynamicEventListener.onChargingStateChange(charging);
+
+            onChargingStateChange(charging);
         }
     }
 
@@ -384,9 +433,34 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
     public void setDocked(boolean docked) {
         if (docked != isDocked()) {
             this.mDocked = docked;
-            mDynamicEventListener.onDockStateChange(docked);
+
+            onDockStateChange(docked);
         }
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (DynamicSdkUtils.is30()
+                && sensorEvent.sensor.getType() == Sensor.TYPE_HINGE_ANGLE) {
+            final float[] value = sensorEvent.values;
+            if (value == null || value.length == 0) {
+                return;
+            }
+
+            if ((value[0] >= 90 && value[0] < 150) ||
+                    (value[0] > 180 && value[0] <= 270)) {
+                setHinge(DynamicHinge.HALF_EXPANDED);
+            } else if ((value[0] >= 150 && value[0] <= 180)
+                    || (value[0] > 270 && value[0] < 360)) {
+                setHinge(DynamicHinge.FLAT);
+            } else {
+                setHinge(DynamicHinge.COLLAPSED);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) { }
 
     /**
      * Broadcast receiver to listen various events.
@@ -451,17 +525,15 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
                                     Intent.EXTRA_REPLACING, false);
 
                             if (!isReplacing) {
-                                mDynamicEventListener.onPackageRemoved(
-                                        intent.getData().getSchemeSpecificPart());
+                                onPackageRemoved(intent.getData().getSchemeSpecificPart());
                             }
                         }
                         break;
                     case Intent.ACTION_PACKAGE_ADDED:
                         if (intent.getData() != null
                                 && intent.getData().getSchemeSpecificPart() != null) {
-                            mDynamicEventListener.onPackageUpdated(
-                                    DynamicEngineUtils.getAppInfoFromPackage(context,
-                                            intent.getData().getSchemeSpecificPart()), !isReplacing);
+                            onPackageUpdated(DynamicEngineUtils.getAppInfoFromPackage(context,
+                                    intent.getData().getSchemeSpecificPart()), !isReplacing);
                         }
                         break;
                     case DynamicEngineUtils.ACTION_ON_CALL:
@@ -497,6 +569,10 @@ public abstract class DynamicEngine extends DynamicStickyService implements Dyna
         updateEventsMap(DynamicEvent.HEADSET, headset);
         updateEventsMap(DynamicEvent.DOCK, docked);
     }
+
+    @CallSuper
+    @Override
+    public void onHingeStateChange(@DynamicHinge int state) { }
 
     @CallSuper
     @Override
