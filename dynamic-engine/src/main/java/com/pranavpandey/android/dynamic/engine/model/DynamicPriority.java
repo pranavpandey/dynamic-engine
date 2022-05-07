@@ -38,7 +38,7 @@ public class DynamicPriority {
     /**
      * Shared preference key for the event priorities.
      */
-    private static final String ADE_PREF_EVENTS_PRIORITY = "ade_pref_events_priority";
+    public static final String ADE_PREF_EVENTS_PRIORITY = "ade_pref_events_priority";
 
     /**
      * DynamicPriority splitter to separate different events.

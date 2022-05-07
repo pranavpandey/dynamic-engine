@@ -16,25 +16,14 @@
 
 package com.pranavpandey.android.dynamic.engine.model;
 
-import androidx.annotation.StringDef;
-
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.APP;
-import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.CALL;
-import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.CHARGING;
-import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.DOCK;
-import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.HEADSET;
-import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.LOCK;
-import static com.pranavpandey.android.dynamic.engine.model.DynamicEvent.NONE;
-
 /**
  * Events supported by the {@link DynamicEngine}.
  */
-@StringDef(value = { NONE, CALL, LOCK, HEADSET, HEADSET, CHARGING, DOCK, APP })
 @Retention(RetentionPolicy.SOURCE)
 public @interface DynamicEvent {
 
