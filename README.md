@@ -341,7 +341,7 @@ various internal operations. So, its functions can also be used to perform other
 Please email me if you are using this library and want to feature your app here. Also, please 
 checkout the `Rotation` app to experience the full potential of this library.
 
-- [Rotation - Orientation Manager](https://play.google.com/store/apps/details?id=com.pranavpandey.rotation)
+- [Rotation](https://play.google.com/store/apps/details?id=com.pranavpandey.rotation)
 
 ---
 
