@@ -190,7 +190,8 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
      * @param event The accessibility event.
      */
     public void onAccessibilityEvent(@Nullable AccessibilityEvent event) {
-        if (!isRunning() || isPaused() || event == null) {
+        if (!isRunning() || isPaused() || event == null
+                || event.getPackageName() == null || event.getClassName() == null) {
             return;
         }
 
