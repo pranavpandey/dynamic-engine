@@ -28,6 +28,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
@@ -247,19 +248,18 @@ public abstract class DynamicEngine extends DynamicStickyService
      */
     public void setAppMonitorTask(boolean running) {
         if (running) {
-            mDynamicAppMonitor = new DynamicAppMonitor(this);
-            mDynamicAppMonitor.setRunning(true);
-            DynamicTaskUtils.executeTask(mDynamicAppMonitor);
-        } else {
-            if (mDynamicAppMonitor != null) {
-                mDynamicAppMonitor.setRunning(false);
-                DynamicTaskUtils.cancelTask(mDynamicAppMonitor, true);
+            if (mDynamicAppMonitor.isCancelled()) {
+                mDynamicAppMonitor = new DynamicAppMonitor(this);
             }
+
+            getAppMonitor().setRunning(true);
+            DynamicTaskUtils.executeTask(getAppMonitor());
+        } else {
+            getAppMonitor().setRunning(false);
+            DynamicTaskUtils.cancelTask(getAppMonitor(), true);
         }
 
-        if (mDynamicAppMonitor != null) {
-            updateEventsMap(DynamicEvent.APP, mDynamicAppMonitor.isRunning());
-        }
+        updateEventsMap(DynamicEvent.APP, getAppMonitor().isRunning());
     }
 
     /**
@@ -271,9 +271,7 @@ public abstract class DynamicEngine extends DynamicStickyService
      * @see DynamicEventListener#onAppChange(DynamicAppInfo)
      */
     public void setAppMonitorTaskPaused(boolean paused) {
-        if (mDynamicAppMonitor != null) {
-            mDynamicAppMonitor.setPaused(paused);
-        }
+        getAppMonitor().setPaused(paused);
     }
 
     @Override
@@ -611,7 +609,22 @@ public abstract class DynamicEngine extends DynamicStickyService
     @CallSuper
     @Override
     public void onAppChange(@Nullable DynamicAppInfo dynamicAppInfo) {
-        updateEventsMap(DynamicEvent.APP, mDynamicAppMonitor.isRunning());
+        updateEventsMap(DynamicEvent.APP, getAppMonitor().isRunning());
+    }
+
+    @Override
+    protected void onAccessibilityStateChanged(boolean enabled) {
+        super.onAccessibilityStateChanged(enabled);
+
+        getAppMonitor().setDormant(enabled);
+    }
+
+    @Override
+    public void onAccessibilityEvent(AccessibilityEvent event) {
+        super.onAccessibilityEvent(event);
+
+        getAppMonitor().setDormant(true);
+        getAppMonitor().onAccessibilityEvent(event);
     }
 
     /**

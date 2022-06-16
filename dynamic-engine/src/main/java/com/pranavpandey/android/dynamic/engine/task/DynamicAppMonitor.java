@@ -20,8 +20,10 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.usage.UsageStatsManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Build;
+import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,8 @@ import com.pranavpandey.android.dynamic.engine.util.DynamicEngineUtils;
 import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
 import com.pranavpandey.android.dynamic.util.concurrent.DynamicResult;
 import com.pranavpandey.android.dynamic.util.concurrent.DynamicTask;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A {@link DynamicTask} to monitor foreground to provide app specific functionality.
@@ -55,12 +59,12 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     /**
      * Default usage stats interval in milliseconds.
      */
-    private static final long ADE_USAGE_STATS_INTERVAL = 2500L;
+    private static final long ADE_USAGE_STATS_INTERVAL = 200L;
 
     /**
      * The minimal period in milliseconds between two events.
      */
-    public static final long ADE_NOTIFICATION_TIMEOUT = 200L;
+    public static final long ADE_NOTIFICATION_TIMEOUT = 100L;
 
     /**
      * Dynamic engine to initialize usage stats service.
@@ -71,12 +75,17 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     /**
      * {@code true} if this task is running.
      */
-    private boolean mRunning;
+    private final AtomicBoolean mRunning = new AtomicBoolean();
 
     /**
      * {@code true} if this task is paused.
      */
-    private boolean mPaused;
+    private final AtomicBoolean mPaused = new AtomicBoolean();
+
+    /**
+     * {@code true} if this task is dormant and used only to notify events.
+     */
+    private final AtomicBoolean mDormant = new AtomicBoolean();
 
     /**
      * Dynamic app info for the foreground package.
@@ -129,14 +138,10 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
 
     @Override
     protected Void doInBackground(@Nullable Void params) {
-        while (mRunning) {
+        while (isRunning()) {
             try {
-                if (!mPaused) {
-                    DynamicAppInfo appInfo = getForegroundAppInfo();
-                    if (appInfo != null && appInfo.getPackageName() != null
-                            && (mDynamicAppInfo == null || !mDynamicAppInfo.equals(appInfo))) {
-                        publishProgress(new DynamicResult.Progress<>(appInfo));
-                    }
+                if (!isPaused() && !isDormant()) {
+                    publishProgress(new DynamicResult.Progress<>(getForegroundAppInfo()));
                 }
 
                 Thread.sleep(ADE_NOTIFICATION_TIMEOUT);
@@ -152,9 +157,12 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
         super.onProgressUpdate(progress);
 
         if (progress != null) {
-            mDynamicAppInfo = progress.getData();
+            if (progress.getData() != null && progress.getData().getPackageName() != null
+                    && (mDynamicAppInfo == null || !progress.getData().equals(mDynamicAppInfo))) {
+                mDynamicAppInfo = progress.getData();
+                mDynamicEngine.getSpecialEventListener().onAppChange(mDynamicAppInfo);
+            }
         }
-        mDynamicEngine.getSpecialEventListener().onAppChange(mDynamicAppInfo);
     }
 
     @Override
@@ -177,12 +185,29 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     }
 
     /**
+     * This method will be called to notify for the accessibility event.
+     *
+     * @param event The accessibility event.
+     */
+    public void onAccessibilityEvent(@Nullable AccessibilityEvent event) {
+        if (!isRunning() || isPaused() || event == null) {
+            return;
+        }
+
+        if (DynamicEngineUtils.getActivityInfo(mDynamicEngine, new ComponentName(
+                event.getPackageName().toString(), event.getClassName().toString())) != null) {
+            onProgressUpdate(new DynamicResult.Progress<>(DynamicEngineUtils.getAppInfoFromPackage(
+                    mDynamicEngine, event.getPackageName().toString())));
+        }
+    }
+
+    /**
      * Get the running status of this task.
      *
      * @return {@code true} if this task is running.
      */
     public boolean isRunning() {
-        return mRunning;
+        return mRunning.get();
     }
 
     /**
@@ -191,7 +216,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
      * @param running {@code true} if this task is running.
      */
     public void setRunning(boolean running) {
-        this.mRunning = running;
+        mRunning.set(running);
     }
 
     /**
@@ -200,7 +225,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
      * @return {@code true} if this task is paused.
      */
     public boolean isPaused() {
-        return mPaused;
+        return mPaused.get();
     }
 
     /**
@@ -209,7 +234,25 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
      * @param paused {@code true} if this task is paused.
      */
     public void setPaused(boolean paused) {
-        this.mPaused = paused;
+        mPaused.set(paused);
+    }
+
+    /**
+     * Get the dormant status of this task.
+     *
+     * @return {@code true} if this task is dormant.
+     */
+    public boolean isDormant() {
+        return mDormant.get();
+    }
+
+    /**
+     * Set the dormant status of this task.
+     *
+     * @param dormant {@code true} if this task is dormant.
+     */
+    public void setDormant(boolean dormant) {
+        mDormant.set(dormant);
     }
 
     /**

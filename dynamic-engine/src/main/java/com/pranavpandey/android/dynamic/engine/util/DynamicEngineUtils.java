@@ -21,9 +21,11 @@ import android.app.ActivityManager;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
@@ -35,8 +37,6 @@ import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
 
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
  * Helper class used for the {@link DynamicEngine}.
@@ -66,10 +66,31 @@ public class DynamicEngineUtils {
     private static final int EVENT_UNKNOWN = -1;
 
     /**
+     * Returns activity info from the component name.
+     *
+     * @param context The context to get {@link PackageManager}.
+     * @param componentName The component name to be used.
+     *
+     * @return The activity info from the component name.
+     */
+    public static @Nullable ActivityInfo getActivityInfo(
+            @NonNull Context context, @Nullable ComponentName componentName) {
+        if (componentName != null) {
+            try {
+                return context.getPackageManager().getActivityInfo(
+                        componentName, PackageManager.GET_META_DATA);
+            } catch (Exception ignored) {
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Load dynamic app info from the package name.
      *
      * @param context The context to get {@link PackageManager}.
-     * @param packageName The Package name to build the dynamic app info.
+     * @param packageName The package name to build the dynamic app info.
      *
      * @return The dynamic app info from the package name.
      */
@@ -172,48 +193,54 @@ public class DynamicEngineUtils {
      *
      * @return The foreground package name on API 21 and above.
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @TargetApi(Build.VERSION_CODES.Q)
     public static @Nullable String getForegroundPackage(
             @Nullable UsageStatsManager usageStatsManager, long time, long interval) {
         if (!DynamicSdkUtils.is21() || usageStatsManager == null) {
             return null;
         }
 
-        UsageEvents usageEvents = usageStatsManager.queryEvents(time - interval, time);
-        UsageEvents.Event event = new UsageEvents.Event();
         String packageName = null;
 
-        while (usageEvents.hasNextEvent()) {
-            usageEvents.getNextEvent(event);
+        try {
+            UsageEvents usageEvents = usageStatsManager.queryEvents(time - interval, time);
+            UsageEvents.Event event = new UsageEvents.Event();
 
-            if (event.getEventType() == getForegroundEventType()) {
-                packageName = event.getPackageName();
+            if (usageEvents != null) {
+                while (usageEvents.hasNextEvent()) {
+                    usageEvents.getNextEvent(event);
+
+                    if (event.getEventType() == getForegroundEventType()
+                            && event.getTimeStamp() >= event.getTimeStamp()) {
+                        packageName = event.getPackageName();
+                    }
+                }
             }
-        }
 
-        // Alternate method
-        if (packageName == null) {
-            List<UsageStats> usageStats = usageStatsManager.queryUsageStats(
-                    UsageStatsManager.INTERVAL_DAILY, time - interval, time);
+            // Alternate method
+            if (DynamicSdkUtils.is29() && packageName == null) {
+                List<UsageStats> usageStats = usageStatsManager.queryUsageStats(
+                        UsageStatsManager.INTERVAL_BEST, time - interval, time);
+                UsageStats usageStat = null;
 
-            if (usageStats != null && !usageStats.isEmpty()) {
-                SortedMap<Long, UsageStats> tasks = new TreeMap<>();
-                UsageStats usage = null;
-
-                for (UsageStats usageStat : usageStats) {
-                    if (usageStat.getTotalTimeInForeground() > 0) {
-                        tasks.put(usageStat.getLastTimeUsed(), usageStat);
+                for (UsageStats usageStatsEntry : usageStats) {
+                    if (usageStatsEntry.getTotalTimeVisible() > 0
+                            && usageStatsEntry.getTotalTimeInForeground() > 0) {
+                        if (usageStat == null) {
+                            usageStat = usageStatsEntry;
+                        } else if (usageStatsEntry.getLastTimeUsed()
+                                >= usageStat.getLastTimeUsed()) {
+                            usageStat = usageStatsEntry;
+                        }
                     }
                 }
 
-                if (!tasks.isEmpty()) {
-                    usage = tasks.get(tasks.lastKey());
-                }
-
-                if (usage != null) {
-                    packageName = usage.getPackageName();
+                if (usageStat != null) {
+                    packageName = usageStat.getPackageName();
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return packageName;
