@@ -17,8 +17,7 @@
 
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.pranavpandey.android.dynamic.engine">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Permission used by the foreground app monitor. -->
     <uses-permission android:name="android.permission.GET_TASKS"
