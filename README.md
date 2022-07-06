@@ -22,10 +22,11 @@ so, minimum SDK will be Android 4.0 (API 14).
 
 - [Installation](https://github.com/pranavpandey/dynamic-engine#installation)
 - [Usage](https://github.com/pranavpandey/dynamic-engine#usage)
-    - [Monitor special events](https://github.com/pranavpandey/dynamic-engine#monitor-special-events)
-    - [Monitor foreground app](https://github.com/pranavpandey/dynamic-engine#monitor-foreground-app)
-    - [Monitor package state](https://github.com/pranavpandey/dynamic-engine#monitor-package-state)
+    - [Special events](https://github.com/pranavpandey/dynamic-engine#monitor-special-events)
+    - [Foreground app](https://github.com/pranavpandey/dynamic-engine#monitor-foreground-app)
+    - [Package state](https://github.com/pranavpandey/dynamic-engine#monitor-package-state)
     - [Events priority](https://github.com/pranavpandey/dynamic-engine#events-priority)
+    - [Accessibility](https://github.com/pranavpandey/dynamic-engine#accessibility)
     - [Dependency](https://github.com/pranavpandey/dynamic-engine#dependency)
 - [License](https://github.com/pranavpandey/dynamic-engine#license)
 
@@ -55,7 +56,7 @@ related events. I will do my best to add more tasks later.
 
 > For complete reference, please read the [documentation](https://pranavpandey.github.io/dynamic-engine).
 
-### Monitor special events
+### Special events
 
 Extend the `DynamicEngine` service and implement the interface functions to monitor call, lock,
 headset, charging and dock related events.
@@ -172,7 +173,7 @@ public class MonitorService extends DynamicEngine {
 }
 ```
 
-### Monitor foreground app
+### Foreground app
 
 It can be used to monitor the foreground app to perform actions based on it. It is 
 currently in `beta` stage so, more improvements will be done in the future.
@@ -217,7 +218,7 @@ public class MonitorService extends DynamicEngine {
 }
 ````
 
-### Monitor package state
+### Package state
 
 It can be used to monitor app updates or new installs.
 
@@ -329,12 +330,21 @@ public abstract class DynamicEngine {
 }
 ```
 
+### Accessibility
+
+It has support for 
+[accessibility service](https://developer.android.com/guide/topics/ui/accessibility/service) 
+to provide a better experience. It also provides more accurate results when detecting the 
+[foreground app](https://github.com/pranavpandey/dynamic-engine/blob/942aa452076c154a6fc3b9698d80b1164093958e/dynamic-engine/src/main/java/com/pranavpandey/android/dynamic/engine/DynamicEngine.java#L623).
+
 ### Dependency
 
 It depends on the [dynamic-utils](https://github.com/pranavpandey/dynamic-utils) to perform
 various internal operations. So, its functions can also be used to perform other useful operations.
 
 ---
+
+<img src="./graphics/rotation.png" width="160" height="160" align="right" hspace="20">
 
 ## Apps using Dynamic Engine
 
