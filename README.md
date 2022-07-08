@@ -9,26 +9,26 @@
 A collection of tasks to monitor various events including call, lock, headset, charging, dock and 
 foreground app via service on Android 2.3 (API 9) and above.
 
-> Since v0.4.0, it uses [26.x.x support libraries](https://developer.android.com/topic/libraries/support-library/revisions.html#26-0-0)
-so, minimum SDK will be Android 4.0 (API 14).
-<br/>Since v2.0.0, it uses [AndroidX](https://developer.android.com/jetpack/androidx/) so, first
-[migrate](https://developer.android.com/jetpack/androidx/migrate) your project to AndroidX.
+> Since v0.4.0, it uses [26.x.x support libraries][android-support] so, minimum SDK will be 
+Android 4.0 (API 14).
+<br/>Since v2.0.0, it uses [AndroidX][androidx] so, first [migrate][androidx-migrate] 
+your project to AndroidX.
 <br/>Since v4.1.0, it is dependent on Java 8 due to the dependency on
-[Dynamic Utils](https://github.com/pranavpandey/dynamic-utils).
+[Dynamic Utils][dynamic-utils].
 
 ---
 
 ## Contents
 
-- [Installation](https://github.com/pranavpandey/dynamic-engine#installation)
-- [Usage](https://github.com/pranavpandey/dynamic-engine#usage)
-    - [Special events](https://github.com/pranavpandey/dynamic-engine#monitor-special-events)
-    - [Foreground app](https://github.com/pranavpandey/dynamic-engine#monitor-foreground-app)
-    - [Package state](https://github.com/pranavpandey/dynamic-engine#monitor-package-state)
-    - [Events priority](https://github.com/pranavpandey/dynamic-engine#events-priority)
-    - [Accessibility](https://github.com/pranavpandey/dynamic-engine#accessibility)
-    - [Dependency](https://github.com/pranavpandey/dynamic-engine#dependency)
-- [License](https://github.com/pranavpandey/dynamic-engine#license)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Special events](#monitor-special-events)
+    - [Foreground app](#monitor-foreground-app)
+    - [Package state](#monitor-package-state)
+    - [Events priority](#events-priority)
+    - [Accessibility](#accessibility)
+    - [Dependency](#dependency)
+- [License](#license)
 
 ---
 
@@ -54,7 +54,7 @@ It is a collection of different tasks which can monitor various events by runnin
 the background. Initially, it can monitor call, lock, headset, charging, dock and foreground app 
 related events. I will do my best to add more tasks later.
 
-> For complete reference, please read the [documentation](https://pranavpandey.github.io/dynamic-engine).
+> For complete reference, please read the [documentation][documentation].
 
 ### Special events
 
@@ -64,7 +64,7 @@ headset, charging and dock related events.
 On Android 6.0 (API 23) and above, `READ_PHONE_STATE` permission must be granted for 
 the app `package` to monitor call events. If this permission is not granted then,
 `onCallStateChange(isCall)` method will never be called. For more information on the 
-`runtime permissions`, please read official documentation [here](https://developer.android.com/training/permissions/requesting.html).
+`runtime permissions`, please read official documentation [here][runtime permissions].
 
 ```java
 public class MonitorService extends DynamicEngine {
@@ -184,7 +184,7 @@ It will not run by default to save resources. It should be started explicitly by
 On Android 5.0 (API 21) and above, `PACKAGE_USAGE_STATS` permission must be granted for 
 the app `package` to monitor foreground app. If this permission is not granted then,
 `onAppChange(dynamicAppInfo)` method will never be called. For more information on 
-`UsageStatsManager`, please read the official documentation [here](https://developer.android.com/reference/android/app/usage/UsageStatsManager.html).
+`UsageStatsManager`, please read the official documentation [here][usage stats manager].
 
 ```java
 public class MonitorService extends DynamicEngine {
@@ -332,14 +332,12 @@ public abstract class DynamicEngine {
 
 ### Accessibility
 
-It has support for 
-[accessibility service](https://developer.android.com/guide/topics/ui/accessibility/service) 
-to provide a better experience. It also provides more accurate results when detecting the 
-[foreground app](https://github.com/pranavpandey/dynamic-engine/blob/942aa452076c154a6fc3b9698d80b1164093958e/dynamic-engine/src/main/java/com/pranavpandey/android/dynamic/engine/DynamicEngine.java#L623).
+It has support for [accessibility service][accessibility service] to provide a better experience. 
+It also provides more accurate results when detecting the [foreground app][foreground app].
 
 ### Dependency
 
-It depends on the [dynamic-utils](https://github.com/pranavpandey/dynamic-utils) to perform
+It depends on the [dynamic-utils][dynamic-utils] to perform
 various internal operations. So, its functions can also be used to perform other useful operations.
 
 ---
@@ -351,7 +349,7 @@ various internal operations. So, its functions can also be used to perform other
 Please email me if you are using this library and want to feature your app here. Also, please 
 checkout the `Rotation` app to experience the full potential of this library.
 
-- [Rotation](https://play.google.com/store/apps/details?id=com.pranavpandey.rotation)
+- [Rotation][rotation]
 
 ---
 
@@ -380,3 +378,15 @@ Pranav Pandey
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+
+[android-support]: https://developer.android.com/topic/libraries/support-library/revisions.html#26-0-0
+[androidx]: https://developer.android.com/jetpack/androidx
+[androidx-migrate]: https://developer.android.com/jetpack/androidx/migrate
+[documentation]: https://pranavpandey.github.io/dynamic-engine
+[runtime permissions]: https://developer.android.com/training/permissions/requesting.html
+[usage stats manager]: https://developer.android.com/reference/android/app/usage/UsageStatsManager.html
+[accessibility service]: https://developer.android.com/guide/topics/ui/accessibility/service
+[foreground app]: https://github.com/pranavpandey/dynamic-engine/blob/942aa452076c154a6fc3b9698d80b1164093958e/dynamic-engine/src/main/java/com/pranavpandey/android/dynamic/engine/DynamicEngine.java#L623
+[dynamic-utils]: https://github.com/pranavpandey/dynamic-utils
+[rotation]: https://play.google.com/store/apps/details?id=com.pranavpandey.rotation
