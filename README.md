@@ -54,7 +54,7 @@ It is a collection of different tasks which can monitor various events by runnin
 the background. Initially, it can monitor call, lock, headset, charging, dock and foreground app 
 related events. I will do my best to add more tasks later.
 
-> For complete reference, please read the [documentation][documentation].
+> For a complete reference, please read the [documentation][documentation].
 
 ### Special events
 
@@ -342,7 +342,8 @@ various internal operations. So, its functions can also be used to perform other
 
 ---
 
-<img src="./graphics/rotation.png" width="160" height="160" align="right" hspace="20">
+<img src="./graphics/apps/pranavpandey-rotation.png"
+  width="140" height="140" align="right" hspace="20">
 
 ## Apps using Dynamic Engine
 
