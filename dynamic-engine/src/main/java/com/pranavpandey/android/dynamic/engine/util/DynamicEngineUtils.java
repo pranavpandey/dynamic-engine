@@ -61,6 +61,11 @@ public class DynamicEngineUtils {
     private static final String PACKAGE_SCHEME = "package";
 
     /**
+     * Android package name.
+     */
+    private static final String PACKAGE_ANDROID = "android";
+
+    /**
      * Constant for the unknown event type.
      */
     private static final int EVENT_UNKNOWN = -1;
@@ -211,7 +216,7 @@ public class DynamicEngineUtils {
                     usageEvents.getNextEvent(event);
 
                     if (event.getEventType() == getForegroundEventType()
-                            && event.getTimeStamp() >= event.getTimeStamp()) {
+                            && !PACKAGE_ANDROID.equals(event.getPackageName())) {
                         packageName = event.getPackageName();
                     }
                 }
@@ -225,11 +230,10 @@ public class DynamicEngineUtils {
 
                 for (UsageStats usageStatsEntry : usageStats) {
                     if (usageStatsEntry.getTotalTimeVisible() > 0
-                            && usageStatsEntry.getTotalTimeInForeground() > 0) {
-                        if (usageStat == null) {
-                            usageStat = usageStatsEntry;
-                        } else if (usageStatsEntry.getLastTimeUsed()
-                                >= usageStat.getLastTimeUsed()) {
+                            && usageStatsEntry.getTotalTimeInForeground() > 0
+                            && !PACKAGE_ANDROID.equals(usageStatsEntry.getPackageName())) {
+                        if (usageStat == null || usageStatsEntry.getLastTimeUsed()
+                                > usageStat.getLastTimeUsed()) {
                             usageStat = usageStatsEntry;
                         }
                     }

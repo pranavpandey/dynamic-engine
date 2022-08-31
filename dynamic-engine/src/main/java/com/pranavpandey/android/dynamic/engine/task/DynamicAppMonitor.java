@@ -59,12 +59,12 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     /**
      * Default usage stats interval in milliseconds.
      */
-    private static final long ADE_USAGE_STATS_INTERVAL = 200L;
+    private static final long ADE_USAGE_STATS_INTERVAL = 2000L;
 
     /**
      * The minimal period in milliseconds between two events.
      */
-    public static final long ADE_NOTIFICATION_TIMEOUT = 100L;
+    public static final long ADE_NOTIFICATION_TIMEOUT = 800L;
 
     /**
      * Dynamic engine to initialize usage stats service.
