@@ -28,6 +28,7 @@ your project to AndroidX.
     - [Events priority](#events-priority)
     - [Accessibility](#accessibility)
     - [Dependency](#dependency)
+- [Projects](#built-with-dynamic)
 - [License](#license)
 
 ---
@@ -345,7 +346,7 @@ various internal operations. So, its functions can also be used to perform other
 <img src="./graphics/apps/pranavpandey-rotation.png"
   width="140" height="140" align="right" hspace="20">
 
-## Apps using Dynamic Engine
+## Built with Dynamic
 
 Please email me if you are using this library and want to feature your app here. Also, please 
 checkout the `Rotation` app to experience the full potential of this library.
