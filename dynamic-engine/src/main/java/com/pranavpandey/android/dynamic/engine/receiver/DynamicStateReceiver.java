@@ -39,12 +39,15 @@ public class DynamicStateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(@NonNull Context context, @Nullable Intent intent) {
-        if (intent != null
-                && TelephonyManager.ACTION_PHONE_STATE_CHANGED.equals(intent.getAction())) {
+        if (intent == null || intent.getAction() == null) {
+            return;
+        }
+
+        if (TelephonyManager.ACTION_PHONE_STATE_CHANGED.equals(intent.getAction())) {
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
-            if (state != null && (state.equals(TelephonyManager.EXTRA_STATE_RINGING)
-                    || state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK))) {
+            if (TelephonyManager.EXTRA_STATE_RINGING.equals(state)
+                    || TelephonyManager.EXTRA_STATE_OFFHOOK.equals(state)) {
                 context.sendBroadcast(new Intent(DynamicEngineUtils.ACTION_ON_CALL));
             } else {
                 context.sendBroadcast(new Intent(DynamicEngineUtils.ACTION_CALL_IDLE));
