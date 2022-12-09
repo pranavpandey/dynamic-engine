@@ -20,7 +20,7 @@ buildscript {
             'minSdk'    : 14,
             'targetSdk' : 33,
             'buildTools': '33.0.0',
-            'dynamic'   : '4.4.3',
+            'dynamic'   : '4.4.7',
             'preference': '1.1.1'
     ]
 
@@ -30,7 +30,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.0-alpha09'
+        classpath 'com.android.tools.build:gradle:8.0.0-alpha09'
     }
 }
 
