@@ -145,9 +145,12 @@ public abstract class DynamicEngine extends DynamicStickyService
         mDynamicAppMonitor = new DynamicAppMonitor(this);
         mSpecialEventReceiver = new SpecialEventReceiver();
         
-        registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getEventsIntentFilter());
-        registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getPackageIntentFilter());
-        registerReceiver(mSpecialEventReceiver, DynamicEngineUtils.getCallIntentFilter());
+        ContextCompat.registerReceiver(this, mSpecialEventReceiver,
+                DynamicEngineUtils.getEventsIntentFilter(), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(this, mSpecialEventReceiver,
+                DynamicEngineUtils.getPackageIntentFilter(), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(this, mSpecialEventReceiver,
+                DynamicEngineUtils.getCallIntentFilter(), ContextCompat.RECEIVER_EXPORTED);
         updateEventsPriority();
 
         mEventsMap = new LinkedHashMap<>();
@@ -166,22 +169,22 @@ public abstract class DynamicEngine extends DynamicStickyService
             setHinge(DynamicHinge.UNKNOWN);
         }
 
-        Intent chargingIntent = registerReceiver(null,
-                new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        Intent chargingIntent = ContextCompat.registerReceiver(this, null,
+                new IntentFilter(Intent.ACTION_BATTERY_CHANGED), ContextCompat.RECEIVER_EXPORTED);
         if (chargingIntent != null) {
             int status = chargingIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             mCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                     status == BatteryManager.BATTERY_STATUS_FULL;
         }
 
-        Intent headsetIntent = registerReceiver(null,
-                new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+        Intent headsetIntent = ContextCompat.registerReceiver(this, null,
+                new IntentFilter(Intent.ACTION_HEADSET_PLUG), ContextCompat.RECEIVER_EXPORTED);
         if (headsetIntent != null) {
             mHeadset = headsetIntent.getIntExtra(ADE_EXTRA_HEADSET_STATE, -1) == 1;
         }
 
-        Intent dockIntent = registerReceiver(null,
-                new IntentFilter(Intent.ACTION_DOCK_EVENT));
+        Intent dockIntent = ContextCompat.registerReceiver(this, null,
+                new IntentFilter(Intent.ACTION_DOCK_EVENT), ContextCompat.RECEIVER_EXPORTED);
         if (dockIntent != null) {
             mDocked = dockIntent.getIntExtra(Intent.EXTRA_DOCK_STATE, -1)
                     != Intent.EXTRA_DOCK_STATE_UNDOCKED;
