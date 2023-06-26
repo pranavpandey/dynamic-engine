@@ -22,7 +22,7 @@ buildscript {
             'buildTools': '34.0.0',
             'dynamic'   : '4.5.0',
             'kotlin'    : '1.8.22',
-            'preference': '1.1.1'
+            'preference': '1.2.0'
     ]
 
     repositories {
