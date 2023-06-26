@@ -20,7 +20,8 @@ buildscript {
             'minSdk'    : 14,
             'targetSdk' : 34,
             'buildTools': '34.0.0',
-            'dynamic'   : '4.4.8',
+            'dynamic'   : '4.5.0',
+            'kotlin'    : '1.8.22',
             'preference': '1.1.1'
     ]
 
