@@ -291,10 +291,20 @@ public abstract class DynamicEngine extends DynamicStickyService
         super.onDestroy();
     }
 
+    /**
+     * Returns the dynamic hinge state.
+     *
+     * @return The dynamic hinge state.
+     */
     public @DynamicHinge int getHinge() {
         return mHinge;
     }
 
+    /**
+     * Set the dynamic hinge state.
+     *
+     * @param hinge The hinge state to be set.
+     */
     public void setHinge(@DynamicHinge int hinge) {
         if (hinge != getHinge()) {
             this.mHinge = hinge;
