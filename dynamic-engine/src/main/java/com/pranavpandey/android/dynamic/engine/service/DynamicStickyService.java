@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Pranav Pandey
+ * Copyright 2017-2024 Pranav Pandey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,10 +69,10 @@ public abstract class DynamicStickyService extends AccessibilityService {
     }
 
     /**
-     * Get restart interval after which try to restart the service.
+     * Get the restart interval after which try to restart the service.
      * <p>Override this method in the extended class to change the default interval.
      *
-     * @return The Interval in milliseconds after which service will be restarted.
+     * @return The interval in milliseconds after which service will be restarted.
      *
      * @see #ADE_DEFAULT_RESTART_INTERVAL
      */
