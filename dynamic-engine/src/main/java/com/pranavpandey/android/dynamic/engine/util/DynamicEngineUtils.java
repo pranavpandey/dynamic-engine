@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Pranav Pandey
+ * Copyright 2017-2024 Pranav Pandey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package com.pranavpandey.android.dynamic.engine.util;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.usage.UsageEvents;
-import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,8 +34,6 @@ import androidx.annotation.Nullable;
 import com.pranavpandey.android.dynamic.engine.DynamicEngine;
 import com.pranavpandey.android.dynamic.engine.model.DynamicAppInfo;
 import com.pranavpandey.android.dynamic.util.DynamicSdkUtils;
-
-import java.util.List;
 
 /**
  * Helper class used for the {@link DynamicEngine}.
@@ -218,29 +215,9 @@ public class DynamicEngineUtils {
                     if (event.getEventType() == getForegroundEventType()
                             && !PACKAGE_ANDROID.equals(event.getPackageName())) {
                         packageName = event.getPackageName();
+
+                        break;
                     }
-                }
-            }
-
-            // Alternate method
-            if (DynamicSdkUtils.is29() && packageName == null) {
-                List<UsageStats> usageStats = usageStatsManager.queryUsageStats(
-                        UsageStatsManager.INTERVAL_BEST, time - interval, time);
-                UsageStats usageStat = null;
-
-                for (UsageStats usageStatsEntry : usageStats) {
-                    if (usageStatsEntry.getTotalTimeVisible() > 0
-                            && usageStatsEntry.getTotalTimeInForeground() > 0
-                            && !PACKAGE_ANDROID.equals(usageStatsEntry.getPackageName())) {
-                        if (usageStat == null || usageStatsEntry.getLastTimeUsed()
-                                > usageStat.getLastTimeUsed()) {
-                            usageStat = usageStatsEntry;
-                        }
-                    }
-                }
-
-                if (usageStat != null) {
-                    packageName = usageStat.getPackageName();
                 }
             }
         } catch (Exception e) {
