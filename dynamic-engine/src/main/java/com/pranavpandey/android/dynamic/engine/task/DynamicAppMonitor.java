@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Pranav Pandey
+ * Copyright 2017-2024 Pranav Pandey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class DynamicAppMonitor extends DynamicTask<Void, DynamicAppInfo, Void> {
     /**
      * The minimal period in milliseconds between two events.
      */
-    public static final long ADE_NOTIFICATION_TIMEOUT = 800L;
+    public static final long ADE_NOTIFICATION_TIMEOUT = 200L;
 
     /**
      * Dynamic engine to initialize usage stats service.
