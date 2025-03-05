@@ -1,4 +1,4 @@
-<img src="./graphics/icon.png" width="160" height="160" align="right" hspace="20">
+<img src="./graphics/icon.png" height="160">
 
 # Dynamic Engine
 
@@ -6,9 +6,10 @@
 [![Build Status](https://travis-ci.org/pranavpandey/dynamic-engine.svg?branch=master)](https://travis-ci.org/pranavpandey/dynamic-engine)
 [![Release](https://img.shields.io/maven-central/v/com.pranavpandey.android/dynamic-engine)](https://search.maven.org/artifact/com.pranavpandey.android/dynamic-engine)
 
-A collection of tasks to monitor various events including call, lock, headset, charging, dock and 
-foreground app via service on Android 2.3 (API 9) and above.
+**A collection of tasks to monitor various events including call, lock, headset, charging, dock and 
+foreground app via service on Android 2.3 (API 9) and above.**
 
+> [!IMPORTANT]
 > Since v0.4.0, it uses [26.x.x support libraries][android-support] so, minimum SDK will be 
 Android 4.0 (API 14).
 <br/>Since v2.0.0, it uses [AndroidX][androidx] so, first [migrate][androidx-migrate] 
@@ -345,8 +346,7 @@ various internal operations. So, its functions can also be used to perform other
 
 ---
 
-<img src="./graphics/apps/pranavpandey-rotation.png"
-  width="140" height="140" align="right" hspace="20">
+<img src="./graphics/apps/pranavpandey-rotation.png" height="140">
 
 ## Built with Dynamic
 
