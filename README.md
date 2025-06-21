@@ -3,7 +3,6 @@
 # Dynamic Engine
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?)](https://www.apache.org/licenses/LICENSE-2.0.html)
-[![Build Status](https://travis-ci.org/pranavpandey/dynamic-engine.svg?branch=master)](https://travis-ci.org/pranavpandey/dynamic-engine)
 [![Release](https://img.shields.io/maven-central/v/com.pranavpandey.android/dynamic-engine)](https://search.maven.org/artifact/com.pranavpandey.android/dynamic-engine)
 
 **A collection of tasks to monitor various events including call, lock, headset, charging, dock and 
@@ -18,6 +17,7 @@ your project to AndroidX.
 [Dynamic Utils][dynamic-utils].
 <br/>Since v4.4.1, it is targeting Java 17 to provide maximum compatibility.
 <br/>Since v4.5.0, the minimum SDK is Android 4.4 (API 19) to comply with the latest policies.
+<br/>Since v4.5.1, the minimum SDK is Android 5.0 (API 21) to comply with the latest policies.
 
 ---
 
