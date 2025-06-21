@@ -144,12 +144,12 @@ public abstract class DynamicEngine extends DynamicStickyService
         mKeyguardManager = ContextCompat.getSystemService(this, KeyguardManager.class);
         mDynamicAppMonitor = new DynamicAppMonitor(this);
         mSpecialEventReceiver = new SpecialEventReceiver();
-        
-        ContextCompat.registerReceiver(this, mSpecialEventReceiver,
+
+        ContextCompat.registerReceiver(this, getSpecialEventReceiver(),
                 DynamicEngineUtils.getEventsIntentFilter(), ContextCompat.RECEIVER_EXPORTED);
-        ContextCompat.registerReceiver(this, mSpecialEventReceiver,
+        ContextCompat.registerReceiver(this, getSpecialEventReceiver(),
                 DynamicEngineUtils.getPackageIntentFilter(), ContextCompat.RECEIVER_EXPORTED);
-        ContextCompat.registerReceiver(this, mSpecialEventReceiver,
+        ContextCompat.registerReceiver(this, getSpecialEventReceiver(),
                 DynamicEngineUtils.getCallIntentFilter(), ContextCompat.RECEIVER_EXPORTED);
         updateEventsPriority();
 
@@ -162,8 +162,8 @@ public abstract class DynamicEngine extends DynamicStickyService
      */
     public void initializeEvents() {
         if (DynamicDeviceUtils.hasHingeFeature(this)) {
-            mSensorManager.registerListener(this,
-                    mSensorManager.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE),
+            getSensorManager().registerListener(this,
+                    getSensorManager().getDefaultSensor(Sensor.TYPE_HINGE_ANGLE),
                     SensorManager.SENSOR_DELAY_NORMAL);
         } else {
             setHinge(DynamicHinge.UNKNOWN);
@@ -224,6 +224,15 @@ public abstract class DynamicEngine extends DynamicStickyService
     }
 
     /**
+     * Get the keyguard manager used by this service.
+     *
+     * @return The keyguard manager used by this service.
+     */
+    public @Nullable KeyguardManager getKeyguardManager() {
+        return mKeyguardManager;
+    }
+
+    /**
      * Get the listener to listen special events.
      *
      * @return The listener to listen special events.
@@ -239,6 +248,15 @@ public abstract class DynamicEngine extends DynamicStickyService
      */
     public @NonNull DynamicAppMonitor getAppMonitor() {
         return mDynamicAppMonitor;
+    }
+
+    /**
+     * Get the receiver to listen special events.
+     *
+     * @return The receiver to listen special events.
+     */
+    public @Nullable SpecialEventReceiver getSpecialEventReceiver() {
+        return mSpecialEventReceiver;
     }
 
     /**
@@ -280,12 +298,12 @@ public abstract class DynamicEngine extends DynamicStickyService
     @Override
     public void onDestroy() {
         try {
-            unregisterReceiver(mSpecialEventReceiver);
-            setAppMonitorTask(false);
-
             if (DynamicSdkUtils.is30()) {
-                mSensorManager.unregisterListener(this);
+                getSensorManager().unregisterListener(this);
             }
+
+            unregisterReceiver(getSpecialEventReceiver());
+            setAppMonitorTask(false);
         } catch (Exception ignored) {
         }
         super.onDestroy();
@@ -458,13 +476,21 @@ public abstract class DynamicEngine extends DynamicStickyService
                 return;
             }
 
-            if ((value[0] >= 90 && value[0] < 150) ||
-                    (value[0] > 180 && value[0] <= 270)) {
+            if ((value[0] > 30 && value[0] < 150) ||
+                    (value[0] > 210 && value[0] <= 270)) {
                 setHinge(DynamicHinge.HALF_EXPANDED);
-            } else if ((value[0] >= 150 && value[0] <= 180)
-                    || (value[0] > 270 && value[0] < 360)) {
+            } else if ((value[0] > 150 && value[0] <= 180)
+                    || (value[0] > 180 && value[0] <= 210)) {
                 setHinge(DynamicHinge.FLAT);
             } else {
+                if (value[0] == 90 || value[0] == 270) {
+                    setHinge(DynamicHinge.HALF_EXPANDED);
+                } else if (value[0] == 180) {
+                    setHinge(DynamicHinge.FLAT);
+                } else {
+                    setHinge(DynamicHinge.COLLAPSED);
+                }
+
                 setHinge(DynamicHinge.COLLAPSED);
             }
         }
@@ -487,7 +513,7 @@ public abstract class DynamicEngine extends DynamicStickyService
      * @see DynamicEngineUtils#ACTION_ON_CALL
      * @see DynamicEngineUtils#ACTION_CALL_IDLE
      */
-    class SpecialEventReceiver extends BroadcastReceiver {
+    public class SpecialEventReceiver extends BroadcastReceiver {
 
         private boolean isReplacing;
 
@@ -512,7 +538,7 @@ public abstract class DynamicEngine extends DynamicStickyService
                         setScreenOff(true);
                         setAppMonitorTaskPaused(true);
 
-                        if (mKeyguardManager != null) {
+                        if (getKeyguardManager() != null) {
                             setLocked(isKeyguardLocked());
                         }
                         break;
@@ -520,12 +546,12 @@ public abstract class DynamicEngine extends DynamicStickyService
                         setScreenOff(false);
                         setAppMonitorTaskPaused(false);
 
-                        if (mKeyguardManager != null) {
+                        if (getKeyguardManager() != null) {
                             setLocked(isKeyguardLocked());
                         }
                         break;
                     case Intent.ACTION_USER_PRESENT:
-                        if (mKeyguardManager != null) {
+                        if (getKeyguardManager() != null) {
                             setLocked(isKeyguardLocked());
                         }
                         break;
@@ -564,12 +590,12 @@ public abstract class DynamicEngine extends DynamicStickyService
          */
         @SuppressWarnings("deprecation")
         private boolean isKeyguardLocked() {
-            if (mKeyguardManager == null) {
+            if (getKeyguardManager() == null) {
                 return false;
             }
 
-            return DynamicSdkUtils.is16() ? mKeyguardManager.isKeyguardLocked()
-                    : mKeyguardManager.inKeyguardRestrictedInputMode();
+            return DynamicSdkUtils.is16() ? getKeyguardManager().isKeyguardLocked()
+                    : getKeyguardManager().inKeyguardRestrictedInputMode();
         }
     }
 
